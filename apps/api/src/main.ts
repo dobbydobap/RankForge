@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('API_PORT', 4000);
+  const port = configService.get<number>('PORT') || configService.get<number>('API_PORT', 4000);
 
   app.setGlobalPrefix('api');
   app.use(cookieParser());
@@ -19,16 +19,16 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const corsOrigin = configService.get<string>('CORS_ORIGIN', 'http://localhost:3000');
   app.enableCors({
-    origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:3000'),
+    origin: corsOrigin.split(',').map((o) => o.trim()),
     credentials: true,
   });
 
-  // WebSocket adapter (raw ws, not Socket.IO — faster)
   app.useWebSocketAdapter(new WsAdapter(app));
 
-  await app.listen(port);
-  console.log(`RankForge API running on http://localhost:${port}`);
-  console.log(`WebSocket available at ws://localhost:${port}/ws`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`RankForge API running on port ${port}`);
 }
 bootstrap();

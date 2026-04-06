@@ -22,7 +22,8 @@ import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '../../.env',
+      // In production, env vars come from the platform; in dev, from .env file
+      envFilePath: process.env.NODE_ENV === 'production' ? undefined : '../../.env',
     }),
     PrismaModule,
     RedisModule,
