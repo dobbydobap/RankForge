@@ -2,9 +2,10 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { PrismaService } from '../../prisma/prisma.service';
+import { EventsGateway } from '../../ws/events.gateway';
 import { JUDGE_QUEUE } from '../../redis/redis.module';
 import { JudgeJobData } from './judge.service';
-import { execSync, execFileSync } from 'child_process';
+import { execSync } from 'child_process';
 import { writeFileSync, mkdirSync, readFileSync, rmSync, existsSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
@@ -54,7 +55,10 @@ const LANGUAGE_CONFIGS: Record<string, LanguageConfig> = {
 export class JudgeProcessor extends WorkerHost {
   private readonly logger = new Logger(JudgeProcessor.name);
 
-  constructor(private prisma: PrismaService) {
+  constructor(
+    private prisma: PrismaService,
+    private eventsGateway: EventsGateway,
+  ) {
     super();
   }
 
@@ -241,6 +245,37 @@ export class JudgeProcessor extends WorkerHost {
         }
       }
 
+      // Emit real-time verdict update
+      const submission = await this.prisma.submission.findUnique({
+        where: { id: submissionId },
+        select: { userId: true, contestId: true },
+      });
+
+      const verdictPayload = {
+        submissionId,
+        verdict: overallVerdict,
+        timeUsed: maxTime,
+        memoryUsed: maxMemory,
+        score: overallVerdict === 'ACCEPTED' ? 100 : 0,
+      };
+
+      // Notify the submitter
+      if (submission?.userId) {
+        this.eventsGateway.emitToUser(submission.userId, 'verdict:update', verdictPayload);
+      }
+
+      // Notify anyone watching this submission
+      this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'verdict:update', verdictPayload);
+
+      // If contest submission, notify the contest leaderboard room
+      if (submission?.contestId) {
+        this.eventsGateway.emitToRoom(
+          `contest:${submission.contestId}`,
+          'leaderboard:update',
+          { contestId: submission.contestId, trigger: 'submission_judged' },
+        );
+      }
+
       this.logger.log(`Submission ${submissionId}: ${overallVerdict} (${maxTime}ms)`);
     } finally {
       // Cleanup
@@ -253,13 +288,18 @@ export class JudgeProcessor extends WorkerHost {
   }
 
   private async setVerdict(submissionId: string, verdict: string) {
-    await this.prisma.submission.update({
+    const updated = await this.prisma.submission.update({
       where: { id: submissionId },
       data: {
         verdict: verdict as any,
         judgedAt: new Date(),
         score: 0,
       },
+      select: { userId: true, contestId: true },
     });
+
+    const payload = { submissionId, verdict, timeUsed: null, memoryUsed: null, score: 0 };
+    this.eventsGateway.emitToUser(updated.userId, 'verdict:update', payload);
+    this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'verdict:update', payload);
   }
 }

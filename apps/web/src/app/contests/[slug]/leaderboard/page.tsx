@@ -1,17 +1,29 @@
 'use client';
 
+import { useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useQueryClient } from '@tanstack/react-query';
 import { Navbar } from '@/components/layout/Navbar';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { useContest, useLeaderboard, useProblemStats } from '@/hooks/use-api';
+import { useContestUpdates } from '@/hooks/use-websocket';
 
 export default function LeaderboardPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const queryClient = useQueryClient();
   const { data: contest } = useContest(slug);
   const { data: leaderboard, isLoading } = useLeaderboard(contest?.id || '');
   const { data: stats } = useProblemStats(contest?.id || '');
+
+  // Live leaderboard updates via WebSocket
+  useContestUpdates(contest?.id || null, {
+    onLeaderboardUpdate: useCallback(() => {
+      queryClient.invalidateQueries({ queryKey: ['leaderboard', contest?.id] });
+      queryClient.invalidateQueries({ queryKey: ['problemStats', contest?.id] });
+    }, [queryClient, contest?.id]),
+  });
 
   if (isLoading || !contest) {
     return (

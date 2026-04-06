@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useQueryClient } from '@tanstack/react-query';
 import { useProblem, useSubmitCode, useSubmissions } from '@/hooks/use-api';
 import { useAuthStore } from '@/stores/auth-store';
+import { useVerdictUpdates } from '@/hooks/use-websocket';
 import { ProblemStatement } from '@/components/problems/ProblemStatement';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { LanguageSelector } from '@/components/editor/LanguageSelector';
@@ -59,10 +61,21 @@ export default function ProblemDetailPage() {
   const [code, setCode] = useState(DEFAULT_CODE[Language.CPP]);
   const [activeTab, setActiveTab] = useState<'problem' | 'submissions'>('problem');
 
+  const [lastSubmissionId, setLastSubmissionId] = useState<string | null>(null);
+  const [liveVerdict, setLiveVerdict] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+
   const submitMutation = useSubmitCode();
   const { data: submissionsData } = useSubmissions(
     problem ? { problemId: problem.id } : undefined,
   );
+
+  // Live verdict updates via WebSocket
+  useVerdictUpdates(lastSubmissionId, useCallback((data) => {
+    setLiveVerdict(data.verdict);
+    // Refresh submissions list when verdict arrives
+    queryClient.invalidateQueries({ queryKey: ['submissions'] });
+  }, [queryClient]));
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
@@ -76,11 +89,13 @@ export default function ProblemDetailPage() {
     }
     if (!problem) return;
 
-    await submitMutation.mutateAsync({
+    setLiveVerdict(null);
+    const result = await submitMutation.mutateAsync({
       problemId: problem.id,
       language,
       sourceCode: code,
     });
+    setLastSubmissionId(result.id);
   };
 
   if (isLoading) {
@@ -184,12 +199,15 @@ export default function ProblemDetailPage() {
             <CodeEditor language={language} value={code} onChange={setCode} />
           </div>
 
-          {/* Submission result */}
+          {/* Submission result — shows live verdict via WebSocket */}
           {submitMutation.isSuccess && (
             <div className="shrink-0 p-3 border-t border-zinc-800 bg-zinc-900/50">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-zinc-400">Verdict:</span>
-                <VerdictBadge verdict={submitMutation.data?.verdict || 'PENDING'} />
+                <VerdictBadge verdict={liveVerdict || submitMutation.data?.verdict || 'PENDING'} />
+                {!liveVerdict && submitMutation.data?.verdict === 'PENDING' && (
+                  <span className="text-xs text-zinc-500 animate-pulse">Judging...</span>
+                )}
               </div>
             </div>
           )}

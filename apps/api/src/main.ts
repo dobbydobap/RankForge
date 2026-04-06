@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { WsAdapter } from '@nestjs/platform-ws';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
@@ -23,7 +24,11 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // WebSocket adapter (raw ws, not Socket.IO — faster)
+  app.useWebSocketAdapter(new WsAdapter(app));
+
   await app.listen(port);
   console.log(`RankForge API running on http://localhost:${port}`);
+  console.log(`WebSocket available at ws://localhost:${port}/ws`);
 }
 bootstrap();
