@@ -31,6 +31,14 @@ export class SubmissionsController {
     return this.submissionsService.findById(id);
   }
 
+  @Post('run')
+  @UseGuards(JwtAuthGuard)
+  async customRun(
+    @Body() body: { language: string; sourceCode: string; input: string },
+  ) {
+    return this.submissionsService.customRun(body.language, body.sourceCode, body.input);
+  }
+
   @Get()
   async findAll(
     @Query('userId') userId?: string,

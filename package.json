@@ -14,7 +14,10 @@
     "db:push": "pnpm --filter @rankforge/api exec prisma db push",
     "db:migrate": "pnpm --filter @rankforge/api exec prisma migrate dev",
     "db:seed": "pnpm --filter @rankforge/api exec prisma db seed",
-    "db:studio": "pnpm --filter @rankforge/api exec prisma studio"
+    "db:studio": "pnpm --filter @rankforge/api exec prisma studio",
+    "test": "turbo test",
+    "test:segment-tree": "pnpm --filter @rankforge/segment-tree test",
+    "test:shared": "pnpm --filter @rankforge/shared test"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

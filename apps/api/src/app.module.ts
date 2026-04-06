@@ -14,6 +14,9 @@ import { RatingsModule } from './modules/ratings/ratings.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { EditorialsModule } from './modules/editorials/editorials.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { AchievementsModule } from './modules/achievements/achievements.module';
+import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
 
 @Module({
   imports: [
@@ -35,6 +38,9 @@ import { CommentsModule } from './modules/comments/comments.module';
     AnalyticsModule,
     EditorialsModule,
     CommentsModule,
+    AdminModule,
+    AchievementsModule,
+    PlagiarismModule,
   ],
 })
 export class AppModule {}

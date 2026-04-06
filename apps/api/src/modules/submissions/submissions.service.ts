@@ -134,4 +134,68 @@ export class SubmissionsService {
   async findByUser(userId: string, page = 1, limit = 20) {
     return this.findAll({ userId, page, limit });
   }
+
+  /** Run code against custom input without creating a submission */
+  async customRun(language: string, sourceCode: string, input: string) {
+    const { execSync } = await import('child_process');
+    const { writeFileSync, mkdirSync, rmSync } = await import('fs');
+    const { join } = await import('path');
+    const { tmpdir } = await import('os');
+    const { randomUUID } = await import('crypto');
+
+    const CONFIGS: Record<string, { sourceFile: string; compile: string | null; run: string }> = {
+      CPP: { sourceFile: 'solution.cpp', compile: 'g++ -O2 -std=c++17 -o solution solution.cpp', run: './solution' },
+      PYTHON: { sourceFile: 'solution.py', compile: null, run: 'python3 solution.py' },
+      JAVA: { sourceFile: 'Solution.java', compile: 'javac Solution.java', run: 'java Solution' },
+      JAVASCRIPT: { sourceFile: 'solution.js', compile: null, run: 'node solution.js' },
+      GO: { sourceFile: 'solution.go', compile: 'go build -o solution solution.go', run: './solution' },
+    };
+
+    const config = CONFIGS[language];
+    if (!config) return { error: 'Unsupported language', output: '' };
+
+    const workDir = join(tmpdir(), `rankforge-run-${randomUUID()}`);
+    mkdirSync(workDir, { recursive: true });
+
+    try {
+      writeFileSync(join(workDir, config.sourceFile), sourceCode);
+      writeFileSync(join(workDir, 'input.txt'), input);
+
+      // Compile
+      if (config.compile) {
+        try {
+          execSync(config.compile, { cwd: workDir, timeout: 15000, stdio: 'pipe' });
+        } catch (err: any) {
+          return { error: 'Compilation Error', output: err.stderr?.toString().slice(0, 2000) || '' };
+        }
+      }
+
+      // Run
+      const shellPath = process.platform === 'win32' ? 'cmd.exe' : '/bin/sh';
+      const runCmd = process.platform === 'win32'
+        ? `type input.txt | ${config.run}`
+        : `${config.run} < input.txt`;
+
+      try {
+        const result = execSync(runCmd, {
+          cwd: workDir,
+          timeout: 10000,
+          maxBuffer: 1024 * 1024,
+          stdio: ['pipe', 'pipe', 'pipe'],
+          shell: shellPath,
+        });
+        return { error: null, output: result.toString().slice(0, 10000) };
+      } catch (err: any) {
+        if (err.killed || err.signal === 'SIGTERM') {
+          return { error: 'Time Limit Exceeded', output: '' };
+        }
+        return {
+          error: 'Runtime Error',
+          output: (err.stderr?.toString() || err.stdout?.toString() || '').slice(0, 2000),
+        };
+      }
+    } finally {
+      try { rmSync(workDir, { recursive: true, force: true }); } catch {}
+    }
+  }
 }
