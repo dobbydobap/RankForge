@@ -1,0 +1,36 @@
+{
+  "name": "rankforge",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "dev:web": "turbo dev --filter=@rankforge/web",
+    "dev:api": "turbo dev --filter=@rankforge/api",
+    "dev:judge": "turbo dev --filter=@rankforge/judge-worker",
+    "db:generate": "pnpm --filter @rankforge/api exec prisma generate",
+    "db:push": "pnpm --filter @rankforge/api exec prisma db push",
+    "db:migrate": "pnpm --filter @rankforge/api exec prisma migrate dev",
+    "db:seed": "pnpm --filter @rankforge/api exec prisma db seed",
+    "db:studio": "pnpm --filter @rankforge/api exec prisma studio"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/client",
+      "@prisma/engines",
+      "bcrypt",
+      "esbuild",
+      "msgpackr-extract",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  }
+}

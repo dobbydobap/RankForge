@@ -1,0 +1,342 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ AUTH & USERS ============
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  profile              UserProfile?
+  submissions          Submission[]
+  contestRegistrations ContestRegistration[]
+  ratingHistory        RatingHistory[]
+  comments             Comment[]
+  achievements         UserAchievement[]
+  followers            Follow[]        @relation("following")
+  following            Follow[]        @relation("follower")
+}
+
+enum Role {
+  USER
+  PROBLEM_SETTER
+  CONTEST_ORGANIZER
+  ADMIN
+}
+
+model UserProfile {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName   String?
+  bio           String?
+  avatarUrl     String?
+  currentRating Int     @default(1200)
+  maxRating     Int     @default(1200)
+  solvedCount   Int     @default(0)
+  contestCount  Int     @default(0)
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    User     @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+}
+
+// ============ PROBLEMS ============
+
+model Problem {
+  id           String     @id @default(cuid())
+  title        String
+  slug         String     @unique
+  statement    String
+  constraints  String?
+  inputFormat  String
+  outputFormat String
+  difficulty   Difficulty
+  timeLimit    Int        @default(2000)
+  memoryLimit  Int        @default(256)
+  createdById  String
+  isPublished  Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  tags            ProblemTag[]
+  testCases       TestCase[]
+  contestProblems ContestProblem[]
+  submissions     Submission[]
+  comments        Comment[]
+  editorial       Editorial?
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+model Tag {
+  id       String       @id @default(cuid())
+  name     String       @unique
+  problems ProblemTag[]
+}
+
+model ProblemTag {
+  problemId String
+  tagId     String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([problemId, tagId])
+}
+
+model TestCase {
+  id        String  @id @default(cuid())
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  input     String
+  output    String
+  isSample  Boolean @default(false)
+  order     Int
+}
+
+model Editorial {
+  id        String   @id @default(cuid())
+  problemId String   @unique
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  content   String
+  authorId  String
+  createdAt DateTime @default(now())
+}
+
+// ============ CONTESTS ============
+
+model Contest {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?
+  status      ContestStatus @default(DRAFT)
+  startTime   DateTime
+  endTime     DateTime
+  duration    Int
+  isPublic    Boolean       @default(true)
+  inviteCode  String?       @unique
+  createdById String
+  freezeTime  Int?
+  penaltyTime Int           @default(20)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  problems      ContestProblem[]
+  registrations ContestRegistration[]
+  announcements Announcement[]
+  submissions   Submission[]
+  scoreEvents   ScoreEvent[]
+}
+
+enum ContestStatus {
+  DRAFT
+  PUBLISHED
+  REGISTRATION_OPEN
+  LIVE
+  FROZEN
+  ENDED
+  RESULTS_PUBLISHED
+}
+
+model ContestProblem {
+  id        String  @id @default(cuid())
+  contestId String
+  problemId String
+  contest   Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  label     String
+  points    Int     @default(100)
+  order     Int
+
+  @@unique([contestId, problemId])
+  @@unique([contestId, label])
+}
+
+model ContestRegistration {
+  id               String    @id @default(cuid())
+  contestId        String
+  userId           String
+  contest          Contest   @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isVirtual        Boolean   @default(false)
+  virtualStartTime DateTime?
+  registeredAt     DateTime  @default(now())
+
+  @@unique([contestId, userId])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  contestId String
+  contest   Contest  @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+}
+
+// ============ SUBMISSIONS ============
+
+model Submission {
+  id         String    @id @default(cuid())
+  userId     String
+  problemId  String
+  contestId  String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem    Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  contest    Contest?  @relation(fields: [contestId], references: [id], onDelete: SetNull)
+  language   Language
+  sourceCode String
+  verdict    Verdict   @default(PENDING)
+  timeUsed   Int?
+  memoryUsed Int?
+  score      Int?
+  createdAt  DateTime  @default(now())
+  judgedAt   DateTime?
+
+  testResults TestResult[]
+
+  @@index([userId])
+  @@index([problemId])
+  @@index([contestId])
+}
+
+enum Language {
+  CPP
+  JAVA
+  PYTHON
+  JAVASCRIPT
+  GO
+}
+
+enum Verdict {
+  PENDING
+  JUDGING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  MEMORY_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}
+
+model TestResult {
+  id           String     @id @default(cuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  testCaseId   String
+  verdict      Verdict
+  timeUsed     Int?
+  memoryUsed   Int?
+  output       String?
+  order        Int
+}
+
+// ============ LEADERBOARD & TEMPORAL DATA ============
+
+model ScoreEvent {
+  id           String         @id @default(cuid())
+  contestId    String
+  contest      Contest        @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  userId       String
+  problemLabel String
+  score        Int
+  penalty      Int
+  timestamp    DateTime
+  eventType    ScoreEventType
+  minuteOffset Int
+
+  @@index([contestId, minuteOffset])
+  @@index([contestId, userId])
+}
+
+enum ScoreEventType {
+  ACCEPTED
+  WRONG_ATTEMPT
+  PARTIAL_SCORE
+}
+
+model LeaderboardSnapshot {
+  id           String   @id @default(cuid())
+  contestId    String
+  userId       String
+  score        Int
+  penalty      Int
+  solvedCount  Int
+  rank         Int
+  minuteOffset Int
+  createdAt    DateTime @default(now())
+
+  @@index([contestId, minuteOffset])
+  @@unique([contestId, userId, minuteOffset])
+}
+
+// ============ RATINGS ============
+
+model RatingHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contestId String
+  oldRating Int
+  newRating Int
+  rank      Int
+  createdAt DateTime @default(now())
+}
+
+// ============ SOCIAL ============
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId String
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  parentId  String?
+  createdAt DateTime @default(now())
+}
+
+// ============ ACHIEVEMENTS ============
+
+model Achievement {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  description String
+  icon        String
+  condition   String
+  users       UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  earnedAt      DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+}
