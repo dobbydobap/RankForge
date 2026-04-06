@@ -195,3 +195,46 @@ export function useReplayData(contestId: string) {
     enabled: !!contestId,
   });
 }
+
+// ── User Profile ──
+
+export function useUserProfile(username: string) {
+  return useQuery({
+    queryKey: ['userProfile', username],
+    queryFn: () => api.get<any>(`/users/${username}`),
+    enabled: !!username,
+  });
+}
+
+export function useUserContestHistory(username: string) {
+  return useQuery({
+    queryKey: ['userContests', username],
+    queryFn: () => api.get<any[]>(`/users/${username}/contests`),
+    enabled: !!username,
+  });
+}
+
+export function useUserRatingHistory(username: string) {
+  return useQuery({
+    queryKey: ['userRatings', username],
+    queryFn: () => api.get<any[]>(`/users/${username}/ratings`),
+    enabled: !!username,
+  });
+}
+
+export function useUserSolvedProblems(username: string) {
+  return useQuery({
+    queryKey: ['userSolved', username],
+    queryFn: () => api.get<any[]>(`/users/${username}/solved`),
+    enabled: !!username,
+  });
+}
+
+export function useDashboardStats() {
+  const token = useToken();
+  return useQuery({
+    queryKey: ['dashboard'],
+    queryFn: () => api.get<any>('/users/me/dashboard', { token: token ?? undefined }),
+    enabled: !!token,
+  });
+}
