@@ -123,4 +123,13 @@ export class ContestsController {
   ) {
     return this.contestsService.addAnnouncement(id, content, userId);
   }
+
+  @Post(':id/virtual')
+  @UseGuards(JwtAuthGuard)
+  async startVirtual(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.contestsService.startVirtual(id, userId);
+  }
 }

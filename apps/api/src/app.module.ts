@@ -11,6 +11,9 @@ import { JudgeModule } from './modules/judge/judge.module';
 import { ContestsModule } from './modules/contests/contests.module';
 import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
 import { RatingsModule } from './modules/ratings/ratings.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { EditorialsModule } from './modules/editorials/editorials.module';
+import { CommentsModule } from './modules/comments/comments.module';
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { RatingsModule } from './modules/ratings/ratings.module';
     ContestsModule,
     LeaderboardModule,
     RatingsModule,
+    AnalyticsModule,
+    EditorialsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

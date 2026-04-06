@@ -286,6 +286,46 @@ export class ContestsService {
     }));
   }
 
+  async startVirtual(contestId: string, userId: string) {
+    const contest = await this.prisma.contest.findUnique({ where: { id: contestId } });
+    if (!contest) throw new NotFoundException('Contest not found');
+
+    if (!['ENDED', 'RESULTS_PUBLISHED'].includes(contest.status)) {
+      throw new BadRequestException('Virtual participation is only available for ended contests');
+    }
+
+    // Check if already registered
+    const existing = await this.prisma.contestRegistration.findUnique({
+      where: { contestId_userId: { contestId, userId } },
+    });
+    if (existing?.isVirtual) {
+      throw new BadRequestException('Already started virtual participation');
+    }
+
+    if (existing) {
+      // Update to virtual
+      await this.prisma.contestRegistration.update({
+        where: { id: existing.id },
+        data: { isVirtual: true, virtualStartTime: new Date() },
+      });
+    } else {
+      await this.prisma.contestRegistration.create({
+        data: {
+          contestId,
+          userId,
+          isVirtual: true,
+          virtualStartTime: new Date(),
+        },
+      });
+    }
+
+    return {
+      started: true,
+      virtualStartTime: new Date().toISOString(),
+      duration: contest.duration,
+    };
+  }
+
   private formatContest(contest: any) {
     return {
       id: contest.id,
