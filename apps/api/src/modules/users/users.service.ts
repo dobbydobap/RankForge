@@ -240,6 +240,146 @@ export class UsersService {
     };
   }
 
+  /** Full profile stats for the LeetCode-style profile page */
+  async getProfileStats(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+      include: { profile: true },
+    });
+    if (!user) throw new NotFoundException('User not found');
+
+    // Solved by difficulty
+    const solvedProblemIds = await this.prisma.submission.findMany({
+      where: { userId: user.id, verdict: 'ACCEPTED' },
+      distinct: ['problemId'],
+      select: { problemId: true },
+    });
+    const pIds = solvedProblemIds.map((s) => s.problemId);
+
+    const solvedProblems = pIds.length > 0
+      ? await this.prisma.problem.findMany({
+          where: { id: { in: pIds } },
+          select: { difficulty: true },
+        })
+      : [];
+
+    const solvedByDifficulty: Record<string, number> = { EASY: 0, MEDIUM: 0, HARD: 0, EXPERT: 0 };
+    for (const p of solvedProblems) {
+      solvedByDifficulty[p.difficulty] = (solvedByDifficulty[p.difficulty] || 0) + 1;
+    }
+
+    // Total problems by difficulty
+    const totalByDifficulty: Record<string, number> = { EASY: 0, MEDIUM: 0, HARD: 0, EXPERT: 0 };
+    const allProblems = await this.prisma.problem.groupBy({
+      by: ['difficulty'],
+      where: { isPublished: true },
+      _count: true,
+    });
+    for (const p of allProblems) {
+      totalByDifficulty[p.difficulty] = p._count;
+    }
+
+    // Language breakdown
+    const langBreakdown = await this.prisma.submission.groupBy({
+      by: ['language'],
+      where: { userId: user.id, verdict: 'ACCEPTED' },
+      _count: true,
+    });
+
+    // Submission heatmap (past year)
+    const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+    const yearSubmissions = await this.prisma.submission.findMany({
+      where: { userId: user.id, createdAt: { gte: oneYearAgo } },
+      select: { createdAt: true },
+    });
+
+    const heatmap: Record<string, number> = {};
+    for (const s of yearSubmissions) {
+      const day = s.createdAt.toISOString().slice(0, 10);
+      heatmap[day] = (heatmap[day] || 0) + 1;
+    }
+
+    // Total submissions count
+    const totalSubmissions = await this.prisma.submission.count({
+      where: { userId: user.id },
+    });
+
+    // Active days and max streak
+    const sortedDays = Object.keys(heatmap).sort();
+    const activeDays = sortedDays.length;
+    let maxStreak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < sortedDays.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prev = new Date(sortedDays[i - 1]);
+        const curr = new Date(sortedDays[i]);
+        const diffDays = (curr.getTime() - prev.getTime()) / (24 * 60 * 60 * 1000);
+        currentStreak = diffDays === 1 ? currentStreak + 1 : 1;
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+
+    // Topic skills (top solved tags)
+    const solvedTags = pIds.length > 0
+      ? await this.prisma.problemTag.findMany({
+          where: { problemId: { in: pIds } },
+          include: { tag: true },
+        })
+      : [];
+    const topicCounts: Record<string, number> = {};
+    for (const pt of solvedTags) {
+      topicCounts[pt.tag.name] = (topicCounts[pt.tag.name] || 0) + 1;
+    }
+    const skills = Object.entries(topicCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Recent AC
+    const recentAC = await this.prisma.submission.findMany({
+      where: { userId: user.id, verdict: 'ACCEPTED' },
+      distinct: ['problemId'],
+      include: { problem: { select: { title: true, slug: true, difficulty: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    });
+
+    // Badges/achievements
+    const achievements = await this.prisma.userAchievement.findMany({
+      where: { userId: user.id },
+      include: { achievement: true },
+    });
+
+    return {
+      user: this.formatUser(user, false),
+      stats: {
+        totalSolved: pIds.length,
+        totalProblems: allProblems.reduce((s, p) => s + p._count, 0),
+        solvedByDifficulty,
+        totalByDifficulty,
+        totalSubmissions,
+        activeDays,
+        maxStreak,
+        languages: langBreakdown.map((l) => ({ language: l.language, count: l._count })),
+        skills,
+        heatmap,
+        recentAC: recentAC.map((s) => ({
+          title: s.problem.title,
+          slug: s.problem.slug,
+          difficulty: s.problem.difficulty,
+          solvedAt: s.createdAt.toISOString(),
+        })),
+        badges: achievements.map((a) => ({
+          name: a.achievement.name,
+          description: a.achievement.description,
+          icon: a.achievement.icon,
+          earnedAt: a.earnedAt.toISOString(),
+        })),
+      },
+    };
+  }
+
   private formatUser(user: any, includeEmail: boolean) {
     return {
       id: user.id,

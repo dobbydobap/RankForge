@@ -41,6 +41,11 @@ export class UsersController {
     return this.usersService.getProfile(username);
   }
 
+  @Get(':username/stats')
+  async getProfileStats(@Param('username') username: string) {
+    return this.usersService.getProfileStats(username);
+  }
+
   @Get(':username/contests')
   async getContestHistory(@Param('username') username: string) {
     return this.usersService.getContestHistory(username);

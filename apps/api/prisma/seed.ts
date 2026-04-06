@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { PROBLEMS_DATA } from './problems-data';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,8 @@ const TAGS = [
   'combinatorics', 'game-theory', 'constructive', 'implementation', 'simulation',
 ];
 
-const PROBLEMS = [
+// Use all problems from the data file plus the inline ones below
+const PROBLEMS: typeof PROBLEMS_DATA = [...PROBLEMS_DATA,
   // ── EASY ──
   {
     title: 'Two Sum', slug: 'two-sum', difficulty: 'EASY',
