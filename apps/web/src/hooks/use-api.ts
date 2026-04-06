@@ -196,6 +196,16 @@ export function useReplayData(contestId: string) {
   });
 }
 
+// ── Ratings ──
+
+export function useRatingChanges(contestId: string) {
+  return useQuery({
+    queryKey: ['ratingChanges', contestId],
+    queryFn: () => api.get<any[]>(`/ratings/changes/${contestId}`),
+    enabled: !!contestId,
+  });
+}
+
 // ── User Profile ──
 
 export function useUserProfile(username: string) {

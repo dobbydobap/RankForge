@@ -10,6 +10,7 @@ import { SubmissionsModule } from './modules/submissions/submissions.module';
 import { JudgeModule } from './modules/judge/judge.module';
 import { ContestsModule } from './modules/contests/contests.module';
 import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
+import { RatingsModule } from './modules/ratings/ratings.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
     JudgeModule,
     ContestsModule,
     LeaderboardModule,
+    RatingsModule,
   ],
 })
 export class AppModule {}
