@@ -100,3 +100,64 @@ export function useSubmission(id: string) {
     enabled: !!id,
   });
 }
+
+// ── Contests ──
+
+export function useContests(params?: { status?: string; page?: number }) {
+  const query = new URLSearchParams();
+  if (params?.status) query.set('status', params.status);
+  if (params?.page) query.set('page', String(params.page));
+
+  const qs = query.toString();
+  return useQuery({
+    queryKey: ['contests', params],
+    queryFn: () =>
+      api.get<{ contests: any[]; total: number; page: number; totalPages: number }>(
+        `/contests${qs ? `?${qs}` : ''}`,
+      ),
+  });
+}
+
+export function useContest(slug: string) {
+  const token = useToken();
+  const userId = useAuthStore((s) => s.user?.id);
+  return useQuery({
+    queryKey: ['contest', slug, userId],
+    queryFn: () =>
+      api.get<any>(`/contests/${slug}${userId ? `?userId=${userId}` : ''}`, {
+        token: token ?? undefined,
+      }),
+    enabled: !!slug,
+  });
+}
+
+export function useRegisterContest() {
+  const token = useToken();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (contestId: string) =>
+      api.post<any>(`/contests/${contestId}/register`, {}, { token: token ?? undefined }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contest'] });
+      queryClient.invalidateQueries({ queryKey: ['contests'] });
+    },
+  });
+}
+
+export function useLeaderboard(contestId: string) {
+  return useQuery({
+    queryKey: ['leaderboard', contestId],
+    queryFn: () => api.get<any>(`/leaderboard/${contestId}`),
+    enabled: !!contestId,
+    refetchInterval: 30000, // refresh every 30s during live contests
+  });
+}
+
+export function useProblemStats(contestId: string) {
+  return useQuery({
+    queryKey: ['problemStats', contestId],
+    queryFn: () => api.get<any[]>(`/leaderboard/${contestId}/stats`),
+    enabled: !!contestId,
+  });
+}

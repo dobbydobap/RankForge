@@ -7,6 +7,8 @@ import { UsersModule } from './modules/users/users.module';
 import { ProblemsModule } from './modules/problems/problems.module';
 import { SubmissionsModule } from './modules/submissions/submissions.module';
 import { JudgeModule } from './modules/judge/judge.module';
+import { ContestsModule } from './modules/contests/contests.module';
+import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { JudgeModule } from './modules/judge/judge.module';
     ProblemsModule,
     SubmissionsModule,
     JudgeModule,
+    ContestsModule,
+    LeaderboardModule,
   ],
 })
 export class AppModule {}
