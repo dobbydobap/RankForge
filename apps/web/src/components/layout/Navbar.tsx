@@ -28,7 +28,13 @@ export function Navbar() {
                 Contests
               </Link>
               <Link
-                href="/leaderboard"
+                href="/submissions"
+                className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+              >
+                Submissions
+              </Link>
+              <Link
+                href="/contests"
                 className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
               >
                 Leaderboard

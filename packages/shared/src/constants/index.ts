@@ -23,11 +23,16 @@ export enum ContestStatus {
 }
 
 export enum Language {
+  C = 'C',
   CPP = 'CPP',
   JAVA = 'JAVA',
   PYTHON = 'PYTHON',
   JAVASCRIPT = 'JAVASCRIPT',
+  TYPESCRIPT = 'TYPESCRIPT',
   GO = 'GO',
+  RUST = 'RUST',
+  KOTLIN = 'KOTLIN',
+  RUBY = 'RUBY',
 }
 
 export enum Verdict {
@@ -48,11 +53,16 @@ export enum ScoreEventType {
 }
 
 export const LANGUAGE_DISPLAY: Record<Language, string> = {
+  [Language.C]: 'C',
   [Language.CPP]: 'C++',
   [Language.JAVA]: 'Java',
   [Language.PYTHON]: 'Python',
   [Language.JAVASCRIPT]: 'JavaScript',
+  [Language.TYPESCRIPT]: 'TypeScript',
   [Language.GO]: 'Go',
+  [Language.RUST]: 'Rust',
+  [Language.KOTLIN]: 'Kotlin',
+  [Language.RUBY]: 'Ruby',
 };
 
 export const VERDICT_DISPLAY: Record<Verdict, string> = {

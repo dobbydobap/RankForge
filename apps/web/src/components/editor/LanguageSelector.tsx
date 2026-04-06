@@ -9,10 +9,15 @@ interface LanguageSelectorProps {
 
 const LANGUAGES = [
   Language.CPP,
+  Language.C,
   Language.PYTHON,
   Language.JAVA,
   Language.JAVASCRIPT,
+  Language.TYPESCRIPT,
   Language.GO,
+  Language.RUST,
+  Language.KOTLIN,
+  Language.RUBY,
 ];
 
 export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {

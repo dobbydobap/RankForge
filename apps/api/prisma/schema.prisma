@@ -224,11 +224,16 @@ model Submission {
 }
 
 enum Language {
+  C
   CPP
   JAVA
   PYTHON
   JAVASCRIPT
+  TYPESCRIPT
   GO
+  RUST
+  KOTLIN
+  RUBY
 }
 
 enum Verdict {

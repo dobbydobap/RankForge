@@ -14,6 +14,12 @@ import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { Language } from '@rankforge/shared';
 
 const DEFAULT_CODE: Record<string, string> = {
+  C: `#include <stdio.h>
+
+int main() {
+
+    return 0;
+}`,
   CPP: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -41,6 +47,14 @@ rl.on('line', (line) => lines.push(line));
 rl.on('close', () => {
 
 });`,
+  TYPESCRIPT: `import * as readline from 'readline';
+const rl = readline.createInterface({ input: process.stdin });
+const lines: string[] = [];
+
+rl.on('line', (line) => lines.push(line));
+rl.on('close', () => {
+
+});`,
   GO: `package main
 
 import "fmt"
@@ -48,6 +62,22 @@ import "fmt"
 func main() {
 
 }`,
+  RUST: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line.unwrap();
+    }
+}`,
+  KOTLIN: `fun main() {
+    val br = System.in.bufferedReader()
+
+}`,
+  RUBY: `# Read input
+lines = STDIN.read.split("\\n")
+
+`,
 };
 
 export default function ProblemDetailPage() {

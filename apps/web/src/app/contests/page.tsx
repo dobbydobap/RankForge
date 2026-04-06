@@ -14,7 +14,15 @@ export default function ContestsPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-zinc-100 mb-6">Contests</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-zinc-100">Contests</h1>
+          <Link
+            href="/contests/create"
+            className="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors"
+          >
+            Create Contest
+          </Link>
+        </div>
 
         {isLoading ? (
           <div className="text-center py-12 text-zinc-500">Loading contests...</div>
