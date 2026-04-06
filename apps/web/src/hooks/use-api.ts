@@ -161,3 +161,37 @@ export function useProblemStats(contestId: string) {
     enabled: !!contestId,
   });
 }
+
+// ── Temporal Leaderboard ──
+
+export function useLeaderboardAtTime(contestId: string, minute: number) {
+  return useQuery({
+    queryKey: ['leaderboard', contestId, 'at', minute],
+    queryFn: () => api.get<any>(`/leaderboard/${contestId}/at/${minute}`),
+    enabled: !!contestId && minute >= 0,
+  });
+}
+
+export function useUserProgression(contestId: string, userId: string) {
+  return useQuery({
+    queryKey: ['progression', contestId, userId],
+    queryFn: () => api.get<any>(`/leaderboard/${contestId}/user/${userId}`),
+    enabled: !!contestId && !!userId,
+  });
+}
+
+export function useContestAnalytics(contestId: string) {
+  return useQuery({
+    queryKey: ['analytics', contestId],
+    queryFn: () => api.get<any>(`/leaderboard/${contestId}/analytics`),
+    enabled: !!contestId,
+  });
+}
+
+export function useReplayData(contestId: string) {
+  return useQuery({
+    queryKey: ['replay', contestId],
+    queryFn: () => api.get<any>(`/leaderboard/${contestId}/replay`),
+    enabled: !!contestId,
+  });
+}

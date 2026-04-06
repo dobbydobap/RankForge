@@ -22,6 +22,7 @@
     "@nestjs/bullmq": "^11.0.0",
     "@prisma/client": "^6.0.0",
     "@rankforge/shared": "workspace:*",
+    "@rankforge/segment-tree": "workspace:*",
     "bcrypt": "^5.1.1",
     "bullmq": "^5.0.0",
     "class-transformer": "^0.5.1",

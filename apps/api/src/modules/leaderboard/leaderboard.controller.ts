@@ -14,4 +14,30 @@ export class LeaderboardController {
   async getProblemStats(@Param('contestId') contestId: string) {
     return this.leaderboardService.getProblemStats(contestId);
   }
+
+  @Get(':contestId/at/:minute')
+  async getStandingsAtTime(
+    @Param('contestId') contestId: string,
+    @Param('minute') minute: string,
+  ) {
+    return this.leaderboardService.getStandingsAtTime(contestId, parseInt(minute, 10));
+  }
+
+  @Get(':contestId/user/:userId')
+  async getUserProgression(
+    @Param('contestId') contestId: string,
+    @Param('userId') userId: string,
+  ) {
+    return this.leaderboardService.getUserProgression(contestId, userId);
+  }
+
+  @Get(':contestId/analytics')
+  async getContestAnalytics(@Param('contestId') contestId: string) {
+    return this.leaderboardService.getContestAnalytics(contestId);
+  }
+
+  @Get(':contestId/replay')
+  async getReplayData(@Param('contestId') contestId: string) {
+    return this.leaderboardService.getReplayData(contestId);
+  }
 }

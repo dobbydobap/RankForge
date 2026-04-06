@@ -267,8 +267,16 @@ export class JudgeProcessor extends WorkerHost {
       // Notify anyone watching this submission
       this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'verdict:update', verdictPayload);
 
-      // If contest submission, notify the contest leaderboard room
+      // If contest submission, record ScoreEvent + notify leaderboard
       if (submission?.contestId) {
+        await this.recordScoreEvent(
+          submission.contestId,
+          submission.userId,
+          problemId,
+          overallVerdict,
+          overallVerdict === 'ACCEPTED' ? 100 : 0,
+        );
+
         this.eventsGateway.emitToRoom(
           `contest:${submission.contestId}`,
           'leaderboard:update',
@@ -301,5 +309,43 @@ export class JudgeProcessor extends WorkerHost {
     const payload = { submissionId, verdict, timeUsed: null, memoryUsed: null, score: 0 };
     this.eventsGateway.emitToUser(updated.userId, 'verdict:update', payload);
     this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'verdict:update', payload);
+  }
+
+  private async recordScoreEvent(
+    contestId: string,
+    userId: string,
+    problemId: string,
+    verdict: string,
+    score: number,
+  ) {
+    const contest = await this.prisma.contest.findUnique({
+      where: { id: contestId },
+      include: { problems: true },
+    });
+    if (!contest) return;
+
+    const cp = contest.problems.find((p) => p.problemId === problemId);
+    if (!cp) return;
+
+    const now = new Date();
+    const minuteOffset = Math.floor(
+      (now.getTime() - contest.startTime.getTime()) / 60000,
+    );
+
+    const eventType = verdict === 'ACCEPTED' ? 'ACCEPTED' : 'WRONG_ATTEMPT';
+    const penaltyAdded = verdict === 'ACCEPTED' ? 0 : contest.penaltyTime;
+
+    await this.prisma.scoreEvent.create({
+      data: {
+        contestId,
+        userId,
+        problemLabel: cp.label,
+        score: verdict === 'ACCEPTED' ? cp.points : 0,
+        penalty: penaltyAdded,
+        timestamp: now,
+        eventType: eventType as any,
+        minuteOffset: Math.max(0, minuteOffset),
+      },
+    });
   }
 }
