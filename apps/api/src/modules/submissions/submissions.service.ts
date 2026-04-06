@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { JudgeService } from '../judge/judge.service';
 import { SubmitCodeInput } from '@rankforge/shared';
 
 @Injectable()
 export class SubmissionsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private judgeService: JudgeService,
+  ) {}
 
   async submit(input: SubmitCodeInput, userId: string) {
     const problem = await this.prisma.problem.findUnique({
@@ -23,7 +27,15 @@ export class SubmissionsService {
       },
     });
 
-    // TODO: Phase 3 — push to BullMQ judge queue here
+    // Push to judge queue
+    await this.judgeService.enqueue({
+      submissionId: submission.id,
+      problemId: input.problemId,
+      language: input.language,
+      sourceCode: input.sourceCode,
+      timeLimit: problem.timeLimit,
+      memoryLimit: problem.memoryLimit,
+    });
 
     return {
       id: submission.id,
