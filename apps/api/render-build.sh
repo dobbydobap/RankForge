@@ -18,7 +18,7 @@ npx tsc
 
 echo "Verifying build..."
 ls -la dist/main.js
-ls -la dist/modules/ratings/rating-calculator.js
+ls -la dist/modules/ratings/ratingCalculator.js
 
 echo "Running database migrations..."
 npx prisma db push --accept-data-loss
