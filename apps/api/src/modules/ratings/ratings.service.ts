@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { LeaderboardService } from '../leaderboard/leaderboard.service';
-import { calculateRatingChanges } from './rating-calculator';
+import { calculateRatingChanges } from './ratingCalculator';
 
 @Injectable()
 export class RatingsService {
