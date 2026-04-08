@@ -11,15 +11,39 @@ export class SeedController {
   ) {}
 
   @Post()
-  async seed(@Query('key') key: string) {
+  async seed(@Query('key') key: string, @Query('force') force?: string) {
     const secret = this.configService.get<string>('JWT_ACCESS_SECRET');
     if (!key || key !== secret) {
       throw new ForbiddenException('Invalid seed key');
     }
 
     const userCount = await this.prisma.user.count();
-    if (userCount > 0) {
-      return { message: 'Database already seeded', users: userCount };
+    if (userCount > 0 && force !== 'true') {
+      return { message: 'Database already seeded. Add &force=true to reseed.', users: userCount };
+    }
+
+    // Wipe existing data if force reseeding
+    if (force === 'true') {
+      await this.prisma.scoreEvent.deleteMany();
+      await this.prisma.leaderboardSnapshot.deleteMany();
+      await this.prisma.testResult.deleteMany();
+      await this.prisma.submission.deleteMany();
+      await this.prisma.ratingHistory.deleteMany();
+      await this.prisma.userAchievement.deleteMany();
+      await this.prisma.contestRegistration.deleteMany();
+      await this.prisma.announcement.deleteMany();
+      await this.prisma.contestProblem.deleteMany();
+      await this.prisma.contest.deleteMany();
+      await this.prisma.testCase.deleteMany();
+      await this.prisma.comment.deleteMany();
+      await this.prisma.editorial.deleteMany();
+      await this.prisma.problemTag.deleteMany();
+      await this.prisma.problem.deleteMany();
+      await this.prisma.tag.deleteMany();
+      await this.prisma.follow.deleteMany();
+      await this.prisma.achievement.deleteMany();
+      await this.prisma.userProfile.deleteMany();
+      await this.prisma.user.deleteMany();
     }
 
     const bcrypt = await import('bcrypt');
