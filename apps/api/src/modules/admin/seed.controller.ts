@@ -1,12 +1,8 @@
 import { Controller, Post, Query, ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
+import { PROBLEMS_DATA } from '../../data/problems-data';
 
-/**
- * One-time seed endpoint for production.
- * Protected by a secret key, not JWT auth (since no users exist yet).
- * Call: POST /api/seed?key=YOUR_JWT_ACCESS_SECRET
- */
 @Controller('seed')
 export class SeedController {
   constructor(
@@ -21,7 +17,6 @@ export class SeedController {
       throw new ForbiddenException('Invalid seed key');
     }
 
-    // Check if already seeded
     const userCount = await this.prisma.user.count();
     if (userCount > 0) {
       return { message: 'Database already seeded', users: userCount };
@@ -48,11 +43,11 @@ export class SeedController {
       data: {
         email: 'admin@rankforge.dev', username: 'admin', passwordHash: adminHash,
         role: 'ADMIN',
-        profile: { create: { displayName: 'Admin', currentRating: 2100, maxRating: 2100 } },
+        profile: { create: { displayName: 'Admin', currentRating: 2100, maxRating: 2100, solvedCount: 5, contestCount: 1 } },
       },
     });
 
-    // ── Seed users ──
+    // ── Users ──
     const userHash = await bcrypt.hash('Password1', 12);
     const seedUsers = [
       { username: 'alice', email: 'alice@rankforge.dev', displayName: 'Alice Chen', rating: 1650 },
@@ -73,50 +68,148 @@ export class SeedController {
       users.push(user);
     }
 
-    // ── Sample problems ──
-    const sampleProblems = [
-      { title: 'Two Sum', slug: 'two-sum', difficulty: 'EASY' as const, statement: 'Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.', constraints: '2 <= nums.length <= 10^4', inputFormat: 'First line: n and target. Second line: n integers.', outputFormat: 'Two space-separated indices.', tags: ['arrays', 'hash-table'], testCases: [{ input: '4 9\n2 7 11 15', output: '0 1', isSample: true }, { input: '3 6\n3 2 4', output: '1 2', isSample: true }] },
-      { title: 'Reverse String', slug: 'reverse-string', difficulty: 'EASY' as const, statement: 'Given a string `s`, reverse it and print the result.', constraints: '1 <= |s| <= 10^5', inputFormat: 'A single string.', outputFormat: 'The reversed string.', tags: ['strings'], testCases: [{ input: 'hello', output: 'olleh', isSample: true }, { input: 'RankForge', output: 'egroFknaR', isSample: true }] },
-      { title: 'Maximum Subarray', slug: 'maximum-subarray', difficulty: 'EASY' as const, statement: 'Find the subarray with the largest sum.', constraints: '1 <= n <= 10^5', inputFormat: 'First line: n. Second line: n integers.', outputFormat: 'Maximum subarray sum.', tags: ['arrays', 'dynamic-programming', 'greedy'], testCases: [{ input: '9\n-2 1 -3 4 -1 2 1 -5 4', output: '6', isSample: true }] },
-      { title: 'Binary Search', slug: 'binary-search', difficulty: 'EASY' as const, statement: 'Given a sorted array, find the target index or return -1.', constraints: '1 <= n <= 10^4', inputFormat: 'First line: n and target. Second line: n sorted integers.', outputFormat: 'Index or -1.', tags: ['arrays', 'binary-search'], testCases: [{ input: '6 9\n-1 0 3 5 9 12', output: '4', isSample: true }] },
-      { title: 'Longest Increasing Subsequence', slug: 'longest-increasing-subsequence', difficulty: 'MEDIUM' as const, statement: 'Return the length of the longest strictly increasing subsequence.', constraints: '1 <= n <= 2500', inputFormat: 'First line: n. Second line: n integers.', outputFormat: 'LIS length.', tags: ['arrays', 'dynamic-programming', 'binary-search'], testCases: [{ input: '8\n10 9 2 5 3 7 101 18', output: '4', isSample: true }] },
-      { title: 'Coin Change', slug: 'coin-change', difficulty: 'MEDIUM' as const, statement: 'Find the fewest coins to make amount. Return -1 if impossible.', constraints: '1 <= coins.length <= 12', inputFormat: 'First line: n and amount. Second line: n coin values.', outputFormat: 'Minimum coins or -1.', tags: ['dynamic-programming', 'greedy'], testCases: [{ input: '3 11\n1 2 5', output: '3', isSample: true }] },
-      { title: 'Number of Islands', slug: 'number-of-islands', difficulty: 'MEDIUM' as const, statement: 'Count the number of islands in a grid of 1s and 0s.', constraints: 'm, n <= 300', inputFormat: 'First line: m and n. Next m lines: n characters.', outputFormat: 'Number of islands.', tags: ['graphs', 'dfs', 'bfs'], testCases: [{ input: '4 5\n11110\n11010\n11000\n00000', output: '1', isSample: true }] },
-      { title: 'Minimum Spanning Tree', slug: 'minimum-spanning-tree', difficulty: 'HARD' as const, statement: 'Find the total weight of the MST.', constraints: '1 <= n <= 10^5', inputFormat: 'First line: n and m. Next m lines: u v w.', outputFormat: 'Total MST weight.', tags: ['graphs', 'greedy', 'union-find', 'sorting'], testCases: [{ input: '4 5\n1 2 1\n1 3 3\n2 3 2\n2 4 4\n3 4 5', output: '7', isSample: true }] },
-      { title: 'Segment Tree Range Sum', slug: 'segment-tree-range-sum', difficulty: 'HARD' as const, statement: 'Support point updates and range sum queries.', constraints: '1 <= n, q <= 10^5', inputFormat: 'First line: n and q. Second line: n integers. Next q lines: operations.', outputFormat: 'Query results.', tags: ['segment-tree', 'arrays'], testCases: [{ input: '5 3\n1 2 3 4 5\n2 1 3\n1 2 10\n2 1 3', output: '6\n14', isSample: true }] },
-      { title: 'Suffix Array', slug: 'suffix-array', difficulty: 'EXPERT' as const, statement: 'Construct the suffix array of a string.', constraints: '1 <= |s| <= 10^5', inputFormat: 'A single string.', outputFormat: 'Space-separated suffix array indices.', tags: ['strings', 'sorting', 'divide-and-conquer'], testCases: [{ input: 'banana', output: '5 3 1 0 4 2', isSample: true }] },
-    ];
+    // ── ALL Problems from data file ──
+    const problemRecords: any[] = [];
+    for (const prob of PROBLEMS_DATA) {
+      const existing = await this.prisma.problem.findUnique({ where: { slug: prob.slug } });
+      if (existing) { problemRecords.push(existing); continue; }
 
-    for (const prob of sampleProblems) {
-      const { tags: tagNames, testCases, ...data } = prob;
+      // Resolve tags, skip any that don't exist
+      const tagConnections = [];
+      for (const name of prob.tags) {
+        const tag = await this.prisma.tag.findUnique({ where: { name } });
+        if (tag) tagConnections.push({ tagId: tag.id });
+      }
+
       const problem = await this.prisma.problem.create({
         data: {
-          ...data, timeLimit: 2000, memoryLimit: 256, createdById: admin.id, isPublished: true,
-          tags: {
-            create: await Promise.all(tagNames.map(async (name) => {
-              const tag = await this.prisma.tag.findUnique({ where: { name } });
-              return { tagId: tag!.id };
-            })),
-          },
+          title: prob.title, slug: prob.slug, statement: prob.statement,
+          constraints: prob.constraints, inputFormat: prob.inputFormat,
+          outputFormat: prob.outputFormat, difficulty: prob.difficulty as any,
+          timeLimit: 2000, memoryLimit: 256, createdById: admin.id, isPublished: true,
+          tags: { create: tagConnections },
         },
       });
+
       await this.prisma.testCase.createMany({
-        data: testCases.map((tc, i) => ({ problemId: problem.id, input: tc.input, output: tc.output, isSample: tc.isSample, order: i })),
+        data: prob.testCases.map((tc, i) => ({
+          problemId: problem.id, input: tc.input, output: tc.output,
+          isSample: tc.isSample, order: i,
+        })),
       });
+
+      problemRecords.push(problem);
     }
 
-    // ── Demo contest ──
+    // ── Demo Contest (ended, with results) ──
     const startTime = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
     const duration = 120;
     const endTime = new Date(startTime.getTime() + duration * 60 * 1000);
+
     const contest = await this.prisma.contest.create({
       data: {
         title: 'RankForge Round #1', slug: 'rankforge-round-1',
-        description: 'The first RankForge contest!',
+        description: 'The first ever RankForge contest! A mix of easy to hard problems.',
         status: 'RESULTS_PUBLISHED', startTime, endTime, duration,
         isPublic: true, penaltyTime: 20, createdById: admin.id,
       },
     });
+
+    // Add first 5 problems to contest
+    const contestProblems = problemRecords.slice(0, 5);
+    const labels = ['A', 'B', 'C', 'D', 'E'];
+    const points = [100, 150, 200, 250, 300];
+    for (let i = 0; i < contestProblems.length; i++) {
+      await this.prisma.contestProblem.create({
+        data: { contestId: contest.id, problemId: contestProblems[i].id, label: labels[i], points: points[i], order: i },
+      });
+    }
+
+    // Register all users + admin
+    for (const user of [...users, admin]) {
+      await this.prisma.contestRegistration.create({
+        data: { contestId: contest.id, userId: user.id },
+      });
+    }
+
+    // Simulate submissions
+    const simData = [
+      { user: users[0], problems: [0, 1, 2, 3], minutes: [5, 18, 35, 70], wrongBefore: [0, 1, 0, 2] },
+      { user: users[1], problems: [0, 1, 2], minutes: [8, 25, 55], wrongBefore: [0, 0, 1] },
+      { user: users[2], problems: [0, 1, 2, 3, 4], minutes: [3, 12, 28, 50, 90], wrongBefore: [0, 0, 1, 0, 3] },
+      { user: users[3], problems: [0, 1], minutes: [15, 45], wrongBefore: [1, 2] },
+      { user: users[4], problems: [0, 1, 2, 3], minutes: [6, 20, 40, 80], wrongBefore: [0, 0, 0, 1] },
+      { user: admin, problems: [0, 1, 2, 3, 4], minutes: [4, 15, 30, 55, 95], wrongBefore: [0, 0, 0, 1, 1] },
+    ];
+
+    for (const sim of simData) {
+      for (let i = 0; i < sim.problems.length; i++) {
+        const probIdx = sim.problems[i];
+        const acMinute = sim.minutes[i];
+        const wrongCount = sim.wrongBefore[i];
+
+        for (let w = 0; w < wrongCount; w++) {
+          const wrongTime = new Date(startTime.getTime() + (acMinute - wrongCount + w) * 60 * 1000);
+          await this.prisma.submission.create({
+            data: {
+              userId: sim.user.id, problemId: contestProblems[probIdx].id, contestId: contest.id,
+              language: 'CPP', sourceCode: '// wrong attempt', verdict: 'WRONG_ANSWER',
+              timeUsed: 100, memoryUsed: 5000, score: 0, createdAt: wrongTime, judgedAt: wrongTime,
+            },
+          });
+          await this.prisma.scoreEvent.create({
+            data: {
+              contestId: contest.id, userId: sim.user.id, problemLabel: labels[probIdx],
+              score: 0, penalty: 20, timestamp: wrongTime, eventType: 'WRONG_ATTEMPT',
+              minuteOffset: acMinute - wrongCount + w,
+            },
+          });
+        }
+
+        const acTime = new Date(startTime.getTime() + acMinute * 60 * 1000);
+        await this.prisma.submission.create({
+          data: {
+            userId: sim.user.id, problemId: contestProblems[probIdx].id, contestId: contest.id,
+            language: 'CPP', sourceCode: '// accepted solution', verdict: 'ACCEPTED',
+            timeUsed: Math.floor(50 + Math.random() * 200), memoryUsed: Math.floor(3000 + Math.random() * 5000),
+            score: points[probIdx], createdAt: acTime, judgedAt: acTime,
+          },
+        });
+        await this.prisma.scoreEvent.create({
+          data: {
+            contestId: contest.id, userId: sim.user.id, problemLabel: labels[probIdx],
+            score: points[probIdx], penalty: 0, timestamp: acTime, eventType: 'ACCEPTED',
+            minuteOffset: acMinute,
+          },
+        });
+      }
+
+      // Update profile stats
+      await this.prisma.userProfile.update({
+        where: { userId: sim.user.id },
+        data: { solvedCount: sim.problems.length, contestCount: 1 },
+      });
+    }
+
+    // Rating history
+    const ratingChanges = [
+      { user: users[2], rank: 1, delta: 80 },
+      { user: admin, rank: 2, delta: 45 },
+      { user: users[0], rank: 3, delta: 25 },
+      { user: users[4], rank: 4, delta: 10 },
+      { user: users[1], rank: 5, delta: -15 },
+      { user: users[3], rank: 6, delta: -30 },
+    ];
+    for (const rc of ratingChanges) {
+      const profile = await this.prisma.userProfile.findUnique({ where: { userId: rc.user.id } });
+      await this.prisma.ratingHistory.create({
+        data: {
+          userId: rc.user.id, contestId: contest.id,
+          oldRating: profile!.currentRating - rc.delta, newRating: profile!.currentRating,
+          rank: rc.rank,
+        },
+      });
+    }
 
     // Upcoming contest
     const futureStart = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -133,12 +226,8 @@ export class SeedController {
       message: 'Seed complete!',
       tags: TAGS.length,
       users: users.length + 1,
-      problems: sampleProblems.length,
+      problems: problemRecords.length,
       contests: 2,
-      credentials: {
-        admin: 'admin@rankforge.dev / Admin123',
-        users: 'alice, bob, charlie, diana, eve — password: Password1',
-      },
     };
   }
 }
