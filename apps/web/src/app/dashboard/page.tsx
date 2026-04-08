@@ -37,7 +37,7 @@ export default function DashboardPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-rf-cream">
+        <h1 className="text-2xl font-bold text-white">
           Welcome, {user.profile?.displayName || user.username}
         </h1>
         <p className="mt-1 text-sm text-rf-gray">
@@ -56,7 +56,7 @@ export default function DashboardPage() {
         {/* Difficulty Breakdown */}
         {stats?.difficultyBreakdown && Object.keys(stats.difficultyBreakdown).length > 0 && (
           <div className="mt-6 p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <h2 className="text-sm font-semibold text-rf-sage mb-3">Problems by Difficulty</h2>
+            <h2 className="text-sm font-semibold text-rf-pink mb-3">Problems by Difficulty</h2>
             <div className="flex items-center gap-4">
               {['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => {
                 const count = stats.difficultyBreakdown[d] || 0;
@@ -80,11 +80,11 @@ export default function DashboardPage() {
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Upcoming Contests */}
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <h2 className="text-sm font-semibold text-rf-sage mb-3">Upcoming Contests</h2>
+            <h2 className="text-sm font-semibold text-rf-pink mb-3">Upcoming Contests</h2>
             {!stats?.upcomingContests?.length ? (
-              <p className="text-xs text-rf-muted">
+              <p className="text-xs text-rf-gray">
                 No upcoming contests.{' '}
-                <Link href="/contests" className="text-rf-sage hover:text-rf-cream">
+                <Link href="/contests" className="text-rf-pink hover:text-white">
                   Browse contests
                 </Link>
               </p>
@@ -96,8 +96,8 @@ export default function DashboardPage() {
                     href={`/contests/${c.slug}`}
                     className="block p-3 rounded-lg border border-rf-border hover:border-rf-gray transition-colors"
                   >
-                    <div className="text-sm font-medium text-rf-cream">{c.title}</div>
-                    <div className="text-xs text-rf-muted mt-0.5">
+                    <div className="text-sm font-medium text-white">{c.title}</div>
+                    <div className="text-xs text-rf-gray mt-0.5">
                       {new Date(c.startTime).toLocaleDateString(undefined, {
                         month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
                       })}{' '}
@@ -111,11 +111,11 @@ export default function DashboardPage() {
 
           {/* Recent Submissions */}
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <h2 className="text-sm font-semibold text-rf-sage mb-3">Recent Submissions</h2>
+            <h2 className="text-sm font-semibold text-rf-pink mb-3">Recent Submissions</h2>
             {!stats?.recentSubmissions?.length ? (
-              <p className="text-xs text-rf-muted">
+              <p className="text-xs text-rf-gray">
                 No submissions yet.{' '}
-                <Link href="/problems" className="text-rf-sage hover:text-rf-cream">
+                <Link href="/problems" className="text-rf-pink hover:text-white">
                   Start solving
                 </Link>
               </p>
@@ -128,8 +128,8 @@ export default function DashboardPage() {
                     className="flex items-center justify-between p-2 rounded-lg hover:bg-rf-border/50 transition-colors"
                   >
                     <div>
-                      <div className="text-sm text-rf-cream">{s.problemTitle}</div>
-                      <div className="text-xs text-rf-muted">
+                      <div className="text-sm text-white">{s.problemTitle}</div>
+                      <div className="text-xs text-rf-gray">
                         {(LANGUAGE_DISPLAY as any)[s.language]} &middot;{' '}
                         {new Date(s.createdAt).toLocaleDateString()}
                       </div>
@@ -146,19 +146,19 @@ export default function DashboardPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/problems"
-            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-white rounded-lg transition-colors"
           >
             Practice Problems
           </Link>
           <Link
             href="/contests"
-            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-white rounded-lg transition-colors"
           >
             Browse Contests
           </Link>
           <Link
             href={`/users/${user.username}`}
-            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-white rounded-lg transition-colors"
           >
             My Profile
           </Link>
@@ -171,8 +171,8 @@ export default function DashboardPage() {
 function StatCard({ title, value, accent }: { title: string; value: string | number; accent?: boolean }) {
   return (
     <div className="p-4 rounded-xl border border-rf-border bg-rf-dark/50">
-      <p className="text-xs text-rf-muted">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-sage' : 'text-rf-cream'}`}>
+      <p className="text-xs text-rf-gray">{title}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-pink' : 'text-white'}`}>
         {value}
       </p>
     </div>

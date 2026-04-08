@@ -42,7 +42,7 @@ export default function SubmissionDetailPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-xl font-bold text-rf-cream">
+              <h1 className="text-xl font-bold text-white">
                 Submission #{id.slice(0, 8)}
               </h1>
               <VerdictBadge verdict={submission.verdict} />
@@ -50,7 +50,7 @@ export default function SubmissionDetailPage() {
             <div className="flex items-center gap-4 text-sm text-rf-gray">
               <Link
                 href={`/problems/${submission.problemSlug}`}
-                className="hover:text-rf-sage transition-colors"
+                className="hover:text-rf-pink transition-colors"
               >
                 {submission.problemTitle}
               </Link>
@@ -81,17 +81,17 @@ export default function SubmissionDetailPage() {
         {/* Test Results */}
         {submission.testResults.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-rf-cream mb-3">Test Results</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">Test Results</h2>
             <div className="flex flex-wrap gap-2">
               {submission.testResults.map((tr: any, idx: number) => (
                 <div
                   key={idx}
                   className="flex items-center gap-2 px-3 py-2 border border-rf-border rounded-lg bg-rf-dark/50"
                 >
-                  <span className="text-xs text-rf-muted">#{tr.order + 1}</span>
+                  <span className="text-xs text-rf-gray">#{tr.order + 1}</span>
                   <VerdictBadge verdict={tr.verdict} short />
                   {tr.timeUsed !== null && (
-                    <span className="text-xs text-rf-muted">{tr.timeUsed}ms</span>
+                    <span className="text-xs text-rf-gray">{tr.timeUsed}ms</span>
                   )}
                 </div>
               ))}
@@ -101,7 +101,7 @@ export default function SubmissionDetailPage() {
 
         {/* Source Code */}
         <div>
-          <h2 className="text-lg font-semibold text-rf-cream mb-3">Source Code</h2>
+          <h2 className="text-lg font-semibold text-white mb-3">Source Code</h2>
           <div className="h-96">
             <CodeEditor
               language={submission.language}
@@ -119,8 +119,8 @@ export default function SubmissionDetailPage() {
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="p-3 border border-rf-border rounded-lg bg-rf-dark/50">
-      <p className="text-xs text-rf-muted">{label}</p>
-      <p className="text-sm font-medium text-rf-cream mt-0.5">{value}</p>
+      <p className="text-xs text-rf-gray">{label}</p>
+      <p className="text-sm font-medium text-white mt-0.5">{value}</p>
     </div>
   );
 }

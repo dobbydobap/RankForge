@@ -15,12 +15,12 @@ export default function SubmissionsPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-rf-cream mb-6">Submissions</h1>
+        <h1 className="text-2xl font-bold text-white mb-6">Submissions</h1>
 
         {isLoading ? (
-          <div className="text-center py-12 text-rf-muted">Loading submissions...</div>
+          <div className="text-center py-12 text-rf-gray">Loading submissions...</div>
         ) : !data?.submissions.length ? (
-          <div className="text-center py-12 text-rf-muted">No submissions yet.</div>
+          <div className="text-center py-12 text-rf-gray">No submissions yet.</div>
         ) : (
           <>
             <div className="border border-rf-border rounded-xl overflow-hidden">
@@ -53,7 +53,7 @@ export default function SubmissionsPage() {
                       <td className="px-4 py-3">
                         <Link
                           href={`/problems/${sub.problemSlug}`}
-                          className="text-sm text-rf-cream hover:text-rf-sage transition-colors"
+                          className="text-sm text-white hover:text-rf-pink transition-colors"
                         >
                           {sub.problemTitle}
                         </Link>
@@ -61,7 +61,7 @@ export default function SubmissionsPage() {
                       <td className="px-4 py-3 hidden sm:table-cell">
                         <Link
                           href={`/users/${sub.username}`}
-                          className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                          className="text-sm text-rf-gray hover:text-white transition-colors"
                         >
                           {sub.username}
                         </Link>
@@ -77,7 +77,7 @@ export default function SubmissionsPage() {
                       <td className="px-4 py-3 text-right text-sm text-rf-gray hidden md:table-cell">
                         {sub.timeUsed !== null ? `${sub.timeUsed}ms` : '—'}
                       </td>
-                      <td className="px-4 py-3 text-right text-sm text-rf-muted hidden lg:table-cell">
+                      <td className="px-4 py-3 text-right text-sm text-rf-gray hidden lg:table-cell">
                         {new Date(sub.createdAt).toLocaleString()}
                       </td>
                     </tr>
@@ -91,7 +91,7 @@ export default function SubmissionsPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
@@ -101,7 +101,7 @@ export default function SubmissionsPage() {
                 <button
                   onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                   disabled={page === data.totalPages}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>

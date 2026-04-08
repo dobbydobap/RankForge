@@ -121,17 +121,18 @@ rankforge/
 
 ## Design
 
-Custom dark theme with a warm sage/cream palette:
+Dark theme with pink/magenta accents:
 
 | Color | Hex | Usage |
 |-------|-----|-------|
-| Black | `#141413` | Page backgrounds |
-| Dark | `#272727` | Cards, panels |
-| Border | `#3a3a38` | Borders, dividers |
-| Iron | `#6A6A67` | Muted text, placeholders |
-| Gray | `#8B8A87` | Secondary text |
-| Sage | `#C1C1A9` | Accent text, links, buttons |
-| Cream | `#E3E2C3` | Primary text, headings |
+| Black | `#050505` | Page backgrounds |
+| Dark | `#111111` | Panels |
+| Card | `#161616` | Cards |
+| Border | `#222222` | Borders, dividers |
+| Gray | `#999999` | Secondary text |
+| Pink | `#ec4899` | Accent text, links |
+| Fuchsia | `#d946ef` | Buttons, highlights |
+| White | `#f0f0f0` | Primary text, headings |
 
 ## Getting Started
 

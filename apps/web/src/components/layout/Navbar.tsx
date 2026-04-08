@@ -11,31 +11,31 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="text-xl font-bold text-rf-sage">
+            <Link href="/" className="text-xl font-bold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent">
               RankForge
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link
                 href="/problems"
-                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                className="text-sm text-rf-gray hover:text-white transition-colors"
               >
                 Problems
               </Link>
               <Link
                 href="/contests"
-                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                className="text-sm text-rf-gray hover:text-white transition-colors"
               >
                 Contests
               </Link>
               <Link
                 href="/submissions"
-                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                className="text-sm text-rf-gray hover:text-white transition-colors"
               >
                 Submissions
               </Link>
               <Link
                 href="/contests"
-                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                className="text-sm text-rf-gray hover:text-white transition-colors"
               >
                 Leaderboard
               </Link>
@@ -47,19 +47,19 @@ export function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                  className="text-sm text-rf-gray hover:text-white transition-colors"
                 >
                   Dashboard
                 </Link>
                 <Link
                   href={`/users/${user.username}`}
-                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                  className="text-sm text-rf-gray hover:text-white transition-colors"
                 >
                   {user.username}
                 </Link>
                 <button
                   onClick={() => logout()}
-                  className="text-sm text-rf-muted hover:text-rf-sage transition-colors"
+                  className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
                 >
                   Logout
                 </button>
@@ -68,7 +68,7 @@ export function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
+                  className="text-sm text-rf-gray hover:text-white transition-colors"
                 >
                   Login
                 </Link>

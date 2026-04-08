@@ -26,17 +26,17 @@ export default function ContestRatingsPage() {
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-rf-cream">Rating Changes</h1>
+          <h1 className="text-2xl font-bold text-white">Rating Changes</h1>
           <Link
             href={`/contests/${slug}`}
-            className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+            className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
           >
             &larr; {contest.title}
           </Link>
         </div>
 
         {!changes?.length ? (
-          <div className="text-center py-12 text-rf-muted">
+          <div className="text-center py-12 text-rf-gray">
             Ratings have not been calculated for this contest yet.
           </div>
         ) : (
@@ -54,29 +54,29 @@ export default function ContestRatingsPage() {
               <tbody className="divide-y divide-rf-border">
                 {changes.map((c: any) => (
                   <tr key={c.userId} className="hover:bg-rf-dark/50 transition-colors">
-                    <td className="text-center px-4 py-3 text-sm font-bold text-rf-sage">
+                    <td className="text-center px-4 py-3 text-sm font-bold text-rf-pink">
                       {c.rank}
                     </td>
                     <td className="px-4 py-3">
                       <Link
                         href={`/users/${c.username}`}
-                        className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
+                        className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
                       >
                         {c.displayName || c.username}
                       </Link>
-                      <span className="text-xs text-rf-muted ml-1.5">@{c.username}</span>
+                      <span className="text-xs text-rf-gray ml-1.5">@{c.username}</span>
                     </td>
                     <td className="text-center px-4 py-3 text-sm text-rf-gray">
                       {c.oldRating}
                     </td>
-                    <td className="text-center px-4 py-3 text-sm font-medium text-rf-cream">
+                    <td className="text-center px-4 py-3 text-sm font-medium text-white">
                       {c.newRating}
                     </td>
                     <td className="text-center px-4 py-3">
                       <span
                         className={`text-sm font-bold ${
                           c.change > 0
-                            ? 'text-rf-sage'
+                            ? 'text-rf-pink'
                             : c.change < 0
                               ? 'text-red-400'
                               : 'text-rf-gray'

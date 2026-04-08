@@ -23,10 +23,10 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
     <div className="space-y-6 overflow-y-auto pr-2">
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-xl font-bold text-rf-cream">{problem.title}</h1>
+          <h1 className="text-xl font-bold text-white">{problem.title}</h1>
           <DiffBadge difficulty={problem.difficulty} />
         </div>
-        <div className="flex items-center gap-4 text-xs text-rf-muted">
+        <div className="flex items-center gap-4 text-xs text-rf-gray">
           <span>Time: {problem.timeLimit}ms</span>
           <span>Memory: {problem.memoryLimit}MB</span>
         </div>
@@ -45,7 +45,7 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
 
       {problem.constraints && (
         <div>
-          <h3 className="text-sm font-semibold text-rf-cream mb-1">Constraints</h3>
+          <h3 className="text-sm font-semibold text-white mb-1">Constraints</h3>
           <pre className="text-xs text-rf-gray bg-rf-dark p-3 rounded-lg whitespace-pre-wrap">
             {problem.constraints}
           </pre>
@@ -53,29 +53,29 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
       )}
 
       <div>
-        <h3 className="text-sm font-semibold text-rf-cream mb-1">Input Format</h3>
+        <h3 className="text-sm font-semibold text-white mb-1">Input Format</h3>
         <p className="text-sm text-rf-gray">{problem.inputFormat}</p>
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-rf-cream mb-1">Output Format</h3>
+        <h3 className="text-sm font-semibold text-white mb-1">Output Format</h3>
         <p className="text-sm text-rf-gray">{problem.outputFormat}</p>
       </div>
 
       {problem.sampleTestCases.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-rf-cream">Examples</h3>
+          <h3 className="text-sm font-semibold text-white">Examples</h3>
           {problem.sampleTestCases.map((tc, i) => (
             <div key={i} className="grid grid-cols-2 gap-3">
               <div>
-                <div className="text-xs text-rf-muted mb-1">Input</div>
-                <pre className="text-xs text-rf-sage bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
+                <div className="text-xs text-rf-gray mb-1">Input</div>
+                <pre className="text-xs text-rf-pink bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
                   {tc.input}
                 </pre>
               </div>
               <div>
-                <div className="text-xs text-rf-muted mb-1">Output</div>
-                <pre className="text-xs text-rf-sage bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
+                <div className="text-xs text-rf-gray mb-1">Output</div>
+                <pre className="text-xs text-rf-pink bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
                   {tc.output}
                 </pre>
               </div>
@@ -89,7 +89,7 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
 
 function DiffBadge({ difficulty }: { difficulty: string }) {
   const colors: Record<string, string> = {
-    EASY: 'bg-rf-dark/80 text-rf-sage border-rf-iron',
+    EASY: 'bg-rf-dark/80 text-rf-pink border-rf-iron',
     MEDIUM: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
     HARD: 'bg-orange-900/50 text-orange-400 border-orange-800',
     EXPERT: 'bg-red-900/50 text-red-400 border-red-800',

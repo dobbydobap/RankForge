@@ -45,7 +45,7 @@ export default function LeaderboardPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-rf-cream">Leaderboard</h1>
+              <h1 className="text-2xl font-bold text-white">Leaderboard</h1>
               {leaderboard?.isFrozen && (
                 <span className="px-2 py-0.5 text-xs font-medium bg-yellow-900/50 text-yellow-400 border border-yellow-800 rounded">
                   Frozen
@@ -54,7 +54,7 @@ export default function LeaderboardPage() {
             </div>
             <Link
               href={`/contests/${slug}`}
-              className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+              className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
             >
               &larr; Back to {contest.title}
             </Link>
@@ -69,9 +69,9 @@ export default function LeaderboardPage() {
                 key={s.label}
                 className="flex-shrink-0 px-4 py-3 border border-rf-border rounded-lg bg-rf-dark/50 min-w-[140px]"
               >
-                <div className="text-sm font-mono font-bold text-rf-sage">{s.label}</div>
+                <div className="text-sm font-mono font-bold text-rf-pink">{s.label}</div>
                 <div className="text-xs text-rf-gray mt-0.5 truncate">{s.title}</div>
-                <div className="flex items-center gap-2 mt-2 text-xs text-rf-muted">
+                <div className="flex items-center gap-2 mt-2 text-xs text-rf-gray">
                   <span>{s.solvedCount}/{s.attemptedCount}</span>
                   <span>{s.acceptanceRate}%</span>
                 </div>
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
 
         {/* Standings Table */}
         {entries.length === 0 ? (
-          <div className="text-center py-12 text-rf-muted">No standings yet.</div>
+          <div className="text-center py-12 text-rf-gray">No standings yet.</div>
         ) : (
           <div className="border border-rf-border rounded-xl overflow-x-auto">
             <table className="w-full">
@@ -118,14 +118,14 @@ export default function LeaderboardPage() {
               <tbody className="divide-y divide-rf-border">
                 {entries.map((entry: any) => (
                   <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
-                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-sage">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-pink">
                       {entry.rank <= 3 ? (
                         <span
                           className={
                             entry.rank === 1
                               ? 'text-yellow-400'
                               : entry.rank === 2
-                                ? 'text-rf-sage'
+                                ? 'text-rf-pink'
                                 : 'text-orange-400'
                           }
                         >
@@ -138,13 +138,13 @@ export default function LeaderboardPage() {
                     <td className="px-3 py-3">
                       <Link
                         href={`/users/${entry.username}`}
-                        className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
+                        className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
                       >
                         {entry.displayName || entry.username}
                       </Link>
-                      <span className="text-xs text-rf-muted ml-1.5">@{entry.username}</span>
+                      <span className="text-xs text-rf-gray ml-1.5">@{entry.username}</span>
                     </td>
-                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-cream">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-white">
                       {entry.totalScore}
                     </td>
                     <td className="text-center px-3 py-3 text-sm text-rf-gray">
@@ -168,7 +168,7 @@ export default function LeaderboardPage() {
                               isAC
                                 ? pr.isFirstBlood
                                   ? 'bg-yellow-900/30 text-yellow-400'
-                                  : 'bg-rf-dark/30 text-rf-sage'
+                                  : 'bg-rf-dark/30 text-rf-pink'
                                 : 'bg-red-900/30 text-red-400'
                             }`}
                           >

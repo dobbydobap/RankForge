@@ -59,7 +59,7 @@ export default function ContestDetailPage() {
         <div className="flex items-start justify-between mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-rf-cream">{contest.title}</h1>
+              <h1 className="text-2xl font-bold text-white">{contest.title}</h1>
               <ContestStatusBadge status={contest.status} />
             </div>
             {contest.description && (
@@ -97,7 +97,7 @@ export default function ContestDetailPage() {
               </button>
             )}
             {contest.isRegistered && (
-              <div className="mt-3 text-sm text-rf-sage">Registered</div>
+              <div className="mt-3 text-sm text-rf-pink">Registered</div>
             )}
           </div>
         </div>
@@ -106,11 +106,11 @@ export default function ContestDetailPage() {
           {/* Problems */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-rf-cream">Problems</h2>
+              <h2 className="text-lg font-semibold text-white">Problems</h2>
               {(isLive || isEnded) && (
                 <Link
                   href={`/contests/${slug}/leaderboard`}
-                  className="text-sm text-rf-sage hover:text-rf-cream transition-colors"
+                  className="text-sm text-rf-pink hover:text-white transition-colors"
                 >
                   View Leaderboard &rarr;
                 </Link>
@@ -118,11 +118,11 @@ export default function ContestDetailPage() {
             </div>
 
             {!showProblems ? (
-              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-muted">
+              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-gray">
                 Problems will be visible when the contest starts.
               </div>
             ) : contest.problems.length === 0 ? (
-              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-muted">
+              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-gray">
                 No problems added yet.
               </div>
             ) : (
@@ -147,13 +147,13 @@ export default function ContestDetailPage() {
                   <tbody className="divide-y divide-rf-border">
                     {contest.problems.map((p: any) => (
                       <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
-                        <td className="px-4 py-3 text-sm font-mono font-bold text-rf-sage">
+                        <td className="px-4 py-3 text-sm font-mono font-bold text-rf-pink">
                           {p.label}
                         </td>
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${p.slug}`}
-                            className="text-sm text-rf-cream hover:text-rf-sage transition-colors"
+                            className="text-sm text-white hover:text-rf-pink transition-colors"
                           >
                             {p.title}
                           </Link>
@@ -176,15 +176,15 @@ export default function ContestDetailPage() {
           <div className="space-y-4">
             {/* Announcements */}
             <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-              <h3 className="text-sm font-semibold text-rf-cream mb-3">Announcements</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">Announcements</h3>
               {contest.announcements.length === 0 ? (
-                <p className="text-xs text-rf-muted">No announcements yet.</p>
+                <p className="text-xs text-rf-gray">No announcements yet.</p>
               ) : (
                 <div className="space-y-2">
                   {contest.announcements.map((a: any) => (
                     <div key={a.id} className="p-2 bg-rf-border/50 rounded-lg">
-                      <p className="text-sm text-rf-sage">{a.content}</p>
-                      <p className="text-xs text-rf-muted mt-1">
+                      <p className="text-sm text-rf-pink">{a.content}</p>
+                      <p className="text-xs text-rf-gray mt-1">
                         {new Date(a.createdAt).toLocaleTimeString()}
                       </p>
                     </div>
@@ -195,25 +195,25 @@ export default function ContestDetailPage() {
 
             {/* Contest Info */}
             <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-              <h3 className="text-sm font-semibold text-rf-cream mb-3">Contest Rules</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">Contest Rules</h3>
               <div className="space-y-2 text-xs text-rf-gray">
                 <div className="flex justify-between">
                   <span>Penalty per wrong submission</span>
-                  <span className="text-rf-sage">{contest.penaltyTime} min</span>
+                  <span className="text-rf-pink">{contest.penaltyTime} min</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Duration</span>
-                  <span className="text-rf-sage">{contest.duration} min</span>
+                  <span className="text-rf-pink">{contest.duration} min</span>
                 </div>
                 {contest.freezeTime && (
                   <div className="flex justify-between">
                     <span>Leaderboard freeze</span>
-                    <span className="text-rf-sage">Last {contest.freezeTime} min</span>
+                    <span className="text-rf-pink">Last {contest.freezeTime} min</span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span>Visibility</span>
-                  <span className="text-rf-sage">{contest.isPublic ? 'Public' : 'Private'}</span>
+                  <span className="text-rf-pink">{contest.isPublic ? 'Public' : 'Private'}</span>
                 </div>
               </div>
             </div>

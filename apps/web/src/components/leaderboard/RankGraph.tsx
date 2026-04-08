@@ -46,23 +46,23 @@ export function RankGraph({ frames, users, highlightUsers, mode }: RankGraphProp
     <div className="w-full h-80">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#3a3a38" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
           <XAxis
             dataKey="minute"
-            stroke="#6A6A67"
+            stroke="#555555"
             fontSize={11}
             tickFormatter={(v) => `${v}m`}
           />
           <YAxis
-            stroke="#6A6A67"
+            stroke="#555555"
             fontSize={11}
             reversed={mode === 'rank'}
             domain={mode === 'rank' ? [1, 'auto'] : [0, 'auto']}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#1c1c1b",
-              border: "1px solid #3a3a38",
+              backgroundColor: "#111111",
+              border: "1px solid #222222",
               borderRadius: '8px',
               fontSize: '12px',
             }}

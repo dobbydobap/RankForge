@@ -86,18 +86,18 @@ export default function ReplayPage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-rf-cream">Contest Replay</h1>
+            <h1 className="text-2xl font-bold text-white">Contest Replay</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
               >
                 {contest.title}
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/temporal`}
-                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
               >
                 Temporal View
               </Link>
@@ -106,14 +106,14 @@ export default function ReplayPage() {
 
           {/* Speed controls */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-rf-muted">Speed:</span>
+            <span className="text-xs text-rf-gray">Speed:</span>
             {[0.5, 1, 2, 4].map((s) => (
               <button
                 key={s}
                 onClick={() => setSpeed(s)}
                 className={`px-2 py-1 text-xs rounded ${
                   speed === s
-                    ? 'bg-rf-accent text-rf-black'
+                    ? 'bg-rf-accent text-white'
                     : 'bg-rf-border text-rf-gray hover:bg-rf-iron'
                 } transition-colors`}
               >
@@ -136,7 +136,7 @@ export default function ReplayPage() {
 
         {/* Rank Graph */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-          <h2 className="text-sm font-semibold text-rf-sage mb-3">
+          <h2 className="text-sm font-semibold text-rf-pink mb-3">
             Rank Movement Over Time
           </h2>
           <RankGraph
@@ -150,7 +150,7 @@ export default function ReplayPage() {
         {currentFrame && (
           <div className="border border-rf-border rounded-xl overflow-hidden">
             <div className="px-4 py-2 bg-rf-dark/50 border-b border-rf-border">
-              <span className="text-xs text-rf-muted">
+              <span className="text-xs text-rf-gray">
                 Standings at minute {currentFrame.minute}
               </span>
             </div>
@@ -185,21 +185,21 @@ export default function ReplayPage() {
                               : ''
                         }`}
                       >
-                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-sage">
+                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-pink">
                           <div className="flex items-center justify-center gap-1">
                             <span>{entry.rank}</span>
                             {rankChange > 0 && (
-                              <span className="text-xs text-rf-sage">+{rankChange}</span>
+                              <span className="text-xs text-rf-pink">+{rankChange}</span>
                             )}
                             {rankChange < 0 && (
                               <span className="text-xs text-red-400">{rankChange}</span>
                             )}
                           </div>
                         </td>
-                        <td className="px-3 py-2.5 text-sm text-rf-cream">
+                        <td className="px-3 py-2.5 text-sm text-white">
                           {entry.displayName || entry.username}
                         </td>
-                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-cream">
+                        <td className="text-center px-3 py-2.5 text-sm font-bold text-white">
                           {entry.score}
                         </td>
                         <td className="text-center px-3 py-2.5 text-sm text-rf-gray">

@@ -35,10 +35,10 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-rf-black px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold text-rf-sage">
+          <Link href="/" className="text-2xl font-bold text-rf-pink">
             RankForge
           </Link>
-          <h1 className="mt-4 text-xl font-semibold text-rf-cream">
+          <h1 className="mt-4 text-xl font-semibold text-white">
             Create your account
           </h1>
           <p className="mt-1 text-sm text-rf-gray">
@@ -54,14 +54,14 @@ export default function RegisterPage() {
           )}
 
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-rf-sage mb-1">
+            <label htmlFor="username" className="block text-sm font-medium text-rf-pink mb-1">
               Username
             </label>
             <input
               id="username"
               type="text"
               {...register('username')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-cream placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
               placeholder="coolcoder42"
             />
             {errors.username && (
@@ -70,14 +70,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-rf-sage mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-rf-pink mb-1">
               Email
             </label>
             <input
               id="email"
               type="email"
               {...register('email')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-cream placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
               placeholder="you@example.com"
             />
             {errors.email && (
@@ -86,20 +86,20 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-rf-sage mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-rf-pink mb-1">
               Password
             </label>
             <input
               id="password"
               type="password"
               {...register('password')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-cream placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
               placeholder="At least 8 characters"
             />
             {errors.password && (
               <p className="mt-1 text-sm text-red-400">{errors.password.message}</p>
             )}
-            <p className="mt-1 text-xs text-rf-muted">
+            <p className="mt-1 text-xs text-rf-gray">
               Must contain uppercase, lowercase, and a number
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-rf-gray">
           Already have an account?{' '}
-          <Link href="/login" className="text-rf-sage hover:text-rf-cream">
+          <Link href="/login" className="text-rf-pink hover:text-white">
             Sign in
           </Link>
         </p>

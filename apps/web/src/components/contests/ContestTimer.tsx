@@ -21,7 +21,7 @@ export function ContestTimer({ startTime, endTime, status }: ContestTimerProps) 
 
   if (status === 'ENDED' || status === 'RESULTS_PUBLISHED') {
     return (
-      <div className="text-sm text-rf-muted">
+      <div className="text-sm text-rf-gray">
         Contest ended
       </div>
     );
@@ -31,7 +31,7 @@ export function ContestTimer({ startTime, endTime, status }: ContestTimerProps) 
     const diff = start - now;
     return (
       <div>
-        <div className="text-xs text-rf-muted mb-1">Starts in</div>
+        <div className="text-xs text-rf-gray mb-1">Starts in</div>
         <div className="text-lg font-mono font-bold text-cyan-400">
           {formatDuration(diff)}
         </div>
@@ -44,15 +44,15 @@ export function ContestTimer({ startTime, endTime, status }: ContestTimerProps) 
     const isLow = diff < 10 * 60 * 1000; // < 10 min
     return (
       <div>
-        <div className="text-xs text-rf-muted mb-1">Time remaining</div>
-        <div className={`text-lg font-mono font-bold ${isLow ? 'text-red-400' : 'text-rf-sage'}`}>
+        <div className="text-xs text-rf-gray mb-1">Time remaining</div>
+        <div className={`text-lg font-mono font-bold ${isLow ? 'text-red-400' : 'text-rf-pink'}`}>
           {formatDuration(diff)}
         </div>
       </div>
     );
   }
 
-  return <div className="text-sm text-rf-muted">Contest ended</div>;
+  return <div className="text-sm text-rf-gray">Contest ended</div>;
 }
 
 function formatDuration(ms: number): string {

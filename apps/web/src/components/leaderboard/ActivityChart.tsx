@@ -19,26 +19,26 @@ export function ActivityChart({ data }: ActivityChartProps) {
     <div className="w-full h-48">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#3a3a38" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
           <XAxis
             dataKey="minute"
-            stroke="#6A6A67"
+            stroke="#555555"
             fontSize={10}
             tickFormatter={(v) => `${v}m`}
             interval="preserveStartEnd"
           />
-          <YAxis stroke="#6A6A67" fontSize={10} />
+          <YAxis stroke="#555555" fontSize={10} />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#1c1c1b",
-              border: "1px solid #3a3a38",
+              backgroundColor: "#111111",
+              border: "1px solid #222222",
               borderRadius: '8px',
               fontSize: '12px',
             }}
             labelFormatter={(v) => `Minute ${v}`}
           />
           <Bar dataKey="submissions" fill="#3f3f46" name="Submissions" />
-          <Bar dataKey="accepted" fill="#C1C1A9" name="Accepted" />
+          <Bar dataKey="accepted" fill="#d946ef" name="Accepted" />
         </BarChart>
       </ResponsiveContainer>
     </div>

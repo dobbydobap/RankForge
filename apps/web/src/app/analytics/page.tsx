@@ -58,7 +58,7 @@ export default function GrowthAnalyticsPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-rf-cream mb-6">Growth Analytics</h1>
+        <h1 className="text-2xl font-bold text-white mb-6">Growth Analytics</h1>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -72,22 +72,22 @@ export default function GrowthAnalyticsPage() {
           {/* Rating History */}
           {growth.ratingHistory.length > 0 && (
             <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-              <h2 className="text-sm font-semibold text-rf-sage mb-3">Rating Over Time</h2>
+              <h2 className="text-sm font-semibold text-rf-pink mb-3">Rating Over Time</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={growth.ratingHistory}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#3a3a38" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
                     <XAxis
                       dataKey="date"
-                      stroke="#6A6A67"
+                      stroke="#555555"
                       fontSize={10}
                       tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     />
-                    <YAxis stroke="#6A6A67" fontSize={10} domain={['auto', 'auto']} />
+                    <YAxis stroke="#555555" fontSize={10} domain={['auto', 'auto']} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: "#1c1c1b", border: "1px solid #3a3a38", borderRadius: '8px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: "#111111", border: "1px solid #222222", borderRadius: '8px', fontSize: '12px' }}
                     />
-                    <Line type="monotone" dataKey="newRating" stroke="#C1C1A9" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
+                    <Line type="monotone" dataKey="newRating" stroke="#d946ef" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -97,13 +97,13 @@ export default function GrowthAnalyticsPage() {
           {/* Topic Mastery Radar */}
           {radarData.length > 0 && (
             <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-              <h2 className="text-sm font-semibold text-rf-sage mb-3">Topic Mastery</h2>
+              <h2 className="text-sm font-semibold text-rf-pink mb-3">Topic Mastery</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#3a3a38" />
-                    <PolarAngleAxis dataKey="topic" stroke="#6A6A67" fontSize={10} />
-                    <Radar dataKey="count" stroke="#C1C1A9" fill="#C1C1A9" fillOpacity={0.2} />
+                    <PolarGrid stroke="#222222" />
+                    <PolarAngleAxis dataKey="topic" stroke="#555555" fontSize={10} />
+                    <Radar dataKey="count" stroke="#d946ef" fill="#d946ef" fillOpacity={0.2} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
@@ -113,7 +113,7 @@ export default function GrowthAnalyticsPage() {
 
         {/* Activity Heatmap (simple version) */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-          <h2 className="text-sm font-semibold text-rf-sage mb-3">
+          <h2 className="text-sm font-semibold text-rf-pink mb-3">
             Solve Activity (Last 30 Days)
           </h2>
           <div className="flex gap-1 flex-wrap">
@@ -133,7 +133,7 @@ export default function GrowthAnalyticsPage() {
               />
             ))}
           </div>
-          <div className="flex items-center gap-2 mt-2 text-xs text-rf-muted">
+          <div className="flex items-center gap-2 mt-2 text-xs text-rf-gray">
             <span>Less</span>
             <div className="w-3 h-3 rounded-sm bg-rf-border" />
             <div className="w-3 h-3 rounded-sm bg-rf-dark" />
@@ -146,11 +146,11 @@ export default function GrowthAnalyticsPage() {
         {/* Top topics table */}
         {growth.topicMastery.length > 0 && (
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <h2 className="text-sm font-semibold text-rf-sage mb-3">Strongest Topics</h2>
+            <h2 className="text-sm font-semibold text-rf-pink mb-3">Strongest Topics</h2>
             <div className="space-y-2">
               {growth.topicMastery.map((t: any) => (
                 <div key={t.topic} className="flex items-center gap-3">
-                  <span className="text-sm text-rf-sage w-32">{t.topic}</span>
+                  <span className="text-sm text-rf-pink w-32">{t.topic}</span>
                   <div className="flex-1 h-2 bg-rf-border rounded-full overflow-hidden">
                     <div
                       className="h-full bg-rf-accent-hover rounded-full"
@@ -159,7 +159,7 @@ export default function GrowthAnalyticsPage() {
                       }}
                     />
                   </div>
-                  <span className="text-xs text-rf-muted w-8 text-right">{t.count}</span>
+                  <span className="text-xs text-rf-gray w-8 text-right">{t.count}</span>
                 </div>
               ))}
             </div>
@@ -173,8 +173,8 @@ export default function GrowthAnalyticsPage() {
 function StatCard({ title, value, accent }: { title: string; value: number; accent?: boolean }) {
   return (
     <div className="p-4 rounded-xl border border-rf-border bg-rf-dark/50">
-      <p className="text-xs text-rf-muted">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-sage' : 'text-rf-cream'}`}>{value}</p>
+      <p className="text-xs text-rf-gray">{title}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-pink' : 'text-white'}`}>{value}</p>
     </div>
   );
 }

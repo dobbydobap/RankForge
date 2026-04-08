@@ -148,10 +148,10 @@ export default function ProblemDetailPage() {
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 h-12 border-b border-rf-border bg-rf-black/80 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-4">
-          <Link href="/problems" className="text-sm text-rf-gray hover:text-rf-cream">
+          <Link href="/problems" className="text-sm text-rf-gray hover:text-white">
             &larr; Problems
           </Link>
-          <span className="text-sm font-medium text-rf-cream">{problem.title}</span>
+          <span className="text-sm font-medium text-white">{problem.title}</span>
         </div>
         <div className="flex items-center gap-3">
           <LanguageSelector value={language} onChange={handleLanguageChange} />
@@ -174,8 +174,8 @@ export default function ProblemDetailPage() {
               onClick={() => setActiveTab('problem')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'problem'
-                  ? 'text-rf-sage border-b-2 border-rf-sage'
-                  : 'text-rf-gray hover:text-rf-cream'
+                  ? 'text-rf-pink border-b-2 border-rf-pink'
+                  : 'text-rf-gray hover:text-white'
               }`}
             >
               Problem
@@ -184,8 +184,8 @@ export default function ProblemDetailPage() {
               onClick={() => setActiveTab('submissions')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'submissions'
-                  ? 'text-rf-sage border-b-2 border-rf-sage'
-                  : 'text-rf-gray hover:text-rf-cream'
+                  ? 'text-rf-pink border-b-2 border-rf-pink'
+                  : 'text-rf-gray hover:text-white'
               }`}
             >
               Submissions
@@ -198,7 +198,7 @@ export default function ProblemDetailPage() {
             ) : (
               <div className="space-y-2">
                 {!submissionsData?.submissions.length ? (
-                  <p className="text-sm text-rf-muted">No submissions yet.</p>
+                  <p className="text-sm text-rf-gray">No submissions yet.</p>
                 ) : (
                   submissionsData.submissions.map((sub: any) => (
                     <div
@@ -207,9 +207,9 @@ export default function ProblemDetailPage() {
                     >
                       <div className="flex items-center gap-3">
                         <VerdictBadge verdict={sub.verdict} />
-                        <span className="text-xs text-rf-muted">{sub.language}</span>
+                        <span className="text-xs text-rf-gray">{sub.language}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-rf-muted">
+                      <div className="flex items-center gap-3 text-xs text-rf-gray">
                         {sub.timeUsed !== null && <span>{sub.timeUsed}ms</span>}
                         {sub.memoryUsed !== null && <span>{sub.memoryUsed}KB</span>}
                         <span>{new Date(sub.createdAt).toLocaleString()}</span>
@@ -235,7 +235,7 @@ export default function ProblemDetailPage() {
                 <span className="text-xs text-rf-gray">Verdict:</span>
                 <VerdictBadge verdict={liveVerdict || submitMutation.data?.verdict || 'PENDING'} />
                 {!liveVerdict && submitMutation.data?.verdict === 'PENDING' && (
-                  <span className="text-xs text-rf-muted animate-pulse">Judging...</span>
+                  <span className="text-xs text-rf-gray animate-pulse">Judging...</span>
                 )}
               </div>
             </div>

@@ -39,10 +39,10 @@ export default function ContestAnalyticsPage() {
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-rf-cream">Contest Analytics</h1>
+          <h1 className="text-2xl font-bold text-white">Contest Analytics</h1>
           <Link
             href={`/contests/${slug}`}
-            className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+            className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
           >
             &larr; {myAnalytics.contestTitle}
           </Link>
@@ -51,24 +51,24 @@ export default function ContestAnalyticsPage() {
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <p className="text-xs text-rf-muted">Solved</p>
-            <p className="text-2xl font-bold text-rf-sage">
+            <p className="text-xs text-rf-gray">Solved</p>
+            <p className="text-2xl font-bold text-rf-pink">
               {myAnalytics.summary.solved}/{myAnalytics.totalProblems}
             </p>
           </div>
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <p className="text-xs text-rf-muted">Score</p>
-            <p className="text-2xl font-bold text-rf-cream">{myAnalytics.summary.totalScore}</p>
+            <p className="text-xs text-rf-gray">Score</p>
+            <p className="text-2xl font-bold text-white">{myAnalytics.summary.totalScore}</p>
           </div>
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <p className="text-xs text-rf-muted">Participants</p>
-            <p className="text-2xl font-bold text-rf-cream">{myAnalytics.totalParticipants}</p>
+            <p className="text-xs text-rf-gray">Participants</p>
+            <p className="text-2xl font-bold text-white">{myAnalytics.totalParticipants}</p>
           </div>
           {myAnalytics.summary.ratingChange && (
             <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-              <p className="text-xs text-rf-muted">Rating Change</p>
+              <p className="text-xs text-rf-gray">Rating Change</p>
               <p className={`text-2xl font-bold ${
-                myAnalytics.summary.ratingChange.delta >= 0 ? 'text-rf-sage' : 'text-red-400'
+                myAnalytics.summary.ratingChange.delta >= 0 ? 'text-rf-pink' : 'text-red-400'
               }`}>
                 {myAnalytics.summary.ratingChange.delta >= 0 ? '+' : ''}
                 {myAnalytics.summary.ratingChange.delta}
@@ -93,13 +93,13 @@ export default function ContestAnalyticsPage() {
             <tbody className="divide-y divide-rf-border">
               {myAnalytics.problemBreakdown.map((p: any) => (
                 <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
-                  <td className="text-center px-4 py-3 text-sm font-mono font-bold text-rf-sage">
+                  <td className="text-center px-4 py-3 text-sm font-mono font-bold text-rf-pink">
                     {p.label}
                   </td>
-                  <td className="px-4 py-3 text-sm text-rf-cream">{p.title}</td>
+                  <td className="px-4 py-3 text-sm text-white">{p.title}</td>
                   <td className="text-center px-4 py-3">
                     {p.solved ? (
-                      <span className="px-2 py-0.5 text-xs font-medium bg-rf-dark/80 text-rf-sage border border-rf-iron rounded">
+                      <span className="px-2 py-0.5 text-xs font-medium bg-rf-dark/80 text-rf-pink border border-rf-iron rounded">
                         AC ({p.attempts})
                       </span>
                     ) : p.attempts > 0 ? (
@@ -110,7 +110,7 @@ export default function ContestAnalyticsPage() {
                       <span className="text-xs text-rf-iron">—</span>
                     )}
                   </td>
-                  <td className="text-center px-4 py-3 text-sm text-rf-sage">
+                  <td className="text-center px-4 py-3 text-sm text-rf-pink">
                     {p.solveTime !== null ? `${p.solveTime}m` : '—'}
                   </td>
                   <td className="text-center px-4 py-3 text-sm text-rf-gray">
@@ -127,7 +127,7 @@ export default function ContestAnalyticsPage() {
 
         {/* Solve comparison chart */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-          <h2 className="text-sm font-semibold text-rf-sage mb-3">
+          <h2 className="text-sm font-semibold text-rf-pink mb-3">
             Your Solve Time vs Average
           </h2>
           <div className="h-48">
@@ -135,18 +135,18 @@ export default function ContestAnalyticsPage() {
               <BarChart
                 data={myAnalytics.problemBreakdown.filter((p: any) => p.solveTime !== null)}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#3a3a38" />
-                <XAxis dataKey="label" stroke="#6A6A67" fontSize={12} />
-                <YAxis stroke="#6A6A67" fontSize={10} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
+                <XAxis dataKey="label" stroke="#555555" fontSize={12} />
+                <YAxis stroke="#555555" fontSize={10} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1c1c1b",
-                    border: "1px solid #3a3a38",
+                    backgroundColor: "#111111",
+                    border: "1px solid #222222",
                     borderRadius: '8px',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="solveTime" fill="#C1C1A9" name="Your Time (min)" />
+                <Bar dataKey="solveTime" fill="#d946ef" name="Your Time (min)" />
                 <Bar dataKey="avgSolveTime" fill="#3f3f46" name="Avg Time (min)" />
               </BarChart>
             </ResponsiveContainer>

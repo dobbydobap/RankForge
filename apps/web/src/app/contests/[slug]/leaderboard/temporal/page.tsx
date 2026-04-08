@@ -36,25 +36,25 @@ export default function TemporalLeaderboardPage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-rf-cream">Temporal Leaderboard</h1>
+            <h1 className="text-2xl font-bold text-white">Temporal Leaderboard</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
               >
                 {contest.title}
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard`}
-                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
               >
                 Current Standings
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/replay`}
-                className="text-sm text-rf-sage hover:text-rf-cream transition-colors"
+                className="text-sm text-rf-pink hover:text-white transition-colors"
               >
                 Replay Mode
               </Link>
@@ -64,7 +64,7 @@ export default function TemporalLeaderboardPage() {
 
         {/* Time Slider */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-          <div className="text-xs text-rf-muted mb-2">
+          <div className="text-xs text-rf-gray mb-2">
             Scrub through the contest timeline to see how standings evolved
           </div>
           <TemporalSlider
@@ -77,12 +77,12 @@ export default function TemporalLeaderboardPage() {
         {/* Activity Chart */}
         {analytics?.activityTimeline && (
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-            <h2 className="text-sm font-semibold text-rf-sage mb-3">
+            <h2 className="text-sm font-semibold text-rf-pink mb-3">
               Submission Activity Over Time
             </h2>
             <ActivityChart data={analytics.activityTimeline} />
             {analytics.peakActivity && (
-              <div className="mt-2 text-xs text-rf-muted">
+              <div className="mt-2 text-xs text-rf-gray">
                 Peak activity: minutes {analytics.peakActivity.startMinute}–{analytics.peakActivity.endMinute} ({analytics.peakActivity.submissions} submissions)
               </div>
             )}
@@ -91,9 +91,9 @@ export default function TemporalLeaderboardPage() {
 
         {/* Standings at time T */}
         {isLoading ? (
-          <div className="text-center py-8 text-rf-muted">Loading standings...</div>
+          <div className="text-center py-8 text-rf-gray">Loading standings...</div>
         ) : !standings?.entries?.length ? (
-          <div className="text-center py-8 text-rf-muted">
+          <div className="text-center py-8 text-rf-gray">
             No activity at minute {minute}.
           </div>
         ) : (
@@ -113,13 +113,13 @@ export default function TemporalLeaderboardPage() {
                   .filter((e: any) => e.totalScore > 0 || e.solvedCount > 0)
                   .map((entry: any) => (
                     <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
-                      <td className="text-center px-3 py-3 text-sm font-bold text-rf-sage">
+                      <td className="text-center px-3 py-3 text-sm font-bold text-rf-pink">
                         {entry.rank}
                       </td>
-                      <td className="px-3 py-3 text-sm text-rf-cream">
+                      <td className="px-3 py-3 text-sm text-white">
                         {entry.displayName || entry.username}
                       </td>
-                      <td className="text-center px-3 py-3 text-sm font-bold text-rf-cream">
+                      <td className="text-center px-3 py-3 text-sm font-bold text-white">
                         {entry.totalScore}
                       </td>
                       <td className="text-center px-3 py-3 text-sm text-rf-gray">

@@ -15,7 +15,7 @@ export default function ContestsPage() {
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-rf-cream">Contests</h1>
+          <h1 className="text-2xl font-bold text-white">Contests</h1>
           <Link
             href="/contests/create"
             className="px-4 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover text-white rounded-lg transition-colors"
@@ -25,9 +25,9 @@ export default function ContestsPage() {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-12 text-rf-muted">Loading contests...</div>
+          <div className="text-center py-12 text-rf-gray">Loading contests...</div>
         ) : !data?.contests.length ? (
-          <div className="text-center py-12 text-rf-muted">No contests yet.</div>
+          <div className="text-center py-12 text-rf-gray">No contests yet.</div>
         ) : (
           <>
             <div className="space-y-3">
@@ -40,7 +40,7 @@ export default function ContestsPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                        <h2 className="text-lg font-semibold text-rf-cream">
+                        <h2 className="text-lg font-semibold text-white">
                           {contest.title}
                         </h2>
                         <ContestStatusBadge status={contest.status} />
@@ -70,7 +70,7 @@ export default function ContestsPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
@@ -80,7 +80,7 @@ export default function ContestsPage() {
                 <button
                   onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                   disabled={page === data.totalPages}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>

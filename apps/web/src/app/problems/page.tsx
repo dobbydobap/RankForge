@@ -20,7 +20,7 @@ export default function ProblemsPage() {
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-rf-cream">Problems</h1>
+          <h1 className="text-2xl font-bold text-white">Problems</h1>
         </div>
 
         <ProblemFilters
@@ -35,9 +35,9 @@ export default function ProblemsPage() {
 
         <div className="mt-6">
           {isLoading ? (
-            <div className="text-center py-12 text-rf-muted">Loading problems...</div>
+            <div className="text-center py-12 text-rf-gray">Loading problems...</div>
           ) : !data?.problems.length ? (
-            <div className="text-center py-12 text-rf-muted">No problems found.</div>
+            <div className="text-center py-12 text-rf-gray">No problems found.</div>
           ) : (
             <>
               <div className="border border-rf-border rounded-xl overflow-hidden">
@@ -64,7 +64,7 @@ export default function ProblemsPage() {
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${problem.slug}`}
-                            className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
+                            className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
                           >
                             {problem.title}
                           </Link>
@@ -86,7 +86,7 @@ export default function ProblemsPage() {
                               </span>
                             ))}
                             {problem.tags.length > 3 && (
-                              <span className="text-xs text-rf-muted">
+                              <span className="text-xs text-rf-gray">
                                 +{problem.tags.length - 3}
                               </span>
                             )}
@@ -106,7 +106,7 @@ export default function ProblemsPage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
@@ -116,7 +116,7 @@ export default function ProblemsPage() {
                   <button
                     onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                     disabled={page === data.totalPages}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>
