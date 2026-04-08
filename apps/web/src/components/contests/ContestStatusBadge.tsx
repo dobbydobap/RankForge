@@ -1,12 +1,12 @@
 'use client';
 
 const STATUS_STYLES: Record<string, string> = {
-  DRAFT: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+  DRAFT: 'bg-rf-border text-rf-gray border-rf-iron',
   PUBLISHED: 'bg-blue-900/50 text-blue-400 border-blue-800',
   REGISTRATION_OPEN: 'bg-cyan-900/50 text-cyan-400 border-cyan-800',
-  LIVE: 'bg-emerald-900/50 text-emerald-400 border-emerald-800',
+  LIVE: 'bg-rf-dark/80 text-rf-sage border-rf-iron',
   FROZEN: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
-  ENDED: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+  ENDED: 'bg-rf-border text-rf-gray border-rf-iron',
   RESULTS_PUBLISHED: 'bg-purple-900/50 text-purple-400 border-purple-800',
 };
 

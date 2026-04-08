@@ -7,35 +7,35 @@ export function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore();
 
   return (
-    <nav className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
+    <nav className="border-b border-rf-border bg-rf-black/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="text-xl font-bold text-emerald-400">
+            <Link href="/" className="text-xl font-bold text-rf-sage">
               RankForge
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link
                 href="/problems"
-                className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
               >
                 Problems
               </Link>
               <Link
                 href="/contests"
-                className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
               >
                 Contests
               </Link>
               <Link
                 href="/submissions"
-                className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
               >
                 Submissions
               </Link>
               <Link
                 href="/contests"
-                className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
               >
                 Leaderboard
               </Link>
@@ -47,19 +47,19 @@ export function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
                 >
                   Dashboard
                 </Link>
                 <Link
                   href={`/users/${user.username}`}
-                  className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
                 >
                   {user.username}
                 </Link>
                 <button
                   onClick={() => logout()}
-                  className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+                  className="text-sm text-rf-muted hover:text-rf-sage transition-colors"
                 >
                   Logout
                 </button>
@@ -68,13 +68,13 @@ export function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+                  className="text-sm text-rf-gray hover:text-rf-cream transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover text-white rounded-lg transition-colors"
                 >
                   Register
                 </Link>

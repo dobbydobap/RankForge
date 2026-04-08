@@ -25,7 +25,7 @@ export default function DashboardPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading...</div>
+          <div className="text-rf-gray">Loading...</div>
         </div>
       </>
     );
@@ -37,10 +37,10 @@ export default function DashboardPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-zinc-100">
+        <h1 className="text-2xl font-bold text-rf-cream">
           Welcome, {user.profile?.displayName || user.username}
         </h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <p className="mt-1 text-sm text-rf-gray">
           Here&apos;s your progress overview
         </p>
 
@@ -55,19 +55,19 @@ export default function DashboardPage() {
 
         {/* Difficulty Breakdown */}
         {stats?.difficultyBreakdown && Object.keys(stats.difficultyBreakdown).length > 0 && (
-          <div className="mt-6 p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-            <h2 className="text-sm font-semibold text-zinc-300 mb-3">Problems by Difficulty</h2>
+          <div className="mt-6 p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+            <h2 className="text-sm font-semibold text-rf-sage mb-3">Problems by Difficulty</h2>
             <div className="flex items-center gap-4">
               {['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => {
                 const count = stats.difficultyBreakdown[d] || 0;
                 const colors: Record<string, string> = {
-                  EASY: 'bg-emerald-500', MEDIUM: 'bg-yellow-500',
+                  EASY: 'bg-rf-accent-hover', MEDIUM: 'bg-yellow-500',
                   HARD: 'bg-orange-500', EXPERT: 'bg-red-500',
                 };
                 return (
                   <div key={d} className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full ${colors[d]}`} />
-                    <span className="text-xs text-zinc-400">
+                    <span className="text-xs text-rf-gray">
                       {d.charAt(0) + d.slice(1).toLowerCase()}: {count}
                     </span>
                   </div>
@@ -79,12 +79,12 @@ export default function DashboardPage() {
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Upcoming Contests */}
-          <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-            <h2 className="text-sm font-semibold text-zinc-300 mb-3">Upcoming Contests</h2>
+          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+            <h2 className="text-sm font-semibold text-rf-sage mb-3">Upcoming Contests</h2>
             {!stats?.upcomingContests?.length ? (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-rf-muted">
                 No upcoming contests.{' '}
-                <Link href="/contests" className="text-emerald-400 hover:text-emerald-300">
+                <Link href="/contests" className="text-rf-sage hover:text-rf-cream">
                   Browse contests
                 </Link>
               </p>
@@ -94,10 +94,10 @@ export default function DashboardPage() {
                   <Link
                     key={c.id}
                     href={`/contests/${c.slug}`}
-                    className="block p-3 rounded-lg border border-zinc-800 hover:border-zinc-600 transition-colors"
+                    className="block p-3 rounded-lg border border-rf-border hover:border-rf-gray transition-colors"
                   >
-                    <div className="text-sm font-medium text-zinc-200">{c.title}</div>
-                    <div className="text-xs text-zinc-500 mt-0.5">
+                    <div className="text-sm font-medium text-rf-cream">{c.title}</div>
+                    <div className="text-xs text-rf-muted mt-0.5">
                       {new Date(c.startTime).toLocaleDateString(undefined, {
                         month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
                       })}{' '}
@@ -110,12 +110,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Submissions */}
-          <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-            <h2 className="text-sm font-semibold text-zinc-300 mb-3">Recent Submissions</h2>
+          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+            <h2 className="text-sm font-semibold text-rf-sage mb-3">Recent Submissions</h2>
             {!stats?.recentSubmissions?.length ? (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-rf-muted">
                 No submissions yet.{' '}
-                <Link href="/problems" className="text-emerald-400 hover:text-emerald-300">
+                <Link href="/problems" className="text-rf-sage hover:text-rf-cream">
                   Start solving
                 </Link>
               </p>
@@ -125,11 +125,11 @@ export default function DashboardPage() {
                   <Link
                     key={s.id}
                     href={`/submissions/${s.id}`}
-                    className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-800/50 transition-colors"
+                    className="flex items-center justify-between p-2 rounded-lg hover:bg-rf-border/50 transition-colors"
                   >
                     <div>
-                      <div className="text-sm text-zinc-200">{s.problemTitle}</div>
-                      <div className="text-xs text-zinc-500">
+                      <div className="text-sm text-rf-cream">{s.problemTitle}</div>
+                      <div className="text-xs text-rf-muted">
                         {(LANGUAGE_DISPLAY as any)[s.language]} &middot;{' '}
                         {new Date(s.createdAt).toLocaleDateString()}
                       </div>
@@ -146,19 +146,19 @@ export default function DashboardPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/problems"
-            className="px-4 py-2 text-sm font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
           >
             Practice Problems
           </Link>
           <Link
             href="/contests"
-            className="px-4 py-2 text-sm font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
           >
             Browse Contests
           </Link>
           <Link
             href={`/users/${user.username}`}
-            className="px-4 py-2 text-sm font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-border hover:bg-rf-iron text-rf-cream rounded-lg transition-colors"
           >
             My Profile
           </Link>
@@ -170,9 +170,9 @@ export default function DashboardPage() {
 
 function StatCard({ title, value, accent }: { title: string; value: string | number; accent?: boolean }) {
   return (
-    <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50">
-      <p className="text-xs text-zinc-500">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-emerald-400' : 'text-zinc-100'}`}>
+    <div className="p-4 rounded-xl border border-rf-border bg-rf-dark/50">
+      <p className="text-xs text-rf-muted">{title}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-sage' : 'text-rf-cream'}`}>
         {value}
       </p>
     </div>

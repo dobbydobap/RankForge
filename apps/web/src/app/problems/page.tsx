@@ -20,7 +20,7 @@ export default function ProblemsPage() {
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-zinc-100">Problems</h1>
+          <h1 className="text-2xl font-bold text-rf-cream">Problems</h1>
         </div>
 
         <ProblemFilters
@@ -35,36 +35,36 @@ export default function ProblemsPage() {
 
         <div className="mt-6">
           {isLoading ? (
-            <div className="text-center py-12 text-zinc-500">Loading problems...</div>
+            <div className="text-center py-12 text-rf-muted">Loading problems...</div>
           ) : !data?.problems.length ? (
-            <div className="text-center py-12 text-zinc-500">No problems found.</div>
+            <div className="text-center py-12 text-rf-muted">No problems found.</div>
           ) : (
             <>
-              <div className="border border-zinc-800 rounded-xl overflow-hidden">
+              <div className="border border-rf-border rounded-xl overflow-hidden">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-zinc-800 bg-zinc-900/50">
-                      <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                    <tr className="border-b border-rf-border bg-rf-dark/50">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider">
                         Title
                       </th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden sm:table-cell">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider hidden sm:table-cell">
                         Difficulty
                       </th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden md:table-cell">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider hidden md:table-cell">
                         Tags
                       </th>
-                      <th className="text-right px-4 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden sm:table-cell">
+                      <th className="text-right px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider hidden sm:table-cell">
                         Submissions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800">
+                  <tbody className="divide-y divide-rf-border">
                     {data.problems.map((problem: any) => (
-                      <tr key={problem.id} className="hover:bg-zinc-900/50 transition-colors">
+                      <tr key={problem.id} className="hover:bg-rf-dark/50 transition-colors">
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${problem.slug}`}
-                            className="text-sm font-medium text-zinc-100 hover:text-emerald-400 transition-colors"
+                            className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
                           >
                             {problem.title}
                           </Link>
@@ -80,19 +80,19 @@ export default function ProblemsPage() {
                             {problem.tags.slice(0, 3).map((t: string) => (
                               <span
                                 key={t}
-                                className="px-2 py-0.5 text-xs bg-zinc-800 text-zinc-400 rounded"
+                                className="px-2 py-0.5 text-xs bg-rf-border text-rf-gray rounded"
                               >
                                 {t}
                               </span>
                             ))}
                             {problem.tags.length > 3 && (
-                              <span className="text-xs text-zinc-500">
+                              <span className="text-xs text-rf-muted">
                                 +{problem.tags.length - 3}
                               </span>
                             )}
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-right text-sm text-zinc-400 hidden sm:table-cell">
+                        <td className="px-4 py-3 text-right text-sm text-rf-gray hidden sm:table-cell">
                           {problem.submissionCount}
                         </td>
                       </tr>
@@ -106,17 +106,17 @@ export default function ProblemsPage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1.5 text-sm border border-zinc-700 rounded-lg text-zinc-300 hover:border-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
-                  <span className="text-sm text-zinc-400">
+                  <span className="text-sm text-rf-gray">
                     Page {data.page} of {data.totalPages}
                   </span>
                   <button
                     onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                     disabled={page === data.totalPages}
-                    className="px-3 py-1.5 text-sm border border-zinc-700 rounded-lg text-zinc-300 hover:border-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>

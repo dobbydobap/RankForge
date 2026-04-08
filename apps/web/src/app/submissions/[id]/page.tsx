@@ -17,7 +17,7 @@ export default function SubmissionDetailPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading submission...</div>
+          <div className="text-rf-gray">Loading submission...</div>
         </div>
       </>
     );
@@ -28,7 +28,7 @@ export default function SubmissionDetailPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Submission not found.</div>
+          <div className="text-rf-gray">Submission not found.</div>
         </div>
       </>
     );
@@ -42,15 +42,15 @@ export default function SubmissionDetailPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-xl font-bold text-zinc-100">
+              <h1 className="text-xl font-bold text-rf-cream">
                 Submission #{id.slice(0, 8)}
               </h1>
               <VerdictBadge verdict={submission.verdict} />
             </div>
-            <div className="flex items-center gap-4 text-sm text-zinc-400">
+            <div className="flex items-center gap-4 text-sm text-rf-gray">
               <Link
                 href={`/problems/${submission.problemSlug}`}
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-rf-sage transition-colors"
               >
                 {submission.problemTitle}
               </Link>
@@ -81,17 +81,17 @@ export default function SubmissionDetailPage() {
         {/* Test Results */}
         {submission.testResults.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-zinc-200 mb-3">Test Results</h2>
+            <h2 className="text-lg font-semibold text-rf-cream mb-3">Test Results</h2>
             <div className="flex flex-wrap gap-2">
               {submission.testResults.map((tr: any, idx: number) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 px-3 py-2 border border-zinc-800 rounded-lg bg-zinc-900/50"
+                  className="flex items-center gap-2 px-3 py-2 border border-rf-border rounded-lg bg-rf-dark/50"
                 >
-                  <span className="text-xs text-zinc-500">#{tr.order + 1}</span>
+                  <span className="text-xs text-rf-muted">#{tr.order + 1}</span>
                   <VerdictBadge verdict={tr.verdict} short />
                   {tr.timeUsed !== null && (
-                    <span className="text-xs text-zinc-500">{tr.timeUsed}ms</span>
+                    <span className="text-xs text-rf-muted">{tr.timeUsed}ms</span>
                   )}
                 </div>
               ))}
@@ -101,7 +101,7 @@ export default function SubmissionDetailPage() {
 
         {/* Source Code */}
         <div>
-          <h2 className="text-lg font-semibold text-zinc-200 mb-3">Source Code</h2>
+          <h2 className="text-lg font-semibold text-rf-cream mb-3">Source Code</h2>
           <div className="h-96">
             <CodeEditor
               language={submission.language}
@@ -118,9 +118,9 @@ export default function SubmissionDetailPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-3 border border-zinc-800 rounded-lg bg-zinc-900/50">
-      <p className="text-xs text-zinc-500">{label}</p>
-      <p className="text-sm font-medium text-zinc-200 mt-0.5">{value}</p>
+    <div className="p-3 border border-rf-border rounded-lg bg-rf-dark/50">
+      <p className="text-xs text-rf-muted">{label}</p>
+      <p className="text-sm font-medium text-rf-cream mt-0.5">{value}</p>
     </div>
   );
 }

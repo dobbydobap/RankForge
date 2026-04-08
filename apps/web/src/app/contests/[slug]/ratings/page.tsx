@@ -15,7 +15,7 @@ export default function ContestRatingsPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading...</div>
+          <div className="text-rf-gray">Loading...</div>
         </div>
       </>
     );
@@ -26,60 +26,60 @@ export default function ContestRatingsPage() {
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-zinc-100">Rating Changes</h1>
+          <h1 className="text-2xl font-bold text-rf-cream">Rating Changes</h1>
           <Link
             href={`/contests/${slug}`}
-            className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+            className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
           >
             &larr; {contest.title}
           </Link>
         </div>
 
         {!changes?.length ? (
-          <div className="text-center py-12 text-zinc-500">
+          <div className="text-center py-12 text-rf-muted">
             Ratings have not been calculated for this contest yet.
           </div>
         ) : (
-          <div className="border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="border border-rf-border rounded-xl overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50">
-                  <th className="text-center px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-14">#</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase">User</th>
-                  <th className="text-center px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-28">Old Rating</th>
-                  <th className="text-center px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-28">New Rating</th>
-                  <th className="text-center px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-24">Change</th>
+                <tr className="border-b border-rf-border bg-rf-dark/50">
+                  <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-14">#</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase">User</th>
+                  <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-28">Old Rating</th>
+                  <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-28">New Rating</th>
+                  <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-24">Change</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800">
+              <tbody className="divide-y divide-rf-border">
                 {changes.map((c: any) => (
-                  <tr key={c.userId} className="hover:bg-zinc-900/50 transition-colors">
-                    <td className="text-center px-4 py-3 text-sm font-bold text-zinc-300">
+                  <tr key={c.userId} className="hover:bg-rf-dark/50 transition-colors">
+                    <td className="text-center px-4 py-3 text-sm font-bold text-rf-sage">
                       {c.rank}
                     </td>
                     <td className="px-4 py-3">
                       <Link
                         href={`/users/${c.username}`}
-                        className="text-sm font-medium text-zinc-200 hover:text-emerald-400 transition-colors"
+                        className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
                       >
                         {c.displayName || c.username}
                       </Link>
-                      <span className="text-xs text-zinc-500 ml-1.5">@{c.username}</span>
+                      <span className="text-xs text-rf-muted ml-1.5">@{c.username}</span>
                     </td>
-                    <td className="text-center px-4 py-3 text-sm text-zinc-400">
+                    <td className="text-center px-4 py-3 text-sm text-rf-gray">
                       {c.oldRating}
                     </td>
-                    <td className="text-center px-4 py-3 text-sm font-medium text-zinc-200">
+                    <td className="text-center px-4 py-3 text-sm font-medium text-rf-cream">
                       {c.newRating}
                     </td>
                     <td className="text-center px-4 py-3">
                       <span
                         className={`text-sm font-bold ${
                           c.change > 0
-                            ? 'text-emerald-400'
+                            ? 'text-rf-sage'
                             : c.change < 0
                               ? 'text-red-400'
-                              : 'text-zinc-400'
+                              : 'text-rf-gray'
                         }`}
                       >
                         {c.change > 0 ? '+' : ''}{c.change}

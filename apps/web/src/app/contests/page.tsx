@@ -15,19 +15,19 @@ export default function ContestsPage() {
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-zinc-100">Contests</h1>
+          <h1 className="text-2xl font-bold text-rf-cream">Contests</h1>
           <Link
             href="/contests/create"
-            className="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover text-white rounded-lg transition-colors"
           >
             Create Contest
           </Link>
         </div>
 
         {isLoading ? (
-          <div className="text-center py-12 text-zinc-500">Loading contests...</div>
+          <div className="text-center py-12 text-rf-muted">Loading contests...</div>
         ) : !data?.contests.length ? (
-          <div className="text-center py-12 text-zinc-500">No contests yet.</div>
+          <div className="text-center py-12 text-rf-muted">No contests yet.</div>
         ) : (
           <>
             <div className="space-y-3">
@@ -35,17 +35,17 @@ export default function ContestsPage() {
                 <Link
                   key={contest.id}
                   href={`/contests/${contest.slug}`}
-                  className="block p-5 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-600 transition-colors"
+                  className="block p-5 rounded-xl border border-rf-border bg-rf-dark/50 hover:border-rf-gray transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                        <h2 className="text-lg font-semibold text-zinc-100">
+                        <h2 className="text-lg font-semibold text-rf-cream">
                           {contest.title}
                         </h2>
                         <ContestStatusBadge status={contest.status} />
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-zinc-400">
+                      <div className="flex items-center gap-4 text-sm text-rf-gray">
                         <span>
                           {new Date(contest.startTime).toLocaleDateString(undefined, {
                             month: 'short',
@@ -70,17 +70,17 @@ export default function ContestsPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1.5 text-sm border border-zinc-700 rounded-lg text-zinc-300 hover:border-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
-                <span className="text-sm text-zinc-400">
+                <span className="text-sm text-rf-gray">
                   Page {data.page} of {data.totalPages}
                 </span>
                 <button
                   onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                   disabled={page === data.totalPages}
-                  className="px-3 py-1.5 text-sm border border-zinc-700 rounded-lg text-zinc-300 hover:border-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-sage hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>

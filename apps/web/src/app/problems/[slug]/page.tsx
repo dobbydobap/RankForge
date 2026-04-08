@@ -129,36 +129,36 @@ export default function ProblemDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-zinc-950">
-        <div className="text-zinc-400">Loading problem...</div>
+      <div className="h-screen flex items-center justify-center bg-rf-black">
+        <div className="text-rf-gray">Loading problem...</div>
       </div>
     );
   }
 
   if (!problem) {
     return (
-      <div className="h-screen flex items-center justify-center bg-zinc-950">
-        <div className="text-zinc-400">Problem not found.</div>
+      <div className="h-screen flex items-center justify-center bg-rf-black">
+        <div className="text-rf-gray">Problem not found.</div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-zinc-950">
+    <div className="h-screen flex flex-col bg-rf-black">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 h-12 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm shrink-0">
+      <div className="flex items-center justify-between px-4 h-12 border-b border-rf-border bg-rf-black/80 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-4">
-          <Link href="/problems" className="text-sm text-zinc-400 hover:text-zinc-200">
+          <Link href="/problems" className="text-sm text-rf-gray hover:text-rf-cream">
             &larr; Problems
           </Link>
-          <span className="text-sm font-medium text-zinc-200">{problem.title}</span>
+          <span className="text-sm font-medium text-rf-cream">{problem.title}</span>
         </div>
         <div className="flex items-center gap-3">
           <LanguageSelector value={language} onChange={handleLanguageChange} />
           <button
             onClick={handleSubmit}
             disabled={submitMutation.isPending || !code.trim()}
-            className="px-4 py-1.5 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+            className="px-4 py-1.5 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
           >
             {submitMutation.isPending ? 'Submitting...' : 'Submit'}
           </button>
@@ -168,14 +168,14 @@ export default function ProblemDetailPage() {
       {/* Split pane */}
       <div className="flex-1 flex min-h-0">
         {/* Left: Problem statement / submissions */}
-        <div className="w-1/2 border-r border-zinc-800 flex flex-col min-h-0">
-          <div className="flex border-b border-zinc-800 shrink-0">
+        <div className="w-1/2 border-r border-rf-border flex flex-col min-h-0">
+          <div className="flex border-b border-rf-border shrink-0">
             <button
               onClick={() => setActiveTab('problem')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'problem'
-                  ? 'text-emerald-400 border-b-2 border-emerald-400'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'text-rf-sage border-b-2 border-rf-sage'
+                  : 'text-rf-gray hover:text-rf-cream'
               }`}
             >
               Problem
@@ -184,8 +184,8 @@ export default function ProblemDetailPage() {
               onClick={() => setActiveTab('submissions')}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'submissions'
-                  ? 'text-emerald-400 border-b-2 border-emerald-400'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'text-rf-sage border-b-2 border-rf-sage'
+                  : 'text-rf-gray hover:text-rf-cream'
               }`}
             >
               Submissions
@@ -198,18 +198,18 @@ export default function ProblemDetailPage() {
             ) : (
               <div className="space-y-2">
                 {!submissionsData?.submissions.length ? (
-                  <p className="text-sm text-zinc-500">No submissions yet.</p>
+                  <p className="text-sm text-rf-muted">No submissions yet.</p>
                 ) : (
                   submissionsData.submissions.map((sub: any) => (
                     <div
                       key={sub.id}
-                      className="flex items-center justify-between p-3 rounded-lg border border-zinc-800 bg-zinc-900/50"
+                      className="flex items-center justify-between p-3 rounded-lg border border-rf-border bg-rf-dark/50"
                     >
                       <div className="flex items-center gap-3">
                         <VerdictBadge verdict={sub.verdict} />
-                        <span className="text-xs text-zinc-500">{sub.language}</span>
+                        <span className="text-xs text-rf-muted">{sub.language}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-zinc-500">
+                      <div className="flex items-center gap-3 text-xs text-rf-muted">
                         {sub.timeUsed !== null && <span>{sub.timeUsed}ms</span>}
                         {sub.memoryUsed !== null && <span>{sub.memoryUsed}KB</span>}
                         <span>{new Date(sub.createdAt).toLocaleString()}</span>
@@ -230,18 +230,18 @@ export default function ProblemDetailPage() {
 
           {/* Submission result — shows live verdict via WebSocket */}
           {submitMutation.isSuccess && (
-            <div className="shrink-0 p-3 border-t border-zinc-800 bg-zinc-900/50">
+            <div className="shrink-0 p-3 border-t border-rf-border bg-rf-dark/50">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-zinc-400">Verdict:</span>
+                <span className="text-xs text-rf-gray">Verdict:</span>
                 <VerdictBadge verdict={liveVerdict || submitMutation.data?.verdict || 'PENDING'} />
                 {!liveVerdict && submitMutation.data?.verdict === 'PENDING' && (
-                  <span className="text-xs text-zinc-500 animate-pulse">Judging...</span>
+                  <span className="text-xs text-rf-muted animate-pulse">Judging...</span>
                 )}
               </div>
             </div>
           )}
           {submitMutation.isError && (
-            <div className="shrink-0 p-3 border-t border-zinc-800 bg-red-900/10">
+            <div className="shrink-0 p-3 border-t border-rf-border bg-red-900/10">
               <p className="text-xs text-red-400">
                 Submission failed: {(submitMutation.error as any)?.message || 'Unknown error'}
               </p>

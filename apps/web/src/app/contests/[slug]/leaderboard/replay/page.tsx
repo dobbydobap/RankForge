@@ -61,7 +61,7 @@ export default function ReplayPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">
+          <div className="text-rf-gray">
             {isLoading ? 'Loading replay data...' : 'Loading...'}
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function ReplayPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">No replay data available for this contest.</div>
+          <div className="text-rf-gray">No replay data available for this contest.</div>
         </div>
       </>
     );
@@ -86,18 +86,18 @@ export default function ReplayPage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-zinc-100">Contest Replay</h1>
+            <h1 className="text-2xl font-bold text-rf-cream">Contest Replay</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
               >
                 {contest.title}
               </Link>
-              <span className="text-zinc-600">|</span>
+              <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/temporal`}
-                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+                className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
               >
                 Temporal View
               </Link>
@@ -106,15 +106,15 @@ export default function ReplayPage() {
 
           {/* Speed controls */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-zinc-500">Speed:</span>
+            <span className="text-xs text-rf-muted">Speed:</span>
             {[0.5, 1, 2, 4].map((s) => (
               <button
                 key={s}
                 onClick={() => setSpeed(s)}
                 className={`px-2 py-1 text-xs rounded ${
                   speed === s
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                    ? 'bg-rf-accent text-rf-black'
+                    : 'bg-rf-border text-rf-gray hover:bg-rf-iron'
                 } transition-colors`}
               >
                 {s}x
@@ -124,7 +124,7 @@ export default function ReplayPage() {
         </div>
 
         {/* Timeline slider */}
-        <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50 mb-6">
+        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
           <TemporalSlider
             duration={replay.duration}
             value={currentFrame?.minute || 0}
@@ -135,8 +135,8 @@ export default function ReplayPage() {
         </div>
 
         {/* Rank Graph */}
-        <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50 mb-6">
-          <h2 className="text-sm font-semibold text-zinc-300 mb-3">
+        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+          <h2 className="text-sm font-semibold text-rf-sage mb-3">
             Rank Movement Over Time
           </h2>
           <RankGraph
@@ -148,22 +148,22 @@ export default function ReplayPage() {
 
         {/* Current standings at this frame */}
         {currentFrame && (
-          <div className="border border-zinc-800 rounded-xl overflow-hidden">
-            <div className="px-4 py-2 bg-zinc-900/50 border-b border-zinc-800">
-              <span className="text-xs text-zinc-500">
+          <div className="border border-rf-border rounded-xl overflow-hidden">
+            <div className="px-4 py-2 bg-rf-dark/50 border-b border-rf-border">
+              <span className="text-xs text-rf-muted">
                 Standings at minute {currentFrame.minute}
               </span>
             </div>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/30">
-                  <th className="text-center px-3 py-2 text-xs font-medium text-zinc-400 uppercase w-14">#</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-zinc-400 uppercase">User</th>
-                  <th className="text-center px-3 py-2 text-xs font-medium text-zinc-400 uppercase w-20">Score</th>
-                  <th className="text-center px-3 py-2 text-xs font-medium text-zinc-400 uppercase w-20">Penalty</th>
+                <tr className="border-b border-rf-border bg-rf-dark/30">
+                  <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-14">#</th>
+                  <th className="text-left px-3 py-2 text-xs font-medium text-rf-gray uppercase">User</th>
+                  <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-20">Score</th>
+                  <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-20">Penalty</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800">
+              <tbody className="divide-y divide-rf-border">
                 {currentFrame.standings
                   .filter((s: any) => s.score > 0)
                   .map((entry: any, idx: number) => {
@@ -179,30 +179,30 @@ export default function ReplayPage() {
                         key={entry.userId}
                         className={`transition-all duration-300 ${
                           rankChange > 0
-                            ? 'bg-emerald-900/10'
+                            ? 'bg-rf-dark/10'
                             : rankChange < 0
                               ? 'bg-red-900/10'
                               : ''
                         }`}
                       >
-                        <td className="text-center px-3 py-2.5 text-sm font-bold text-zinc-300">
+                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-sage">
                           <div className="flex items-center justify-center gap-1">
                             <span>{entry.rank}</span>
                             {rankChange > 0 && (
-                              <span className="text-xs text-emerald-400">+{rankChange}</span>
+                              <span className="text-xs text-rf-sage">+{rankChange}</span>
                             )}
                             {rankChange < 0 && (
                               <span className="text-xs text-red-400">{rankChange}</span>
                             )}
                           </div>
                         </td>
-                        <td className="px-3 py-2.5 text-sm text-zinc-200">
+                        <td className="px-3 py-2.5 text-sm text-rf-cream">
                           {entry.displayName || entry.username}
                         </td>
-                        <td className="text-center px-3 py-2.5 text-sm font-bold text-zinc-100">
+                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-cream">
                           {entry.score}
                         </td>
-                        <td className="text-center px-3 py-2.5 text-sm text-zinc-400">
+                        <td className="text-center px-3 py-2.5 text-sm text-rf-gray">
                           {entry.penalty}
                         </td>
                       </tr>

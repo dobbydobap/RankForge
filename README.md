@@ -1,11 +1,18 @@
 # RankForge
 
-A full-stack competitive programming platform with temporal leaderboards, real-time contests, and deep analytics — built as a portfolio project demonstrating system design, data structures, and modern web development.
+A full-stack competitive programming platform with temporal leaderboards, real-time contests, and deep analytics.
+
+## Live Demo
+
+- **Frontend**: [rank-forge-web.vercel.app](https://rank-forge-web.vercel.app)
+- **API**: [rankforge-717i.onrender.com](https://rankforge-717i.onrender.com)
+
+> Note: Backend is on Render free tier — first request may take ~30s to wake up.
 
 ## Highlights
 
-- **99 problems** across 4 difficulty tiers (Easy, Medium, Hard, Expert) with real test cases
-- **Temporal leaderboard** — scrub through time to see how rankings evolved during a contest, powered by segment trees
+- **95+ problems** across 4 difficulty tiers (Easy, Medium, Hard, Expert) with real test cases
+- **Temporal leaderboard** — scrub through time to see how rankings evolved, powered by segment trees
 - **Real-time updates** — live verdict delivery, leaderboard changes, and timer sync via WebSockets
 - **Contest replay mode** — watch a contest unfold like a movie with animated rank graphs
 - **Codeforces-style rating system** — Elo-based algorithm with per-contest rating changes
@@ -18,29 +25,29 @@ A full-stack competitive programming platform with temporal leaderboards, real-t
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Monaco Editor, Recharts |
-| Backend | NestJS, TypeScript, Prisma ORM, REST API, WebSockets (ws) |
-| Database | PostgreSQL |
-| Queue | Redis, BullMQ |
+| Frontend | Next.js 16, TypeScript, Tailwind CSS v4, shadcn/ui, Monaco Editor, Recharts |
+| Backend | NestJS 11, TypeScript, Prisma ORM, REST API, WebSockets (ws) |
+| Database | PostgreSQL (Neon) |
+| Queue | Redis (Upstash), BullMQ |
 | Auth | JWT (access + refresh tokens), bcrypt, Passport.js |
 | Monorepo | Turborepo, pnpm workspaces |
-| Deployment | Vercel (frontend), Render (backend), Neon (PostgreSQL), Upstash (Redis) |
+| Deployment | Vercel (frontend), Render (backend) |
 
 ## Architecture
 
 ```
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Next.js    │────▶│   NestJS     │────▶│  PostgreSQL   │
+│   Next.js    │────>│   NestJS     │────>│  PostgreSQL   │
 │   Frontend   │     │   API        │     │  (Prisma)     │
-│  (Vercel)    │◀────│  (Render)    │     │  (Neon)       │
+│  (Vercel)    │<────│  (Render)    │     │  (Neon)       │
 └──────────────┘  WS └──────┬───────┘     └──────────────┘
                             │
-                   ┌────────▼────────┐
+                   ┌────────┴────────┐
                    │  Redis + BullMQ │
                    │   (Upstash)     │
                    └────────┬────────┘
                             │
-                   ┌────────▼────────┐
+                   ┌────────┴────────┐
                    │  Judge Worker   │
                    │  (Background)   │
                    └─────────────────┘
@@ -68,7 +75,7 @@ rankforge/
 - **Auth** — Register, login, logout, JWT refresh, role-based access (User, Problem Setter, Organizer, Admin)
 - **Problems** — CRUD with Markdown statements, difficulty tags, sample/hidden test cases, Monaco code editor
 - **Submissions** — Multi-language support, background judging, per-test-case verdicts, submission history
-- **Contests** — Full lifecycle (Draft → Published → Registration → Live → Frozen → Ended → Results), ICPC-style scoring
+- **Contests** — Full lifecycle (Draft -> Published -> Registration -> Live -> Frozen -> Ended -> Results), ICPC-style scoring
 
 ### Differentiating Features
 - **Temporal Leaderboard** — Segment tree queries over contest timeline: standings at any minute T, score progressions, peak activity intervals
@@ -112,6 +119,20 @@ rankforge/
 | `/analytics` | Personal growth: topic radar, heatmap, rating graph |
 | `/admin` | Admin dashboard with system stats |
 
+## Design
+
+Custom dark theme with a warm sage/cream palette:
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Black | `#141413` | Page backgrounds |
+| Dark | `#272727` | Cards, panels |
+| Border | `#3a3a38` | Borders, dividers |
+| Iron | `#6A6A67` | Muted text, placeholders |
+| Gray | `#8B8A87` | Secondary text |
+| Sage | `#C1C1A9` | Accent text, links, buttons |
+| Cream | `#E3E2C3` | Primary text, headings |
+
 ## Getting Started
 
 ### Prerequisites
@@ -122,11 +143,9 @@ rankforge/
 ### Local Development
 
 ```bash
-# Clone the repo
 git clone https://github.com/dobbydobap/RankForge.git
 cd RankForge
 
-# Install dependencies
 pnpm install
 
 # Start PostgreSQL + Redis
@@ -135,57 +154,52 @@ docker compose up -d
 # Copy environment variables
 cp .env.example .env
 
-# Push database schema
+# Push database schema and seed
 pnpm db:push
-
-# Seed database (99 problems, 6 users, demo contest)
 pnpm db:seed
 
 # Start development servers
 pnpm dev
 ```
 
-Then open:
+Open:
 - **Frontend**: http://localhost:3000
 - **API**: http://localhost:4000
-- **API docs**: http://localhost:4000/api
 
 ### Seed Accounts
 
 | User | Email | Password | Role |
 |------|-------|----------|------|
 | admin | admin@rankforge.dev | Admin123 | Admin |
-| alice | alice@rankforge.dev | Password1 | User (Rating: 1650) |
-| bob | bob@rankforge.dev | Password1 | User (Rating: 1420) |
-| charlie | charlie@rankforge.dev | Password1 | User (Rating: 1850) |
-| diana | diana@rankforge.dev | Password1 | User (Rating: 1300) |
-| eve | eve@rankforge.dev | Password1 | User (Rating: 1550) |
+| alice | alice@rankforge.dev | Password1 | User (1650) |
+| bob | bob@rankforge.dev | Password1 | User (1420) |
+| charlie | charlie@rankforge.dev | Password1 | User (1850) |
+| diana | diana@rankforge.dev | Password1 | User (1300) |
+| eve | eve@rankforge.dev | Password1 | User (1550) |
 
 ## Deployment
 
-### Free Tier Stack
-- **Frontend**: Vercel (free)
-- **Backend**: Render (free)
-- **PostgreSQL**: Neon (free, 0.5 GB)
-- **Redis**: Upstash (free, 10K commands/day)
+Deployed on the free tier:
 
-See [Deployment Guide](#deployment-guide) below.
+| Service | Platform | Cost |
+|---------|----------|------|
+| Frontend | Vercel | Free |
+| Backend | Render | Free |
+| PostgreSQL | Neon | Free (0.5 GB) |
+| Redis | Upstash | Free (10K cmd/day) |
 
-### Deployment Guide
+### Deploy Your Own
 
-1. **Neon** — Create a project at [neon.tech](https://neon.tech), copy the connection string
-2. **Upstash** — Create a Redis database at [upstash.com](https://upstash.com), copy the `REDIS_URL`
-3. **Render** — Connect your GitHub repo, use `render.yaml` blueprint, set env vars:
-   - `DATABASE_URL` = Neon connection string
-   - `REDIS_URL` = Upstash Redis URL
-   - `CORS_ORIGIN` = Your Vercel URL (e.g., `https://rankforge.vercel.app`)
-4. **Vercel** — Import the repo, set root directory to `apps/web`, set env var:
-   - `NEXT_PUBLIC_API_URL` = Your Render URL + `/api`
-   - `NEXT_PUBLIC_WS_URL` = Your Render URL (replace `https` with `wss`)
-
-## Database Schema
-
-20 tables covering users, problems, contests, submissions, leaderboard snapshots, ratings, achievements, comments, and more. See [`apps/api/prisma/schema.prisma`](apps/api/prisma/schema.prisma) for the full schema.
+1. **Neon** — Create project at [neon.tech](https://neon.tech), copy connection string
+2. **Upstash** — Create Redis at [upstash.com](https://upstash.com), copy `REDIS_URL` (use `rediss://`)
+3. **Render** — Connect GitHub repo, set:
+   - Build: `chmod +x apps/api/render-build.sh && bash apps/api/render-build.sh`
+   - Start: `cd apps/api && node dist/main.js`
+   - Env: `DATABASE_URL`, `REDIS_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `CORS_ORIGIN`, `NODE_ENV=production`
+4. **Vercel** — Import repo, root directory `apps/web`, set:
+   - `NEXT_PUBLIC_API_URL` = Render URL + `/api`
+   - `NEXT_PUBLIC_WS_URL` = Render URL with `wss://`
+5. **Seed production DB**: `POST /api/seed?key=YOUR_JWT_ACCESS_SECRET`
 
 ## Key Data Structures
 
@@ -196,28 +210,26 @@ The `@rankforge/segment-tree` package provides O(log n) queries over the contest
 ```typescript
 const tree = new ContestSegmentTree(120); // 120-minute contest
 
-// Record score events
 tree.update(10, 100, true);  // +100 points at minute 10
 tree.update(30, 200, true);  // +200 points at minute 30
 
-// Query a time range
 const data = tree.query(5, 35);
-// → { totalScore: 300, submissionCount: 2, acceptedCount: 2, maxScoreGain: 200 }
+// { totalScore: 300, submissionCount: 2, acceptedCount: 2, maxScoreGain: 200 }
 ```
 
-This powers: leaderboard at any time T, score progression graphs, peak activity detection, and contest replay.
+Powers: leaderboard at any time T, score progression graphs, peak activity detection, and contest replay.
 
 ## Scripts
 
 ```bash
-pnpm dev              # Start all services in development
+pnpm dev              # Start all services
 pnpm build            # Build all packages
 pnpm test             # Run all tests
-pnpm db:push          # Push Prisma schema to database
-pnpm db:seed          # Seed database with sample data
-pnpm db:studio        # Open Prisma Studio (database GUI)
-pnpm dev:web          # Start only the frontend
-pnpm dev:api          # Start only the backend
+pnpm db:push          # Push Prisma schema
+pnpm db:seed          # Seed database (95+ problems, 6 users, demo contest)
+pnpm db:studio        # Open Prisma Studio
+pnpm dev:web          # Frontend only
+pnpm dev:api          # Backend only
 ```
 
 ## Testing

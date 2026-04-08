@@ -29,7 +29,7 @@ export default function LeaderboardPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading leaderboard...</div>
+          <div className="text-rf-gray">Loading leaderboard...</div>
         </div>
       </>
     );
@@ -45,7 +45,7 @@ export default function LeaderboardPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-zinc-100">Leaderboard</h1>
+              <h1 className="text-2xl font-bold text-rf-cream">Leaderboard</h1>
               {leaderboard?.isFrozen && (
                 <span className="px-2 py-0.5 text-xs font-medium bg-yellow-900/50 text-yellow-400 border border-yellow-800 rounded">
                   Frozen
@@ -54,7 +54,7 @@ export default function LeaderboardPage() {
             </div>
             <Link
               href={`/contests/${slug}`}
-              className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+              className="text-sm text-rf-gray hover:text-rf-sage transition-colors"
             >
               &larr; Back to {contest.title}
             </Link>
@@ -67,11 +67,11 @@ export default function LeaderboardPage() {
             {stats.map((s: any) => (
               <div
                 key={s.label}
-                className="flex-shrink-0 px-4 py-3 border border-zinc-800 rounded-lg bg-zinc-900/50 min-w-[140px]"
+                className="flex-shrink-0 px-4 py-3 border border-rf-border rounded-lg bg-rf-dark/50 min-w-[140px]"
               >
-                <div className="text-sm font-mono font-bold text-emerald-400">{s.label}</div>
-                <div className="text-xs text-zinc-400 mt-0.5 truncate">{s.title}</div>
-                <div className="flex items-center gap-2 mt-2 text-xs text-zinc-500">
+                <div className="text-sm font-mono font-bold text-rf-sage">{s.label}</div>
+                <div className="text-xs text-rf-gray mt-0.5 truncate">{s.title}</div>
+                <div className="flex items-center gap-2 mt-2 text-xs text-rf-muted">
                   <span>{s.solvedCount}/{s.attemptedCount}</span>
                   <span>{s.acceptanceRate}%</span>
                 </div>
@@ -87,45 +87,45 @@ export default function LeaderboardPage() {
 
         {/* Standings Table */}
         {entries.length === 0 ? (
-          <div className="text-center py-12 text-zinc-500">No standings yet.</div>
+          <div className="text-center py-12 text-rf-muted">No standings yet.</div>
         ) : (
-          <div className="border border-zinc-800 rounded-xl overflow-x-auto">
+          <div className="border border-rf-border rounded-xl overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/50">
-                  <th className="text-center px-3 py-3 text-xs font-medium text-zinc-400 uppercase w-14">
+                <tr className="border-b border-rf-border bg-rf-dark/50">
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-14">
                     #
                   </th>
-                  <th className="text-left px-3 py-3 text-xs font-medium text-zinc-400 uppercase">
+                  <th className="text-left px-3 py-3 text-xs font-medium text-rf-gray uppercase">
                     User
                   </th>
-                  <th className="text-center px-3 py-3 text-xs font-medium text-zinc-400 uppercase w-20">
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">
                     Score
                   </th>
-                  <th className="text-center px-3 py-3 text-xs font-medium text-zinc-400 uppercase w-20">
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">
                     Penalty
                   </th>
                   {problemLabels.map((label: string) => (
                     <th
                       key={label}
-                      className="text-center px-3 py-3 text-xs font-medium text-zinc-400 uppercase w-20"
+                      className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20"
                     >
                       {label}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800">
+              <tbody className="divide-y divide-rf-border">
                 {entries.map((entry: any) => (
-                  <tr key={entry.userId} className="hover:bg-zinc-900/50 transition-colors">
-                    <td className="text-center px-3 py-3 text-sm font-bold text-zinc-300">
+                  <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-sage">
                       {entry.rank <= 3 ? (
                         <span
                           className={
                             entry.rank === 1
                               ? 'text-yellow-400'
                               : entry.rank === 2
-                                ? 'text-zinc-300'
+                                ? 'text-rf-sage'
                                 : 'text-orange-400'
                           }
                         >
@@ -138,23 +138,23 @@ export default function LeaderboardPage() {
                     <td className="px-3 py-3">
                       <Link
                         href={`/users/${entry.username}`}
-                        className="text-sm font-medium text-zinc-200 hover:text-emerald-400 transition-colors"
+                        className="text-sm font-medium text-rf-cream hover:text-rf-sage transition-colors"
                       >
                         {entry.displayName || entry.username}
                       </Link>
-                      <span className="text-xs text-zinc-500 ml-1.5">@{entry.username}</span>
+                      <span className="text-xs text-rf-muted ml-1.5">@{entry.username}</span>
                     </td>
-                    <td className="text-center px-3 py-3 text-sm font-bold text-zinc-100">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-cream">
                       {entry.totalScore}
                     </td>
-                    <td className="text-center px-3 py-3 text-sm text-zinc-400">
+                    <td className="text-center px-3 py-3 text-sm text-rf-gray">
                       {entry.penalty}
                     </td>
                     {problemLabels.map((label: string) => {
                       const pr = entry.problemResults.find((r: any) => r.label === label);
                       if (!pr || pr.attempts === 0) {
                         return (
-                          <td key={label} className="text-center px-3 py-3 text-sm text-zinc-600">
+                          <td key={label} className="text-center px-3 py-3 text-sm text-rf-iron">
                             —
                           </td>
                         );
@@ -168,7 +168,7 @@ export default function LeaderboardPage() {
                               isAC
                                 ? pr.isFirstBlood
                                   ? 'bg-yellow-900/30 text-yellow-400'
-                                  : 'bg-emerald-900/30 text-emerald-400'
+                                  : 'bg-rf-dark/30 text-rf-sage'
                                 : 'bg-red-900/30 text-red-400'
                             }`}
                           >

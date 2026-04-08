@@ -32,7 +32,7 @@ export default function GrowthAnalyticsPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading analytics...</div>
+          <div className="text-rf-gray">Loading analytics...</div>
         </div>
       </>
     );
@@ -58,7 +58,7 @@ export default function GrowthAnalyticsPage() {
     <>
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-zinc-100 mb-6">Growth Analytics</h1>
+        <h1 className="text-2xl font-bold text-rf-cream mb-6">Growth Analytics</h1>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -71,23 +71,23 @@ export default function GrowthAnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Rating History */}
           {growth.ratingHistory.length > 0 && (
-            <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-              <h2 className="text-sm font-semibold text-zinc-300 mb-3">Rating Over Time</h2>
+            <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+              <h2 className="text-sm font-semibold text-rf-sage mb-3">Rating Over Time</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={growth.ratingHistory}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#3a3a38" />
                     <XAxis
                       dataKey="date"
-                      stroke="#71717a"
+                      stroke="#6A6A67"
                       fontSize={10}
                       tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     />
-                    <YAxis stroke="#71717a" fontSize={10} domain={['auto', 'auto']} />
+                    <YAxis stroke="#6A6A67" fontSize={10} domain={['auto', 'auto']} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '8px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: "#1c1c1b", border: "1px solid #3a3a38", borderRadius: '8px', fontSize: '12px' }}
                     />
-                    <Line type="monotone" dataKey="newRating" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
+                    <Line type="monotone" dataKey="newRating" stroke="#C1C1A9" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -96,14 +96,14 @@ export default function GrowthAnalyticsPage() {
 
           {/* Topic Mastery Radar */}
           {radarData.length > 0 && (
-            <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-              <h2 className="text-sm font-semibold text-zinc-300 mb-3">Topic Mastery</h2>
+            <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+              <h2 className="text-sm font-semibold text-rf-sage mb-3">Topic Mastery</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#27272a" />
-                    <PolarAngleAxis dataKey="topic" stroke="#71717a" fontSize={10} />
-                    <Radar dataKey="count" stroke="#10b981" fill="#10b981" fillOpacity={0.2} />
+                    <PolarGrid stroke="#3a3a38" />
+                    <PolarAngleAxis dataKey="topic" stroke="#6A6A67" fontSize={10} />
+                    <Radar dataKey="count" stroke="#C1C1A9" fill="#C1C1A9" fillOpacity={0.2} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
@@ -112,8 +112,8 @@ export default function GrowthAnalyticsPage() {
         </div>
 
         {/* Activity Heatmap (simple version) */}
-        <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50 mb-6">
-          <h2 className="text-sm font-semibold text-zinc-300 mb-3">
+        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+          <h2 className="text-sm font-semibold text-rf-sage mb-3">
             Solve Activity (Last 30 Days)
           </h2>
           <div className="flex gap-1 flex-wrap">
@@ -123,43 +123,43 @@ export default function GrowthAnalyticsPage() {
                 title={`${d.date}: ${d.count} solved`}
                 className={`w-6 h-6 rounded-sm ${
                   d.count === 0
-                    ? 'bg-zinc-800'
+                    ? 'bg-rf-border'
                     : d.count <= 2
-                      ? 'bg-emerald-900'
+                      ? 'bg-rf-dark'
                       : d.count <= 5
-                        ? 'bg-emerald-700'
-                        : 'bg-emerald-500'
+                        ? 'bg-rf-iron'
+                        : 'bg-rf-accent-hover'
                 }`}
               />
             ))}
           </div>
-          <div className="flex items-center gap-2 mt-2 text-xs text-zinc-500">
+          <div className="flex items-center gap-2 mt-2 text-xs text-rf-muted">
             <span>Less</span>
-            <div className="w-3 h-3 rounded-sm bg-zinc-800" />
-            <div className="w-3 h-3 rounded-sm bg-emerald-900" />
-            <div className="w-3 h-3 rounded-sm bg-emerald-700" />
-            <div className="w-3 h-3 rounded-sm bg-emerald-500" />
+            <div className="w-3 h-3 rounded-sm bg-rf-border" />
+            <div className="w-3 h-3 rounded-sm bg-rf-dark" />
+            <div className="w-3 h-3 rounded-sm bg-rf-iron" />
+            <div className="w-3 h-3 rounded-sm bg-rf-accent-hover" />
             <span>More</span>
           </div>
         </div>
 
         {/* Top topics table */}
         {growth.topicMastery.length > 0 && (
-          <div className="p-4 border border-zinc-800 rounded-xl bg-zinc-900/50">
-            <h2 className="text-sm font-semibold text-zinc-300 mb-3">Strongest Topics</h2>
+          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+            <h2 className="text-sm font-semibold text-rf-sage mb-3">Strongest Topics</h2>
             <div className="space-y-2">
               {growth.topicMastery.map((t: any) => (
                 <div key={t.topic} className="flex items-center gap-3">
-                  <span className="text-sm text-zinc-300 w-32">{t.topic}</span>
-                  <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
+                  <span className="text-sm text-rf-sage w-32">{t.topic}</span>
+                  <div className="flex-1 h-2 bg-rf-border rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-emerald-500 rounded-full"
+                      className="h-full bg-rf-accent-hover rounded-full"
                       style={{
                         width: `${Math.min(100, (t.count / (growth.topicMastery[0]?.count || 1)) * 100)}%`,
                       }}
                     />
                   </div>
-                  <span className="text-xs text-zinc-500 w-8 text-right">{t.count}</span>
+                  <span className="text-xs text-rf-muted w-8 text-right">{t.count}</span>
                 </div>
               ))}
             </div>
@@ -172,9 +172,9 @@ export default function GrowthAnalyticsPage() {
 
 function StatCard({ title, value, accent }: { title: string; value: number; accent?: boolean }) {
   return (
-    <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50">
-      <p className="text-xs text-zinc-500">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-emerald-400' : 'text-zinc-100'}`}>{value}</p>
+    <div className="p-4 rounded-xl border border-rf-border bg-rf-dark/50">
+      <p className="text-xs text-rf-muted">{title}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-sage' : 'text-rf-cream'}`}>{value}</p>
     </div>
   );
 }

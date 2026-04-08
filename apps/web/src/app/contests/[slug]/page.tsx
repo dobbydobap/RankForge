@@ -30,7 +30,7 @@ export default function ContestDetailPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Loading contest...</div>
+          <div className="text-rf-gray">Loading contest...</div>
         </div>
       </>
     );
@@ -41,7 +41,7 @@ export default function ContestDetailPage() {
       <>
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-400">Contest not found.</div>
+          <div className="text-rf-gray">Contest not found.</div>
         </div>
       </>
     );
@@ -59,13 +59,13 @@ export default function ContestDetailPage() {
         <div className="flex items-start justify-between mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-zinc-100">{contest.title}</h1>
+              <h1 className="text-2xl font-bold text-rf-cream">{contest.title}</h1>
               <ContestStatusBadge status={contest.status} />
             </div>
             {contest.description && (
-              <p className="text-sm text-zinc-400 mt-1 max-w-2xl">{contest.description}</p>
+              <p className="text-sm text-rf-gray mt-1 max-w-2xl">{contest.description}</p>
             )}
-            <div className="flex items-center gap-4 mt-3 text-sm text-zinc-400">
+            <div className="flex items-center gap-4 mt-3 text-sm text-rf-gray">
               <span>
                 {new Date(contest.startTime).toLocaleDateString(undefined, {
                   month: 'long',
@@ -91,13 +91,13 @@ export default function ContestDetailPage() {
               <button
                 onClick={handleRegister}
                 disabled={registerMutation.isPending}
-                className="mt-3 px-5 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-lg transition-colors"
+                className="mt-3 px-5 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 text-white rounded-lg transition-colors"
               >
                 {registerMutation.isPending ? 'Registering...' : 'Register'}
               </button>
             )}
             {contest.isRegistered && (
-              <div className="mt-3 text-sm text-emerald-400">Registered</div>
+              <div className="mt-3 text-sm text-rf-sage">Registered</div>
             )}
           </div>
         </div>
@@ -106,11 +106,11 @@ export default function ContestDetailPage() {
           {/* Problems */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-zinc-200">Problems</h2>
+              <h2 className="text-lg font-semibold text-rf-cream">Problems</h2>
               {(isLive || isEnded) && (
                 <Link
                   href={`/contests/${slug}/leaderboard`}
-                  className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
+                  className="text-sm text-rf-sage hover:text-rf-cream transition-colors"
                 >
                   View Leaderboard &rarr;
                 </Link>
@@ -118,50 +118,50 @@ export default function ContestDetailPage() {
             </div>
 
             {!showProblems ? (
-              <div className="p-6 border border-zinc-800 rounded-xl bg-zinc-900/50 text-center text-sm text-zinc-500">
+              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-muted">
                 Problems will be visible when the contest starts.
               </div>
             ) : contest.problems.length === 0 ? (
-              <div className="p-6 border border-zinc-800 rounded-xl bg-zinc-900/50 text-center text-sm text-zinc-500">
+              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-muted">
                 No problems added yet.
               </div>
             ) : (
-              <div className="border border-zinc-800 rounded-xl overflow-hidden">
+              <div className="border border-rf-border rounded-xl overflow-hidden">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-zinc-800 bg-zinc-900/50">
-                      <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-16">
+                    <tr className="border-b border-rf-border bg-rf-dark/50">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase w-16">
                         #
                       </th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400 uppercase">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase">
                         Title
                       </th>
-                      <th className="text-right px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-24">
+                      <th className="text-right px-4 py-3 text-xs font-medium text-rf-gray uppercase w-24">
                         Points
                       </th>
-                      <th className="text-right px-4 py-3 text-xs font-medium text-zinc-400 uppercase w-24">
+                      <th className="text-right px-4 py-3 text-xs font-medium text-rf-gray uppercase w-24">
                         Solved
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800">
+                  <tbody className="divide-y divide-rf-border">
                     {contest.problems.map((p: any) => (
-                      <tr key={p.label} className="hover:bg-zinc-900/50 transition-colors">
-                        <td className="px-4 py-3 text-sm font-mono font-bold text-emerald-400">
+                      <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
+                        <td className="px-4 py-3 text-sm font-mono font-bold text-rf-sage">
                           {p.label}
                         </td>
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${p.slug}`}
-                            className="text-sm text-zinc-200 hover:text-emerald-400 transition-colors"
+                            className="text-sm text-rf-cream hover:text-rf-sage transition-colors"
                           >
                             {p.title}
                           </Link>
                         </td>
-                        <td className="px-4 py-3 text-right text-sm text-zinc-400">
+                        <td className="px-4 py-3 text-right text-sm text-rf-gray">
                           {p.points}
                         </td>
-                        <td className="px-4 py-3 text-right text-sm text-zinc-400">
+                        <td className="px-4 py-3 text-right text-sm text-rf-gray">
                           {p.solvedCount}
                         </td>
                       </tr>
@@ -175,16 +175,16 @@ export default function ContestDetailPage() {
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Announcements */}
-            <div className="border border-zinc-800 rounded-xl bg-zinc-900/50 p-4">
-              <h3 className="text-sm font-semibold text-zinc-200 mb-3">Announcements</h3>
+            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+              <h3 className="text-sm font-semibold text-rf-cream mb-3">Announcements</h3>
               {contest.announcements.length === 0 ? (
-                <p className="text-xs text-zinc-500">No announcements yet.</p>
+                <p className="text-xs text-rf-muted">No announcements yet.</p>
               ) : (
                 <div className="space-y-2">
                   {contest.announcements.map((a: any) => (
-                    <div key={a.id} className="p-2 bg-zinc-800/50 rounded-lg">
-                      <p className="text-sm text-zinc-300">{a.content}</p>
-                      <p className="text-xs text-zinc-500 mt-1">
+                    <div key={a.id} className="p-2 bg-rf-border/50 rounded-lg">
+                      <p className="text-sm text-rf-sage">{a.content}</p>
+                      <p className="text-xs text-rf-muted mt-1">
                         {new Date(a.createdAt).toLocaleTimeString()}
                       </p>
                     </div>
@@ -194,26 +194,26 @@ export default function ContestDetailPage() {
             </div>
 
             {/* Contest Info */}
-            <div className="border border-zinc-800 rounded-xl bg-zinc-900/50 p-4">
-              <h3 className="text-sm font-semibold text-zinc-200 mb-3">Contest Rules</h3>
-              <div className="space-y-2 text-xs text-zinc-400">
+            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+              <h3 className="text-sm font-semibold text-rf-cream mb-3">Contest Rules</h3>
+              <div className="space-y-2 text-xs text-rf-gray">
                 <div className="flex justify-between">
                   <span>Penalty per wrong submission</span>
-                  <span className="text-zinc-300">{contest.penaltyTime} min</span>
+                  <span className="text-rf-sage">{contest.penaltyTime} min</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Duration</span>
-                  <span className="text-zinc-300">{contest.duration} min</span>
+                  <span className="text-rf-sage">{contest.duration} min</span>
                 </div>
                 {contest.freezeTime && (
                   <div className="flex justify-between">
                     <span>Leaderboard freeze</span>
-                    <span className="text-zinc-300">Last {contest.freezeTime} min</span>
+                    <span className="text-rf-sage">Last {contest.freezeTime} min</span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span>Visibility</span>
-                  <span className="text-zinc-300">{contest.isPublic ? 'Public' : 'Private'}</span>
+                  <span className="text-rf-sage">{contest.isPublic ? 'Public' : 'Private'}</span>
                 </div>
               </div>
             </div>

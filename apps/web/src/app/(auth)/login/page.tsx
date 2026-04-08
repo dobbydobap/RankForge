@@ -32,16 +32,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-rf-black px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold text-emerald-400">
+          <Link href="/" className="text-2xl font-bold text-rf-sage">
             RankForge
           </Link>
-          <h1 className="mt-4 text-xl font-semibold text-zinc-100">
+          <h1 className="mt-4 text-xl font-semibold text-rf-cream">
             Welcome back
           </h1>
-          <p className="mt-1 text-sm text-zinc-400">
+          <p className="mt-1 text-sm text-rf-gray">
             Sign in to your account
           </p>
         </div>
@@ -54,14 +54,14 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label htmlFor="emailOrUsername" className="block text-sm font-medium text-zinc-300 mb-1">
+            <label htmlFor="emailOrUsername" className="block text-sm font-medium text-rf-sage mb-1">
               Email or Username
             </label>
             <input
               id="emailOrUsername"
               type="text"
               {...register('emailOrUsername')}
-              className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-cream placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
               placeholder="you@example.com"
             />
             {errors.emailOrUsername && (
@@ -70,14 +70,14 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-rf-sage mb-1">
               Password
             </label>
             <input
               id="password"
               type="password"
               {...register('password')}
-              className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-cream placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
               placeholder="Enter your password"
             />
             {errors.password && (
@@ -88,15 +88,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+            className="w-full py-2.5 px-4 bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
           >
             {isSubmitting ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
+        <p className="mt-6 text-center text-sm text-rf-gray">
           Don&apos;t have an account?{' '}
-          <Link href="/register" className="text-emerald-400 hover:text-emerald-300">
+          <Link href="/register" className="text-rf-sage hover:text-rf-cream">
             Register
           </Link>
         </p>

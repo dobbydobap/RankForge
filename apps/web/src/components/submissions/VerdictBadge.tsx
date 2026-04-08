@@ -8,13 +8,13 @@ interface VerdictBadgeProps {
 }
 
 const VERDICT_COLORS: Record<string, string> = {
-  ACCEPTED: 'bg-emerald-900/50 text-emerald-400 border-emerald-800',
+  ACCEPTED: 'bg-rf-dark/80 text-rf-sage border-rf-iron',
   WRONG_ANSWER: 'bg-red-900/50 text-red-400 border-red-800',
   TIME_LIMIT_EXCEEDED: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
   MEMORY_LIMIT_EXCEEDED: 'bg-orange-900/50 text-orange-400 border-orange-800',
   RUNTIME_ERROR: 'bg-purple-900/50 text-purple-400 border-purple-800',
   COMPILATION_ERROR: 'bg-pink-900/50 text-pink-400 border-pink-800',
-  PENDING: 'bg-zinc-800/50 text-zinc-400 border-zinc-700',
+  PENDING: 'bg-rf-border/50 text-rf-gray border-rf-iron',
   JUDGING: 'bg-blue-900/50 text-blue-400 border-blue-800',
 };
 
