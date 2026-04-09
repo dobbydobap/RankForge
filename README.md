@@ -167,16 +167,20 @@ Open:
 - **Frontend**: http://localhost:3000
 - **API**: http://localhost:4000
 
-### Seed Accounts
+### Demo Accounts
 
-| User | Email | Password | Role |
-|------|-------|----------|------|
-| admin | admin@rankforge.dev | Admin123 | Admin |
-| alice | alice@rankforge.dev | Password1 | User (1650) |
-| bob | bob@rankforge.dev | Password1 | User (1420) |
-| charlie | charlie@rankforge.dev | Password1 | User (1850) |
-| diana | diana@rankforge.dev | Password1 | User (1300) |
-| eve | eve@rankforge.dev | Password1 | User (1550) |
+These accounts are available after running the seed (`pnpm db:seed` locally, or `POST /api/seed?key=...&force=true` in production):
+
+| User | Email | Password | Role | Rating |
+|------|-------|----------|------|--------|
+| admin | admin@rankforge.dev | Admin123 | Admin | 2100 |
+| alice | alice@rankforge.dev | Password1 | User | 1650 |
+| bob | bob@rankforge.dev | Password1 | User | 1420 |
+| charlie | charlie@rankforge.dev | Password1 | User | 1850 |
+| diana | diana@rankforge.dev | Password1 | User | 1300 |
+| eve | eve@rankforge.dev | Password1 | User | 1550 |
+
+> **Note:** On the live demo, if login fails with "Invalid credentials", the database may not be seeded yet. You can always register a new account to try the platform.
 
 ## Deployment
 
