@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 
 const VERDICT_COLORS: Record<string, string> = {
-  ACCEPTED: '#C1C1A9', WRONG_ANSWER: '#ef4444', TIME_LIMIT_EXCEEDED: '#f59e0b',
+  ACCEPTED: '#B0B0B0', WRONG_ANSWER: '#ef4444', TIME_LIMIT_EXCEEDED: '#f59e0b',
   RUNTIME_ERROR: '#8b5cf6', COMPILATION_ERROR: '#ec4899',
   PENDING: '#71717a', JUDGING: '#3b82f6', MEMORY_LIMIT_EXCEEDED: '#f97316',
 };
@@ -62,10 +62,10 @@ export default function AdminPage() {
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={stats.verdictBreakdown}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
-                      <XAxis dataKey="verdict" stroke="#555555" fontSize={9} angle={-30} textAnchor="end" height={60} />
-                      <YAxis stroke="#555555" fontSize={10} />
-                      <Tooltip contentStyle={{ backgroundColor: "#111111", border: "1px solid #222222", borderRadius: '8px', fontSize: '12px' }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
+                      <XAxis dataKey="verdict" stroke="#666666" fontSize={9} angle={-30} textAnchor="end" height={60} />
+                      <YAxis stroke="#666666" fontSize={10} />
+                      <Tooltip contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #444444", borderRadius: '8px', fontSize: '12px' }} />
                       <Bar dataKey="count">
                         {stats.verdictBreakdown.map((entry: any, idx: number) => (
                           <Cell key={idx} fill={VERDICT_COLORS[entry.verdict] || "#6A6A67"} />

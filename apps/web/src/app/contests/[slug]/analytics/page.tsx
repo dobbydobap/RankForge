@@ -135,18 +135,18 @@ export default function ContestAnalyticsPage() {
               <BarChart
                 data={myAnalytics.problemBreakdown.filter((p: any) => p.solveTime !== null)}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
-                <XAxis dataKey="label" stroke="#555555" fontSize={12} />
-                <YAxis stroke="#555555" fontSize={10} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
+                <XAxis dataKey="label" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={10} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#111111",
-                    border: "1px solid #222222",
+                    backgroundColor: "#1a1a1a",
+                    border: "1px solid #444444",
                     borderRadius: '8px',
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="solveTime" fill="#d946ef" name="Your Time (min)" />
+                <Bar dataKey="solveTime" fill="#E0E0E0" name="Your Time (min)" />
                 <Bar dataKey="avgSolveTime" fill="#3f3f46" name="Avg Time (min)" />
               </BarChart>
             </ResponsiveContainer>

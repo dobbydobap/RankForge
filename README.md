@@ -121,18 +121,18 @@ rankforge/
 
 ## Design
 
-Dark theme with pink/magenta accents:
+Charcoal dark theme with balanced grays:
 
 | Color | Hex | Usage |
 |-------|-----|-------|
-| Black | `#050505` | Page backgrounds |
-| Dark | `#111111` | Panels |
-| Card | `#161616` | Cards |
-| Border | `#222222` | Borders, dividers |
-| Gray | `#999999` | Secondary text |
-| Pink | `#ec4899` | Accent text, links |
-| Fuchsia | `#d946ef` | Buttons, highlights |
-| White | `#f0f0f0` | Primary text, headings |
+| Background | `#121212` | Page backgrounds |
+| Dark | `#1a1a1a` | Panels |
+| Card | `#1e1e1e` | Cards |
+| Border | `#444444` | Borders, dividers |
+| Iron | `#666666` | Muted elements |
+| Gray | `#B0B0B0` | Secondary text |
+| Accent | `#888888` | Soft gray accents |
+| Light | `#E0E0E0` | Primary text, headings |
 
 ## Getting Started
 

@@ -23,7 +23,7 @@ interface RankGraphProps {
 }
 
 const COLORS = [
-  '#C1C1A9', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6',
+  '#B0B0B0', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6',
   '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1',
 ];
 
@@ -46,23 +46,23 @@ export function RankGraph({ frames, users, highlightUsers, mode }: RankGraphProp
     <div className="w-full h-80">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
           <XAxis
             dataKey="minute"
-            stroke="#555555"
+            stroke="#666666"
             fontSize={11}
             tickFormatter={(v) => `${v}m`}
           />
           <YAxis
-            stroke="#555555"
+            stroke="#666666"
             fontSize={11}
             reversed={mode === 'rank'}
             domain={mode === 'rank' ? [1, 'auto'] : [0, 'auto']}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#111111",
-              border: "1px solid #222222",
+              backgroundColor: "#1a1a1a",
+              border: "1px solid #444444",
               borderRadius: '8px',
               fontSize: '12px',
             }}

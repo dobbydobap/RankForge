@@ -76,18 +76,18 @@ export default function GrowthAnalyticsPage() {
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={growth.ratingHistory}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
                     <XAxis
                       dataKey="date"
-                      stroke="#555555"
+                      stroke="#666666"
                       fontSize={10}
                       tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     />
-                    <YAxis stroke="#555555" fontSize={10} domain={['auto', 'auto']} />
+                    <YAxis stroke="#666666" fontSize={10} domain={['auto', 'auto']} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: "#111111", border: "1px solid #222222", borderRadius: '8px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #444444", borderRadius: '8px', fontSize: '12px' }}
                     />
-                    <Line type="monotone" dataKey="newRating" stroke="#d946ef" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
+                    <Line type="monotone" dataKey="newRating" stroke="#E0E0E0" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -101,9 +101,9 @@ export default function GrowthAnalyticsPage() {
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#222222" />
-                    <PolarAngleAxis dataKey="topic" stroke="#555555" fontSize={10} />
-                    <Radar dataKey="count" stroke="#d946ef" fill="#d946ef" fillOpacity={0.2} />
+                    <PolarGrid stroke="#444444" />
+                    <PolarAngleAxis dataKey="topic" stroke="#666666" fontSize={10} />
+                    <Radar dataKey="count" stroke="#E0E0E0" fill="#E0E0E0" fillOpacity={0.2} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>

@@ -13,7 +13,7 @@ import { LANGUAGE_DISPLAY } from '@rankforge/shared';
 type Tab = 'recent' | 'contests' | 'skills';
 
 const DIFF_COLORS: Record<string, string> = {
-  EASY: '#C1C1A9',
+  EASY: '#B0B0B0',
   MEDIUM: '#f59e0b',
   HARD: '#f97316',
   EXPERT: '#ef4444',
@@ -198,9 +198,9 @@ export default function UserProfilePage() {
                 {/* Donut */}
                 <div className="relative w-32 h-32 shrink-0">
                   <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#222222" strokeWidth="3" />
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#444444" strokeWidth="3" />
                     <circle
-                      cx="18" cy="18" r="15.9" fill="none" stroke="#d946ef"
+                      cx="18" cy="18" r="15.9" fill="none" stroke="#E0E0E0"
                       strokeWidth="3" strokeDasharray={`${solvePercent} ${100 - solvePercent}`}
                       strokeLinecap="round"
                     />
@@ -283,17 +283,17 @@ export default function UserProfilePage() {
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={ratings}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#222222" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
                       <XAxis
-                        dataKey="date" stroke="#555555" fontSize={10}
+                        dataKey="date" stroke="#666666" fontSize={10}
                         tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       />
-                      <YAxis stroke="#555555" fontSize={10} domain={['auto', 'auto']} />
+                      <YAxis stroke="#666666" fontSize={10} domain={['auto', 'auto']} />
                       <Tooltip
-                        contentStyle={{ backgroundColor: "#111111", border: "1px solid #222222", borderRadius: '8px', fontSize: '12px' }}
+                        contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #444444", borderRadius: '8px', fontSize: '12px' }}
                         labelFormatter={(v) => new Date(v).toLocaleDateString()}
                       />
-                      <Line type="monotone" dataKey="newRating" stroke="#d946ef" strokeWidth={2} dot={{ r: 3, fill: '#C1C1A9' }} name="Rating" />
+                      <Line type="monotone" dataKey="newRating" stroke="#E0E0E0" strokeWidth={2} dot={{ r: 3, fill: '#B0B0B0' }} name="Rating" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
