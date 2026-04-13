@@ -52,12 +52,35 @@ export default function LeaderboardPage() {
                 </span>
               )}
             </div>
-            <Link
-              href={`/contests/${slug}`}
-              className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
-            >
-              &larr; Back to {contest.title}
-            </Link>
+            <div className="flex items-center gap-3 mt-1">
+              <Link
+                href={`/contests/${slug}`}
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+              >
+                &larr; {contest.title}
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/leaderboard/temporal`}
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+              >
+                Temporal View
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/leaderboard/replay`}
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+              >
+                Replay
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/ratings`}
+                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+              >
+                Ratings
+              </Link>
+            </div>
           </div>
         </div>
 

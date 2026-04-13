@@ -135,67 +135,65 @@ export class SubmissionsService {
     return this.findAll({ userId, page, limit });
   }
 
-  /** Run code against custom input without creating a submission */
+  /** Run code against custom input without creating a submission (uses Piston API) */
   async customRun(language: string, sourceCode: string, input: string) {
-    const { execSync } = await import('child_process');
-    const { writeFileSync, mkdirSync, rmSync } = await import('fs');
-    const { join } = await import('path');
-    const { tmpdir } = await import('os');
-    const { randomUUID } = await import('crypto');
-
-    const CONFIGS: Record<string, { sourceFile: string; compile: string | null; run: string }> = {
-      CPP: { sourceFile: 'solution.cpp', compile: 'g++ -O2 -std=c++17 -o solution solution.cpp', run: './solution' },
-      PYTHON: { sourceFile: 'solution.py', compile: null, run: 'python3 solution.py' },
-      JAVA: { sourceFile: 'Solution.java', compile: 'javac Solution.java', run: 'java Solution' },
-      JAVASCRIPT: { sourceFile: 'solution.js', compile: null, run: 'node solution.js' },
-      GO: { sourceFile: 'solution.go', compile: 'go build -o solution solution.go', run: './solution' },
+    const PISTON_LANGS: Record<string, { language: string; version: string; filename: string }> = {
+      C:          { language: 'c',          version: '10.2.0',  filename: 'solution.c' },
+      CPP:        { language: 'c++',        version: '10.2.0',  filename: 'solution.cpp' },
+      JAVA:       { language: 'java',       version: '15.0.2',  filename: 'Solution.java' },
+      PYTHON:     { language: 'python',     version: '3.10.0',  filename: 'solution.py' },
+      JAVASCRIPT: { language: 'javascript', version: '18.15.0', filename: 'solution.js' },
+      TYPESCRIPT: { language: 'typescript', version: '5.0.3',   filename: 'solution.ts' },
+      GO:         { language: 'go',         version: '1.16.2',  filename: 'solution.go' },
+      RUST:       { language: 'rust',       version: '1.68.2',  filename: 'solution.rs' },
+      KOTLIN:     { language: 'kotlin',     version: '1.8.20',  filename: 'solution.kt' },
+      RUBY:       { language: 'ruby',       version: '3.0.1',   filename: 'solution.rb' },
     };
 
-    const config = CONFIGS[language];
+    const config = PISTON_LANGS[language];
     if (!config) return { error: 'Unsupported language', output: '' };
 
-    const workDir = join(tmpdir(), `rankforge-run-${randomUUID()}`);
-    mkdirSync(workDir, { recursive: true });
-
     try {
-      writeFileSync(join(workDir, config.sourceFile), sourceCode);
-      writeFileSync(join(workDir, 'input.txt'), input);
+      const response = await fetch('https://emkc.org/api/v2/piston/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          language: config.language,
+          version: config.version,
+          files: [{ name: config.filename, content: sourceCode }],
+          stdin: input,
+          run_timeout: 10000,
+          compile_timeout: 15000,
+        }),
+      });
 
-      // Compile
-      if (config.compile) {
-        try {
-          execSync(config.compile, { cwd: workDir, timeout: 15000, stdio: 'pipe' });
-        } catch (err: any) {
-          return { error: 'Compilation Error', output: err.stderr?.toString().slice(0, 2000) || '' };
-        }
+      if (!response.ok) {
+        return { error: `Execution service error: ${response.status}`, output: '' };
       }
 
-      // Run
-      const shellPath = process.platform === 'win32' ? 'cmd.exe' : '/bin/sh';
-      const runCmd = process.platform === 'win32'
-        ? `type input.txt | ${config.run}`
-        : `${config.run} < input.txt`;
+      const result = await response.json();
 
-      try {
-        const result = execSync(runCmd, {
-          cwd: workDir,
-          timeout: 10000,
-          maxBuffer: 1024 * 1024,
-          stdio: ['pipe', 'pipe', 'pipe'],
-          shell: shellPath,
-        });
-        return { error: null, output: result.toString().slice(0, 10000) };
-      } catch (err: any) {
-        if (err.killed || err.signal === 'SIGTERM') {
-          return { error: 'Time Limit Exceeded', output: '' };
-        }
+      // Compile error
+      if (result.compile && result.compile.code !== 0 && result.compile.stderr) {
+        return { error: 'Compilation Error', output: result.compile.stderr.slice(0, 3000) };
+      }
+
+      // Runtime error
+      if (result.run.code !== 0 && result.run.code !== null) {
         return {
           error: 'Runtime Error',
-          output: (err.stderr?.toString() || err.stdout?.toString() || '').slice(0, 2000),
+          output: (result.run.stderr || result.run.output || '').slice(0, 3000),
         };
       }
-    } finally {
-      try { rmSync(workDir, { recursive: true, force: true }); } catch {}
+
+      // TLE
+      if (result.run.signal === 'SIGKILL') {
+        return { error: 'Time Limit Exceeded', output: '' };
+      }
+
+      return { error: null, output: (result.run.stdout || '').slice(0, 10000) };
+    } catch (err: any) {
+      return { error: 'Execution failed', output: err.message?.slice(0, 500) || '' };
     }
   }
 }
