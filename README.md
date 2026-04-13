@@ -1,25 +1,26 @@
 # RankForge
 
-A full-stack competitive programming platform with temporal leaderboards, real-time contests, and deep analytics.
+A full-stack competitive programming platform with temporal leaderboards, real-time code judging, and deep analytics.
 
 ## Live Demo
 
 - **Frontend**: [rank-forge-web.vercel.app](https://rank-forge-web.vercel.app)
 - **API**: [rankforge-717i.onrender.com](https://rankforge-717i.onrender.com)
 
-> Note: Backend is on Render free tier — first request may take ~30s to wake up.
+> Backend is on Render free tier — first request may take ~30s to wake up.
 
 ## Highlights
 
 - **95+ problems** across 4 difficulty tiers (Easy, Medium, Hard, Expert) with real test cases
+- **Online judge** — compile and run code in 10 languages via [Piston API](https://github.com/engineer-man/piston), with per-test-case verdicts (AC/WA/TLE/RE/CE)
+- **LeetCode-style editor** — Run code against custom input, see compilation errors and output instantly, then submit to judge all test cases
 - **Temporal leaderboard** — scrub through time to see how rankings evolved, powered by segment trees
-- **Real-time updates** — live verdict delivery, leaderboard changes, and timer sync via WebSockets
 - **Contest replay mode** — watch a contest unfold like a movie with animated rank graphs
 - **Codeforces-style rating system** — Elo-based algorithm with per-contest rating changes
 - **10 language support** — C, C++, Python, Java, JavaScript, TypeScript, Go, Rust, Kotlin, Ruby
-- **Code judge** — BullMQ queue with background worker, per-test-case verdicts (AC/WA/TLE/MLE/RE/CE)
 - **Plagiarism detection** — token-based n-gram similarity analysis across contest submissions
 - **LeetCode-style profiles** — solve donut, submission heatmap, language breakdown, skill radar
+- **Real-time updates** — live verdict delivery, leaderboard changes, and timer sync via WebSockets
 
 ## Tech Stack
 
@@ -29,6 +30,7 @@ A full-stack competitive programming platform with temporal leaderboards, real-t
 | Backend | NestJS 11, TypeScript, Prisma ORM, REST API, WebSockets (ws) |
 | Database | PostgreSQL (Neon) |
 | Queue | Redis (Upstash), BullMQ |
+| Code Execution | [Piston API](https://github.com/engineer-man/piston) (10 languages, free, open-source) |
 | Auth | JWT (access + refresh tokens), bcrypt, Passport.js |
 | Monorepo | Turborepo, pnpm workspaces |
 | Deployment | Vercel (frontend), Render (backend) |
@@ -47,11 +49,26 @@ A full-stack competitive programming platform with temporal leaderboards, real-t
                    │   (Upstash)     │
                    └────────┬────────┘
                             │
-                   ┌────────┴────────┐
-                   │  Judge Worker   │
-                   │  (Background)   │
-                   └─────────────────┘
+              ┌─────────────┴─────────────┐
+              │  Judge Worker (BullMQ)     │
+              │  Code execution via Piston │
+              │  10 languages supported    │
+              └───────────────────────────┘
 ```
+
+## How Judging Works
+
+```
+1. User writes code in Monaco Editor
+2. "Run" → executes against custom input via Piston API, shows output instantly
+3. "Submit" → enqueues to BullMQ judge queue
+4. Judge worker runs code against ALL test cases via Piston API
+5. Per-test-case verdict (AC/WA/TLE/RE/CE) saved to DB
+6. Real-time verdict delivered via WebSocket
+7. Leaderboard updates if contest submission
+```
+
+Supported verdicts: Accepted, Wrong Answer, Time Limit Exceeded, Memory Limit Exceeded, Runtime Error, Compilation Error
 
 ## Project Structure
 
@@ -71,11 +88,19 @@ rankforge/
 
 ## Features
 
+### Code Editor & Judge
+- **Monaco Editor** — VS Code-powered editor with syntax highlighting for all 10 languages
+- **Run** — test your code against custom input, see output or errors instantly
+- **Submit** — judge against all test cases, see per-test verdicts in real-time
+- **Compilation errors** — shown inline with error messages from the compiler
+- **Runtime errors** — stack traces and error output displayed
+- **Custom test run** — edit input, run, compare output with expected
+
 ### Core Platform
 - **Auth** — Register, login, logout, JWT refresh, role-based access (User, Problem Setter, Organizer, Admin)
-- **Problems** — CRUD with Markdown statements, difficulty tags, sample/hidden test cases, Monaco code editor
-- **Submissions** — Multi-language support, background judging, per-test-case verdicts, submission history
+- **Problems** — CRUD with Markdown statements, difficulty tags, sample/hidden test cases
 - **Contests** — Full lifecycle (Draft -> Published -> Registration -> Live -> Frozen -> Ended -> Results), ICPC-style scoring
+- **Contest creation** — organizers can create contests, add problems, manage lifecycle
 
 ### Differentiating Features
 - **Temporal Leaderboard** — Segment tree queries over contest timeline: standings at any minute T, score progressions, peak activity intervals
@@ -104,7 +129,7 @@ rankforge/
 | `/login`, `/register` | Authentication |
 | `/dashboard` | Personal dashboard with stats, streak, upcoming contests |
 | `/problems` | Problem list with difficulty/tag filters |
-| `/problems/[slug]` | Split-pane: problem statement + Monaco editor |
+| `/problems/[slug]` | Split-pane editor: problem + Monaco + run/submit + test output |
 | `/submissions` | All submissions with verdict badges |
 | `/submissions/[id]` | Submission detail with per-test results |
 | `/contests` | Contest list with status badges |
@@ -169,7 +194,7 @@ Open:
 
 ### Demo Accounts
 
-These accounts are available after running the seed (`pnpm db:seed` locally, or `POST /api/seed?key=...&force=true` in production):
+Available after seeding (`pnpm db:seed` locally, or `POST /api/seed?key=...&force=true` in production):
 
 | User | Email | Password | Role | Rating |
 |------|-------|----------|------|--------|
@@ -180,7 +205,7 @@ These accounts are available after running the seed (`pnpm db:seed` locally, or 
 | diana | diana@rankforge.dev | Password1 | User | 1300 |
 | eve | eve@rankforge.dev | Password1 | User | 1550 |
 
-> **Note:** On the live demo, if login fails with "Invalid credentials", the database may not be seeded yet. You can always register a new account to try the platform.
+> **Note:** On the live demo, you can register a new account to try the platform. Demo accounts are available if the database has been seeded.
 
 ## Deployment
 
@@ -204,7 +229,7 @@ Deployed on the free tier:
 4. **Vercel** — Import repo, root directory `apps/web`, set:
    - `NEXT_PUBLIC_API_URL` = Render URL + `/api`
    - `NEXT_PUBLIC_WS_URL` = Render URL with `wss://`
-5. **Seed production DB**: `POST /api/seed?key=YOUR_JWT_ACCESS_SECRET`
+5. **Seed production DB**: `POST /api/seed?key=YOUR_JWT_ACCESS_SECRET&force=true`
 
 ## Key Data Structures
 
