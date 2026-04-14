@@ -25,7 +25,7 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="px-3 py-1.5 bg-rf-dark border border-rf-iron rounded-lg text-rf-pink text-sm focus:outline-none focus:ring-2 focus:ring-rf-sage"
+      className="px-3 py-1.5 bg-rf-dark border border-rf-iron rounded-lg text-orange-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
     >
       {LANGUAGES.map((lang) => (
         <option key={lang} value={lang}>

@@ -8,7 +8,7 @@ interface VerdictBadgeProps {
 }
 
 const VERDICT_COLORS: Record<string, string> = {
-  ACCEPTED: 'bg-rf-dark/80 text-rf-pink border-rf-iron',
+  ACCEPTED: 'bg-rf-dark/80 text-orange-400 border-rf-iron',
   WRONG_ANSWER: 'bg-red-900/50 text-red-400 border-red-800',
   TIME_LIMIT_EXCEEDED: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
   MEMORY_LIMIT_EXCEEDED: 'bg-orange-900/50 text-orange-400 border-orange-800',

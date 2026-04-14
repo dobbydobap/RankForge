@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQueryClient } from '@tanstack/react-query';
-import { Navbar } from '@/components/layout/Navbar';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { useContest, useLeaderboard, useProblemStats } from '@/hooks/use-api';
 import { useContestUpdates } from '@/hooks/use-websocket';
@@ -27,7 +26,6 @@ export default function LeaderboardPage() {
   if (isLoading || !contest) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading leaderboard...</div>
         </div>
@@ -40,8 +38,7 @@ export default function LeaderboardPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3">
@@ -55,28 +52,28 @@ export default function LeaderboardPage() {
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 &larr; {contest.title}
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/temporal`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 Temporal View
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/replay`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 Replay
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/ratings`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 Ratings
               </Link>
@@ -92,7 +89,7 @@ export default function LeaderboardPage() {
                 key={s.label}
                 className="flex-shrink-0 px-4 py-3 border border-rf-border rounded-lg bg-rf-dark/50 min-w-[140px]"
               >
-                <div className="text-sm font-mono font-bold text-rf-pink">{s.label}</div>
+                <div className="text-sm font-mono font-bold text-orange-400">{s.label}</div>
                 <div className="text-xs text-rf-gray mt-0.5 truncate">{s.title}</div>
                 <div className="flex items-center gap-2 mt-2 text-xs text-rf-gray">
                   <span>{s.solvedCount}/{s.attemptedCount}</span>
@@ -141,14 +138,14 @@ export default function LeaderboardPage() {
               <tbody className="divide-y divide-rf-border">
                 {entries.map((entry: any) => (
                   <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
-                    <td className="text-center px-3 py-3 text-sm font-bold text-rf-pink">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-orange-400">
                       {entry.rank <= 3 ? (
                         <span
                           className={
                             entry.rank === 1
                               ? 'text-yellow-400'
                               : entry.rank === 2
-                                ? 'text-rf-pink'
+                                ? 'text-orange-400'
                                 : 'text-orange-400'
                           }
                         >
@@ -161,7 +158,7 @@ export default function LeaderboardPage() {
                     <td className="px-3 py-3">
                       <Link
                         href={`/users/${entry.username}`}
-                        className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
+                        className="text-sm font-medium text-white hover:text-orange-400 transition-colors"
                       >
                         {entry.displayName || entry.username}
                       </Link>
@@ -191,7 +188,7 @@ export default function LeaderboardPage() {
                               isAC
                                 ? pr.isFirstBlood
                                   ? 'bg-yellow-900/30 text-yellow-400'
-                                  : 'bg-rf-dark/30 text-rf-pink'
+                                  : 'bg-rf-dark/30 text-orange-400'
                                 : 'bg-red-900/30 text-red-400'
                             }`}
                           >

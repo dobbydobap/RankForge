@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { TemporalSlider } from '@/components/leaderboard/TemporalSlider';
 import { useContest, useLeaderboardAtTime, useContestAnalytics } from '@/hooks/use-api';
 import { ActivityChart } from '@/components/leaderboard/ActivityChart';
@@ -22,7 +21,6 @@ export default function TemporalLeaderboardPage() {
   if (!contest) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading...</div>
         </div>
@@ -32,29 +30,28 @@ export default function TemporalLeaderboardPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-white">Temporal Leaderboard</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 {contest.title}
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 Current Standings
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/replay`}
-                className="text-sm text-rf-pink hover:text-white transition-colors"
+                className="text-sm text-orange-400 hover:text-white transition-colors"
               >
                 Replay Mode
               </Link>
@@ -77,7 +74,7 @@ export default function TemporalLeaderboardPage() {
         {/* Activity Chart */}
         {analytics?.activityTimeline && (
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-            <h2 className="text-sm font-semibold text-rf-pink mb-3">
+            <h2 className="text-sm font-semibold text-orange-400 mb-3">
               Submission Activity Over Time
             </h2>
             <ActivityChart data={analytics.activityTimeline} />
@@ -113,7 +110,7 @@ export default function TemporalLeaderboardPage() {
                   .filter((e: any) => e.totalScore > 0 || e.solvedCount > 0)
                   .map((entry: any) => (
                     <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
-                      <td className="text-center px-3 py-3 text-sm font-bold text-rf-pink">
+                      <td className="text-center px-3 py-3 text-sm font-bold text-orange-400">
                         {entry.rank}
                       </td>
                       <td className="px-3 py-3 text-sm text-white">

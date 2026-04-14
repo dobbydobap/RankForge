@@ -7,7 +7,6 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   RadarChart, PolarGrid, PolarAngleAxis, Radar,
 } from 'recharts';
-import { Navbar } from '@/components/layout/Navbar';
 import { useAuthStore } from '@/stores/auth-store';
 import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +29,6 @@ export default function GrowthAnalyticsPage() {
   if (authLoading || isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading analytics...</div>
         </div>
@@ -56,8 +54,7 @@ export default function GrowthAnalyticsPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <h1 className="text-2xl font-bold text-white mb-6">Growth Analytics</h1>
 
         {/* Stats */}
@@ -72,22 +69,22 @@ export default function GrowthAnalyticsPage() {
           {/* Rating History */}
           {growth.ratingHistory.length > 0 && (
             <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-              <h2 className="text-sm font-semibold text-rf-pink mb-3">Rating Over Time</h2>
+              <h2 className="text-sm font-semibold text-orange-400 mb-3">Rating Over Time</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={growth.ratingHistory}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1f1f23" />
                     <XAxis
                       dataKey="date"
-                      stroke="#666666"
+                      stroke="#3a3a42"
                       fontSize={10}
                       tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     />
-                    <YAxis stroke="#666666" fontSize={10} domain={['auto', 'auto']} />
+                    <YAxis stroke="#3a3a42" fontSize={10} domain={['auto', 'auto']} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #444444", borderRadius: '8px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: "#111113", border: "1px solid #1f1f23", borderRadius: '8px', fontSize: '12px' }}
                     />
-                    <Line type="monotone" dataKey="newRating" stroke="#E0E0E0" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
+                    <Line type="monotone" dataKey="newRating" stroke="#e07830" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -97,13 +94,13 @@ export default function GrowthAnalyticsPage() {
           {/* Topic Mastery Radar */}
           {radarData.length > 0 && (
             <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-              <h2 className="text-sm font-semibold text-rf-pink mb-3">Topic Mastery</h2>
+              <h2 className="text-sm font-semibold text-orange-400 mb-3">Topic Mastery</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#444444" />
-                    <PolarAngleAxis dataKey="topic" stroke="#666666" fontSize={10} />
-                    <Radar dataKey="count" stroke="#E0E0E0" fill="#E0E0E0" fillOpacity={0.2} />
+                    <PolarGrid stroke="#1f1f23" />
+                    <PolarAngleAxis dataKey="topic" stroke="#3a3a42" fontSize={10} />
+                    <Radar dataKey="count" stroke="#e07830" fill="#e07830" fillOpacity={0.2} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
@@ -113,7 +110,7 @@ export default function GrowthAnalyticsPage() {
 
         {/* Activity Heatmap (simple version) */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-          <h2 className="text-sm font-semibold text-rf-pink mb-3">
+          <h2 className="text-sm font-semibold text-orange-400 mb-3">
             Solve Activity (Last 30 Days)
           </h2>
           <div className="flex gap-1 flex-wrap">
@@ -128,7 +125,7 @@ export default function GrowthAnalyticsPage() {
                       ? 'bg-rf-dark'
                       : d.count <= 5
                         ? 'bg-rf-iron'
-                        : 'bg-rf-accent-hover'
+                        : 'bg-orange-600-hover'
                 }`}
               />
             ))}
@@ -138,7 +135,7 @@ export default function GrowthAnalyticsPage() {
             <div className="w-3 h-3 rounded-sm bg-rf-border" />
             <div className="w-3 h-3 rounded-sm bg-rf-dark" />
             <div className="w-3 h-3 rounded-sm bg-rf-iron" />
-            <div className="w-3 h-3 rounded-sm bg-rf-accent-hover" />
+            <div className="w-3 h-3 rounded-sm bg-orange-600-hover" />
             <span>More</span>
           </div>
         </div>
@@ -146,14 +143,14 @@ export default function GrowthAnalyticsPage() {
         {/* Top topics table */}
         {growth.topicMastery.length > 0 && (
           <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-            <h2 className="text-sm font-semibold text-rf-pink mb-3">Strongest Topics</h2>
+            <h2 className="text-sm font-semibold text-orange-400 mb-3">Strongest Topics</h2>
             <div className="space-y-2">
               {growth.topicMastery.map((t: any) => (
                 <div key={t.topic} className="flex items-center gap-3">
-                  <span className="text-sm text-rf-pink w-32">{t.topic}</span>
+                  <span className="text-sm text-orange-400 w-32">{t.topic}</span>
                   <div className="flex-1 h-2 bg-rf-border rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-rf-accent-hover rounded-full"
+                      className="h-full bg-orange-600-hover rounded-full"
                       style={{
                         width: `${Math.min(100, (t.count / (growth.topicMastery[0]?.count || 1)) * 100)}%`,
                       }}
@@ -174,7 +171,7 @@ function StatCard({ title, value, accent }: { title: string; value: number; acce
   return (
     <div className="p-4 rounded-xl border border-rf-border bg-rf-dark/50">
       <p className="text-xs text-rf-gray">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-rf-pink' : 'text-white'}`}>{value}</p>
+      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-orange-400' : 'text-white'}`}>{value}</p>
     </div>
   );
 }

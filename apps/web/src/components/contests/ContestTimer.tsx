@@ -45,7 +45,7 @@ export function ContestTimer({ startTime, endTime, status }: ContestTimerProps) 
     return (
       <div>
         <div className="text-xs text-rf-gray mb-1">Time remaining</div>
-        <div className={`text-lg font-mono font-bold ${isLow ? 'text-red-400' : 'text-rf-pink'}`}>
+        <div className={`text-lg font-mono font-bold ${isLow ? 'text-red-400' : 'text-orange-400'}`}>
           {formatDuration(diff)}
         </div>
       </div>

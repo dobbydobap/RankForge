@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { useAuthStore } from '@/stores/auth-store';
 import { api } from '@/lib/api';
 
@@ -54,8 +53,7 @@ export default function CreateContestPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full max-w-3xl px-6 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-white">Create Contest</h1>
           <p className="text-sm text-rf-gray mt-1">
@@ -71,7 +69,7 @@ export default function CreateContestPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-rf-pink mb-1">
+            <label className="block text-sm font-medium text-orange-400 mb-1">
               Contest Title *
             </label>
             <input
@@ -79,27 +77,27 @@ export default function CreateContestPage() {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               required
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="RankForge Round #3"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-rf-pink mb-1">
+            <label className="block text-sm font-medium text-orange-400 mb-1">
               Description
             </label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="A brief description of the contest..."
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-rf-pink mb-1">
+              <label className="block text-sm font-medium text-orange-400 mb-1">
                 Start Date *
               </label>
               <input
@@ -107,11 +105,11 @@ export default function CreateContestPage() {
                 value={form.startDate}
                 onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rf-sage"
+                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-rf-pink mb-1">
+              <label className="block text-sm font-medium text-orange-400 mb-1">
                 Start Time *
               </label>
               <input
@@ -119,14 +117,14 @@ export default function CreateContestPage() {
                 value={form.startTime}
                 onChange={(e) => setForm({ ...form, startTime: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rf-sage"
+                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-rf-pink mb-1">
+              <label className="block text-sm font-medium text-orange-400 mb-1">
                 Duration (minutes) *
               </label>
               <input
@@ -135,11 +133,11 @@ export default function CreateContestPage() {
                 onChange={(e) => setForm({ ...form, duration: parseInt(e.target.value) || 120 })}
                 min={10}
                 max={600}
-                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rf-sage"
+                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-rf-pink mb-1">
+              <label className="block text-sm font-medium text-orange-400 mb-1">
                 Penalty per WA (minutes)
               </label>
               <input
@@ -148,7 +146,7 @@ export default function CreateContestPage() {
                 onChange={(e) => setForm({ ...form, penaltyTime: parseInt(e.target.value) || 20 })}
                 min={0}
                 max={60}
-                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rf-sage"
+                className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
@@ -159,9 +157,9 @@ export default function CreateContestPage() {
               id="isPublic"
               checked={form.isPublic}
               onChange={(e) => setForm({ ...form, isPublic: e.target.checked })}
-              className="w-4 h-4 rounded bg-rf-dark border-rf-iron text-rf-pink focus:ring-rf-sage"
+              className="w-4 h-4 rounded bg-rf-dark border-rf-iron text-orange-400 focus:ring-orange-500"
             />
-            <label htmlFor="isPublic" className="text-sm text-rf-pink">
+            <label htmlFor="isPublic" className="text-sm text-orange-400">
               Public contest (anyone can register)
             </label>
           </div>
@@ -170,13 +168,13 @@ export default function CreateContestPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 text-white rounded-lg transition-colors"
+              className="px-6 py-2.5 text-sm font-medium bg-orange-600 hover:bg-orange-500 disabled:opacity-50 text-white rounded-lg transition-colors"
             >
               {submitting ? 'Creating...' : 'Create Contest'}
             </button>
             <Link
               href="/contests"
-              className="px-6 py-2.5 text-sm font-medium border border-rf-iron hover:border-rf-gray text-rf-pink rounded-lg transition-colors"
+              className="px-6 py-2.5 text-sm font-medium border border-rf-iron hover:border-rf-gray text-orange-400 rounded-lg transition-colors"
             >
               Cancel
             </Link>
@@ -184,7 +182,7 @@ export default function CreateContestPage() {
         </form>
 
         <div className="mt-8 p-4 border border-rf-border rounded-xl bg-rf-dark/50">
-          <h3 className="text-sm font-semibold text-rf-pink mb-2">After creating:</h3>
+          <h3 className="text-sm font-semibold text-orange-400 mb-2">After creating:</h3>
           <ol className="text-xs text-rf-gray space-y-1 list-decimal list-inside">
             <li>Add problems to the contest from the contest detail page</li>
             <li>Transition status: Draft &rarr; Published &rarr; Registration Open &rarr; Live</li>

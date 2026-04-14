@@ -4,7 +4,7 @@ const STATUS_STYLES: Record<string, string> = {
   DRAFT: 'bg-rf-border text-rf-gray border-rf-iron',
   PUBLISHED: 'bg-blue-900/50 text-blue-400 border-blue-800',
   REGISTRATION_OPEN: 'bg-cyan-900/50 text-cyan-400 border-cyan-800',
-  LIVE: 'bg-rf-dark/80 text-rf-pink border-rf-iron',
+  LIVE: 'bg-rf-dark/80 text-orange-400 border-rf-iron',
   FROZEN: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
   ENDED: 'bg-rf-border text-rf-gray border-rf-iron',
   RESULTS_PUBLISHED: 'bg-purple-900/50 text-purple-400 border-purple-800',

@@ -35,7 +35,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-rf-black px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold text-rf-pink">
+          <Link href="/" className="text-2xl font-bold text-orange-400">
             RankForge
           </Link>
           <h1 className="mt-4 text-xl font-semibold text-white">
@@ -54,14 +54,14 @@ export default function RegisterPage() {
           )}
 
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-rf-pink mb-1">
+            <label htmlFor="username" className="block text-sm font-medium text-orange-400 mb-1">
               Username
             </label>
             <input
               id="username"
               type="text"
               {...register('username')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="coolcoder42"
             />
             {errors.username && (
@@ -70,14 +70,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-rf-pink mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-orange-400 mb-1">
               Email
             </label>
             <input
               id="email"
               type="email"
               {...register('email')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="you@example.com"
             />
             {errors.email && (
@@ -86,14 +86,14 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-rf-pink mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-orange-400 mb-1">
               Password
             </label>
             <input
               id="password"
               type="password"
               {...register('password')}
-              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent"
+              className="w-full px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="At least 8 characters"
             />
             {errors.password && (
@@ -107,7 +107,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2.5 px-4 bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+            className="w-full py-2.5 px-4 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
           >
             {isSubmitting ? 'Creating account...' : 'Create Account'}
           </button>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-rf-gray">
           Already have an account?{' '}
-          <Link href="/login" className="text-rf-pink hover:text-white">
+          <Link href="/login" className="text-orange-400 hover:text-white">
             Sign in
           </Link>
         </p>

@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import { Navbar } from '@/components/layout/Navbar';
 import { api } from '@/lib/api';
 import { LANGUAGE_DISPLAY } from '@rankforge/shared';
 
@@ -59,7 +58,6 @@ export default function UserProfilePage() {
   if (isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading profile...</div>
         </div>
@@ -70,7 +68,6 @@ export default function UserProfilePage() {
   if (!data) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">User not found.</div>
         </div>
@@ -83,15 +80,14 @@ export default function UserProfilePage() {
     (user.profile?.currentRating ?? 1200) >= 2000 ? 'text-red-400' :
     (user.profile?.currentRating ?? 1200) >= 1600 ? 'text-purple-400' :
     (user.profile?.currentRating ?? 1200) >= 1400 ? 'text-cyan-400' :
-    (user.profile?.currentRating ?? 1200) >= 1200 ? 'text-rf-pink' : 'text-rf-gray';
+    (user.profile?.currentRating ?? 1200) >= 1200 ? 'text-orange-400' : 'text-rf-gray';
 
   const totalSolvable = stats.totalProblems || 1;
   const solvePercent = Math.round((stats.totalSolved / totalSolvable) * 100);
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 w-full px-6 lg:px-10 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
 
           {/* ── LEFT SIDEBAR ── */}
@@ -121,23 +117,23 @@ export default function UserProfilePage() {
 
             {/* Community Stats */}
             <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-              <h3 className="text-sm font-semibold text-rf-pink mb-3">Stats</h3>
+              <h3 className="text-sm font-semibold text-orange-400 mb-3">Stats</h3>
               <div className="space-y-2.5">
                 <StatRow label="Rating" value={String(user.profile?.currentRating ?? 1200)} color={ratingColor} />
                 <StatRow label="Max Rating" value={String(user.profile?.maxRating ?? 1200)} />
                 <StatRow label="Contests" value={String(user.profile?.contestCount ?? 0)} />
-                <StatRow label="Problems Solved" value={String(stats.totalSolved)} color="text-rf-pink" />
+                <StatRow label="Problems Solved" value={String(stats.totalSolved)} color="text-orange-400" />
               </div>
             </div>
 
             {/* Languages */}
             {stats.languages.length > 0 && (
               <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-                <h3 className="text-sm font-semibold text-rf-pink mb-3">Languages</h3>
+                <h3 className="text-sm font-semibold text-orange-400 mb-3">Languages</h3>
                 <div className="space-y-2">
                   {stats.languages.map((l: any) => (
                     <div key={l.language} className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 text-xs bg-rf-border text-rf-pink rounded">
+                      <span className="px-2 py-0.5 text-xs bg-rf-border text-orange-400 rounded">
                         {(LANGUAGE_DISPLAY as any)[l.language] || l.language}
                       </span>
                       <span className="text-xs text-rf-gray">
@@ -152,14 +148,14 @@ export default function UserProfilePage() {
             {/* Skills */}
             {stats.skills.length > 0 && (
               <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-                <h3 className="text-sm font-semibold text-rf-pink mb-3">Skills</h3>
+                <h3 className="text-sm font-semibold text-orange-400 mb-3">Skills</h3>
                 <div className="space-y-1.5">
                   {stats.skills.slice(0, 8).map((s: any) => (
                     <div key={s.name} className="flex items-center gap-2">
                       <span className="text-xs text-rf-gray w-28 truncate">{s.name}</span>
                       <div className="flex-1 h-1.5 bg-rf-border rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-rf-accent-hover rounded-full"
+                          className="h-full bg-orange-600-hover rounded-full"
                           style={{ width: `${Math.min(100, (s.count / (stats.skills[0]?.count || 1)) * 100)}%` }}
                         />
                       </div>
@@ -173,7 +169,7 @@ export default function UserProfilePage() {
             {/* Badges */}
             {stats.badges.length > 0 && (
               <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
-                <h3 className="text-sm font-semibold text-rf-pink mb-3">Badges</h3>
+                <h3 className="text-sm font-semibold text-orange-400 mb-3">Badges</h3>
                 <div className="flex flex-wrap gap-2">
                   {stats.badges.map((b: any) => (
                     <span
@@ -198,9 +194,9 @@ export default function UserProfilePage() {
                 {/* Donut */}
                 <div className="relative w-32 h-32 shrink-0">
                   <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#444444" strokeWidth="3" />
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1f1f23" strokeWidth="3" />
                     <circle
-                      cx="18" cy="18" r="15.9" fill="none" stroke="#E0E0E0"
+                      cx="18" cy="18" r="15.9" fill="none" stroke="#e07830"
                       strokeWidth="3" strokeDasharray={`${solvePercent} ${100 - solvePercent}`}
                       strokeLinecap="round"
                     />
@@ -218,7 +214,7 @@ export default function UserProfilePage() {
                       <span className="text-xs font-medium" style={{ color: DIFF_COLORS[d] }}>
                         {d.charAt(0) + d.slice(1).toLowerCase()}
                       </span>
-                      <span className="text-xs text-rf-pink">
+                      <span className="text-xs text-orange-400">
                         {stats.solvedByDifficulty[d] || 0}
                         <span className="text-rf-iron">/{stats.totalByDifficulty[d] || 0}</span>
                       </span>
@@ -231,13 +227,13 @@ export default function UserProfilePage() {
             {/* Submission Heatmap */}
             <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-5">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-rf-pink">
+                <h3 className="text-sm font-semibold text-orange-400">
                   <span className="text-white font-bold">{stats.totalSubmissions}</span>{' '}
                   submissions in the past one year
                 </h3>
                 <div className="flex items-center gap-4 text-xs text-rf-gray">
-                  <span>Total active days: <span className="text-rf-pink">{stats.activeDays}</span></span>
-                  <span>Max streak: <span className="text-rf-pink">{stats.maxStreak}</span></span>
+                  <span>Total active days: <span className="text-orange-400">{stats.activeDays}</span></span>
+                  <span>Max streak: <span className="text-orange-400">{stats.maxStreak}</span></span>
                 </div>
               </div>
 
@@ -250,7 +246,7 @@ export default function UserProfilePage() {
                         const idx = weekIdx * 7 + dayIdx;
                         const cell = heatmapData[idx];
                         if (!cell) return <div key={dayIdx} className="w-[11px] h-[11px]" />;
-                        const colors = ['bg-rf-border', 'bg-rf-dark', 'bg-rf-iron', 'bg-rf-accent-hover', 'bg-pink-400'];
+                        const colors = ['bg-rf-border', 'bg-rf-dark', 'bg-rf-iron', 'bg-orange-600-hover', 'bg-pink-400'];
                         return (
                           <div
                             key={dayIdx}
@@ -270,7 +266,7 @@ export default function UserProfilePage() {
                 <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-border" />
                 <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-dark" />
                 <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-iron" />
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-accent-hover" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-orange-600-hover" />
                 <div className="w-[11px] h-[11px] rounded-[2px] bg-pink-400" />
                 <span>More</span>
               </div>
@@ -279,21 +275,21 @@ export default function UserProfilePage() {
             {/* Rating Graph */}
             {ratings && ratings.length > 0 && (
               <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-5">
-                <h3 className="text-sm font-semibold text-rf-pink mb-3">Rating History</h3>
+                <h3 className="text-sm font-semibold text-orange-400 mb-3">Rating History</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={ratings}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1f1f23" />
                       <XAxis
-                        dataKey="date" stroke="#666666" fontSize={10}
+                        dataKey="date" stroke="#3a3a42" fontSize={10}
                         tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       />
-                      <YAxis stroke="#666666" fontSize={10} domain={['auto', 'auto']} />
+                      <YAxis stroke="#3a3a42" fontSize={10} domain={['auto', 'auto']} />
                       <Tooltip
-                        contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #444444", borderRadius: '8px', fontSize: '12px' }}
+                        contentStyle={{ backgroundColor: "#111113", border: "1px solid #1f1f23", borderRadius: '8px', fontSize: '12px' }}
                         labelFormatter={(v) => new Date(v).toLocaleDateString()}
                       />
-                      <Line type="monotone" dataKey="newRating" stroke="#E0E0E0" strokeWidth={2} dot={{ r: 3, fill: '#B0B0B0' }} name="Rating" />
+                      <Line type="monotone" dataKey="newRating" stroke="#e07830" strokeWidth={2} dot={{ r: 3, fill: '#B0B0B0' }} name="Rating" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -309,7 +305,7 @@ export default function UserProfilePage() {
                     onClick={() => setTab(key)}
                     className={`px-4 py-3 text-sm font-medium transition-colors ${
                       tab === key
-                        ? 'text-rf-pink border-b-2 border-rf-pink'
+                        ? 'text-orange-400 border-b-2 border-rf-pink'
                         : 'text-rf-gray hover:text-white'
                     }`}
                   >
@@ -328,7 +324,7 @@ export default function UserProfilePage() {
                         <div key={p.slug} className="flex items-center justify-between py-2 border-b border-rf-border/50 last:border-0">
                           <Link
                             href={`/problems/${p.slug}`}
-                            className="text-sm text-white hover:text-rf-pink transition-colors"
+                            className="text-sm text-white hover:text-orange-400 transition-colors"
                           >
                             {p.title}
                           </Link>
@@ -355,14 +351,14 @@ export default function UserProfilePage() {
                         <div key={c.contestId} className="flex items-center justify-between py-2 border-b border-rf-border/50 last:border-0">
                           <Link
                             href={`/contests/${c.slug}`}
-                            className="text-sm text-white hover:text-rf-pink transition-colors"
+                            className="text-sm text-white hover:text-orange-400 transition-colors"
                           >
                             {c.title}
                           </Link>
                           <div className="flex items-center gap-4">
                             {c.rank && <span className="text-xs text-rf-gray">#{c.rank}</span>}
                             {c.ratingChange !== null && (
-                              <span className={`text-xs font-bold ${c.ratingChange >= 0 ? 'text-rf-pink' : 'text-red-400'}`}>
+                              <span className={`text-xs font-bold ${c.ratingChange >= 0 ? 'text-orange-400' : 'text-red-400'}`}>
                                 {c.ratingChange >= 0 ? '+' : ''}{c.ratingChange}
                               </span>
                             )}
@@ -385,7 +381,7 @@ export default function UserProfilePage() {
                         {stats.skills.map((s: any) => (
                           <span
                             key={s.name}
-                            className="px-3 py-1.5 text-xs bg-rf-border text-rf-pink rounded-lg border border-rf-iron"
+                            className="px-3 py-1.5 text-xs bg-rf-border text-orange-400 rounded-lg border border-rf-iron"
                           >
                             {s.name} <span className="text-rf-gray ml-1">x{s.count}</span>
                           </span>
@@ -407,7 +403,7 @@ function StatRow({ label, value, color }: { label: string; value: string; color?
   return (
     <div className="flex items-center justify-between">
       <span className="text-xs text-rf-gray">{label}</span>
-      <span className={`text-sm font-bold ${color || 'text-rf-pink'}`}>{value}</span>
+      <span className={`text-sm font-bold ${color || 'text-orange-400'}`}>{value}</span>
     </div>
   );
 }

@@ -69,13 +69,13 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
             <div key={i} className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-xs text-rf-gray mb-1">Input</div>
-                <pre className="text-xs text-rf-pink bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
+                <pre className="text-xs text-orange-400 bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
                   {tc.input}
                 </pre>
               </div>
               <div>
                 <div className="text-xs text-rf-gray mb-1">Output</div>
-                <pre className="text-xs text-rf-pink bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
+                <pre className="text-xs text-orange-400 bg-rf-dark p-3 rounded-lg whitespace-pre font-mono overflow-x-auto">
                   {tc.output}
                 </pre>
               </div>
@@ -89,7 +89,7 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
 
 function DiffBadge({ difficulty }: { difficulty: string }) {
   const colors: Record<string, string> = {
-    EASY: 'bg-rf-dark/80 text-rf-pink border-rf-iron',
+    EASY: 'bg-rf-dark/80 text-orange-400 border-rf-iron',
     MEDIUM: 'bg-yellow-900/50 text-yellow-400 border-yellow-800',
     HARD: 'bg-orange-900/50 text-orange-400 border-orange-800',
     EXPERT: 'bg-red-900/50 text-red-400 border-red-800',

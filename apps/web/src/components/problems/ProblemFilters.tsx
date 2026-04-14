@@ -14,7 +14,7 @@ interface ProblemFiltersProps {
 
 const DIFFICULTIES = ['', 'EASY', 'MEDIUM', 'HARD', 'EXPERT'];
 const DIFF_COLORS: Record<string, string> = {
-  EASY: 'text-rf-pink',
+  EASY: 'text-orange-400',
   MEDIUM: 'text-yellow-400',
   HARD: 'text-orange-400',
   EXPERT: 'text-red-400',
@@ -36,12 +36,12 @@ export function ProblemFilters({
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Search problems..."
-        className="flex-1 px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-rf-sage focus:border-transparent text-sm"
+        className="flex-1 px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-white placeholder-rf-iron focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
       />
       <select
         value={difficulty}
         onChange={(e) => onDifficultyChange(e.target.value)}
-        className="px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-pink text-sm focus:outline-none focus:ring-2 focus:ring-rf-sage"
+        className="px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-orange-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
       >
         <option value="">All Difficulties</option>
         {DIFFICULTIES.filter(Boolean).map((d) => (
@@ -53,7 +53,7 @@ export function ProblemFilters({
       <select
         value={tag}
         onChange={(e) => onTagChange(e.target.value)}
-        className="px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-rf-pink text-sm focus:outline-none focus:ring-2 focus:ring-rf-sage"
+        className="px-3 py-2 bg-rf-dark border border-rf-iron rounded-lg text-orange-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
       >
         <option value="">All Tags</option>
         {tags.map((t) => (

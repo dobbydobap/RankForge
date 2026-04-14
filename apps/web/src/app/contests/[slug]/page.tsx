@@ -1,7 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { ContestStatusBadge } from '@/components/contests/ContestStatusBadge';
 import { ContestTimer } from '@/components/contests/ContestTimer';
 import { useContest, useRegisterContest } from '@/hooks/use-api';
@@ -28,7 +27,6 @@ export default function ContestDetailPage() {
   if (isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading contest...</div>
         </div>
@@ -39,7 +37,6 @@ export default function ContestDetailPage() {
   if (!contest) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Contest not found.</div>
         </div>
@@ -53,8 +50,7 @@ export default function ContestDetailPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
           <div>
@@ -91,13 +87,13 @@ export default function ContestDetailPage() {
               <button
                 onClick={handleRegister}
                 disabled={registerMutation.isPending}
-                className="mt-3 px-5 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover disabled:opacity-50 text-white rounded-lg transition-colors"
+                className="mt-3 px-5 py-2 text-sm font-medium bg-orange-600 hover:bg-orange-500 disabled:opacity-50 text-white rounded-lg transition-colors"
               >
                 {registerMutation.isPending ? 'Registering...' : 'Register'}
               </button>
             )}
             {contest.isRegistered && (
-              <div className="mt-3 text-sm text-rf-pink">Registered</div>
+              <div className="mt-3 text-sm text-orange-400">Registered</div>
             )}
           </div>
         </div>
@@ -110,7 +106,7 @@ export default function ContestDetailPage() {
               {(isLive || isEnded) && (
                 <Link
                   href={`/contests/${slug}/leaderboard`}
-                  className="text-sm text-rf-pink hover:text-white transition-colors"
+                  className="text-sm text-orange-400 hover:text-white transition-colors"
                 >
                   View Leaderboard &rarr;
                 </Link>
@@ -147,13 +143,13 @@ export default function ContestDetailPage() {
                   <tbody className="divide-y divide-rf-border">
                     {contest.problems.map((p: any) => (
                       <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
-                        <td className="px-4 py-3 text-sm font-mono font-bold text-rf-pink">
+                        <td className="px-4 py-3 text-sm font-mono font-bold text-orange-400">
                           {p.label}
                         </td>
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${p.slug}`}
-                            className="text-sm text-white hover:text-rf-pink transition-colors"
+                            className="text-sm text-white hover:text-orange-400 transition-colors"
                           >
                             {p.title}
                           </Link>
@@ -183,7 +179,7 @@ export default function ContestDetailPage() {
                 <div className="space-y-2">
                   {contest.announcements.map((a: any) => (
                     <div key={a.id} className="p-2 bg-rf-border/50 rounded-lg">
-                      <p className="text-sm text-rf-pink">{a.content}</p>
+                      <p className="text-sm text-orange-400">{a.content}</p>
                       <p className="text-xs text-rf-gray mt-1">
                         {new Date(a.createdAt).toLocaleTimeString()}
                       </p>
@@ -199,21 +195,21 @@ export default function ContestDetailPage() {
               <div className="space-y-2 text-xs text-rf-gray">
                 <div className="flex justify-between">
                   <span>Penalty per wrong submission</span>
-                  <span className="text-rf-pink">{contest.penaltyTime} min</span>
+                  <span className="text-orange-400">{contest.penaltyTime} min</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Duration</span>
-                  <span className="text-rf-pink">{contest.duration} min</span>
+                  <span className="text-orange-400">{contest.duration} min</span>
                 </div>
                 {contest.freezeTime && (
                   <div className="flex justify-between">
                     <span>Leaderboard freeze</span>
-                    <span className="text-rf-pink">Last {contest.freezeTime} min</span>
+                    <span className="text-orange-400">Last {contest.freezeTime} min</span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span>Visibility</span>
-                  <span className="text-rf-pink">{contest.isPublic ? 'Public' : 'Private'}</span>
+                  <span className="text-orange-400">{contest.isPublic ? 'Public' : 'Private'}</span>
                 </div>
               </div>
             </div>

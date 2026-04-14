@@ -1,7 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { useSubmission } from '@/hooks/use-api';
@@ -15,7 +14,6 @@ export default function SubmissionDetailPage() {
   if (isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading submission...</div>
         </div>
@@ -26,7 +24,6 @@ export default function SubmissionDetailPage() {
   if (!submission) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Submission not found.</div>
         </div>
@@ -36,8 +33,7 @@ export default function SubmissionDetailPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -50,7 +46,7 @@ export default function SubmissionDetailPage() {
             <div className="flex items-center gap-4 text-sm text-rf-gray">
               <Link
                 href={`/problems/${submission.problemSlug}`}
-                className="hover:text-rf-pink transition-colors"
+                className="hover:text-orange-400 transition-colors"
               >
                 {submission.problemTitle}
               </Link>

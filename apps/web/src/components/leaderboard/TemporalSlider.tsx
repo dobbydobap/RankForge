@@ -26,7 +26,7 @@ export function TemporalSlider({
       {onPlayToggle && (
         <button
           onClick={onPlayToggle}
-          className="w-8 h-8 flex items-center justify-center rounded-full border border-rf-iron hover:border-rf-pink text-rf-gray hover:text-rf-pink transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-full border border-rf-iron hover:border-rf-pink text-rf-gray hover:text-orange-400 transition-colors"
         >
           {isPlaying ? (
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ export function TemporalSlider({
             [&::-webkit-slider-thumb]:w-4
             [&::-webkit-slider-thumb]:h-4
             [&::-webkit-slider-thumb]:rounded-full
-            [&::-webkit-slider-thumb]:bg-rf-accent-hover
+            [&::-webkit-slider-thumb]:bg-orange-600-hover
             [&::-webkit-slider-thumb]:cursor-pointer
             [&::-webkit-slider-thumb]:shadow-lg"
         />
@@ -64,7 +64,7 @@ export function TemporalSlider({
       </div>
 
       <div className="px-3 py-1 bg-rf-dark border border-rf-iron rounded-lg">
-        <span className="text-sm font-mono text-rf-pink">{timeLabel}</span>
+        <span className="text-sm font-mono text-orange-400">{timeLabel}</span>
       </div>
     </div>
   );

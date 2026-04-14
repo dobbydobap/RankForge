@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { TemporalSlider } from '@/components/leaderboard/TemporalSlider';
 import { RankGraph } from '@/components/leaderboard/RankGraph';
 import { useContest, useReplayData } from '@/hooks/use-api';
@@ -59,7 +58,6 @@ export default function ReplayPage() {
   if (!contest || isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">
             {isLoading ? 'Loading replay data...' : 'Loading...'}
@@ -72,7 +70,6 @@ export default function ReplayPage() {
   if (!replay || frames.length === 0) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">No replay data available for this contest.</div>
         </div>
@@ -82,22 +79,21 @@ export default function ReplayPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-white">Contest Replay</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 {contest.title}
               </Link>
               <span className="text-rf-iron">|</span>
               <Link
                 href={`/contests/${slug}/leaderboard/temporal`}
-                className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
               >
                 Temporal View
               </Link>
@@ -113,7 +109,7 @@ export default function ReplayPage() {
                 onClick={() => setSpeed(s)}
                 className={`px-2 py-1 text-xs rounded ${
                   speed === s
-                    ? 'bg-rf-accent text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-rf-border text-rf-gray hover:bg-rf-iron'
                 } transition-colors`}
               >
@@ -136,7 +132,7 @@ export default function ReplayPage() {
 
         {/* Rank Graph */}
         <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
-          <h2 className="text-sm font-semibold text-rf-pink mb-3">
+          <h2 className="text-sm font-semibold text-orange-400 mb-3">
             Rank Movement Over Time
           </h2>
           <RankGraph
@@ -185,11 +181,11 @@ export default function ReplayPage() {
                               : ''
                         }`}
                       >
-                        <td className="text-center px-3 py-2.5 text-sm font-bold text-rf-pink">
+                        <td className="text-center px-3 py-2.5 text-sm font-bold text-orange-400">
                           <div className="flex items-center justify-center gap-1">
                             <span>{entry.rank}</span>
                             {rankChange > 0 && (
-                              <span className="text-xs text-rf-pink">+{rankChange}</span>
+                              <span className="text-xs text-orange-400">+{rankChange}</span>
                             )}
                             {rankChange < 0 && (
                               <span className="text-xs text-red-400">{rankChange}</span>

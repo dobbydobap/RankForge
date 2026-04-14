@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { ProblemFilters, DifficultyBadge } from '@/components/problems/ProblemFilters';
 import { useProblems, useTags } from '@/hooks/use-api';
 
@@ -17,8 +16,7 @@ export default function ProblemsPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-white">Problems</h1>
         </div>
@@ -64,7 +62,7 @@ export default function ProblemsPage() {
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${problem.slug}`}
-                            className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
+                            className="text-sm font-medium text-white hover:text-orange-400 transition-colors"
                           >
                             {problem.title}
                           </Link>
@@ -106,7 +104,7 @@ export default function ProblemsPage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
@@ -116,7 +114,7 @@ export default function ProblemsPage() {
                   <button
                     onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                     disabled={page === data.totalPages}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-rf-pink hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>

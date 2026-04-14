@@ -59,7 +59,7 @@ export function Navbar() {
                 </Link>
                 <button
                   onClick={() => logout()}
-                  className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+                  className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
                 >
                   Logout
                 </button>
@@ -74,7 +74,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 text-sm font-medium bg-rf-accent hover:bg-rf-accent-hover text-white rounded-lg transition-colors"
+                  className="px-4 py-2 text-sm font-medium bg-orange-600 hover:bg-orange-500 text-white rounded-lg transition-colors"
                 >
                   Register
                 </Link>

@@ -1,7 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Navbar } from '@/components/layout/Navbar';
 import { useContest, useRatingChanges } from '@/hooks/use-api';
 
 export default function ContestRatingsPage() {
@@ -13,7 +12,6 @@ export default function ContestRatingsPage() {
   if (!contest || isLoading) {
     return (
       <>
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-rf-gray">Loading...</div>
         </div>
@@ -23,13 +21,12 @@ export default function ContestRatingsPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-white">Rating Changes</h1>
           <Link
             href={`/contests/${slug}`}
-            className="text-sm text-rf-gray hover:text-rf-pink transition-colors"
+            className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
           >
             &larr; {contest.title}
           </Link>
@@ -54,13 +51,13 @@ export default function ContestRatingsPage() {
               <tbody className="divide-y divide-rf-border">
                 {changes.map((c: any) => (
                   <tr key={c.userId} className="hover:bg-rf-dark/50 transition-colors">
-                    <td className="text-center px-4 py-3 text-sm font-bold text-rf-pink">
+                    <td className="text-center px-4 py-3 text-sm font-bold text-orange-400">
                       {c.rank}
                     </td>
                     <td className="px-4 py-3">
                       <Link
                         href={`/users/${c.username}`}
-                        className="text-sm font-medium text-white hover:text-rf-pink transition-colors"
+                        className="text-sm font-medium text-white hover:text-orange-400 transition-colors"
                       >
                         {c.displayName || c.username}
                       </Link>
@@ -76,7 +73,7 @@ export default function ContestRatingsPage() {
                       <span
                         className={`text-sm font-bold ${
                           c.change > 0
-                            ? 'text-rf-pink'
+                            ? 'text-orange-400'
                             : c.change < 0
                               ? 'text-red-400'
                               : 'text-rf-gray'
