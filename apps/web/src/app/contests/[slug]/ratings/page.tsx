@@ -37,10 +37,10 @@ export default function ContestRatingsPage() {
             Ratings have not been calculated for this contest yet.
           </div>
         ) : (
-          <div className="border border-rf-border rounded-xl overflow-hidden">
+          <div className="border border-[#2a2a30] rounded-xl overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-rf-border bg-rf-dark/50">
+                <tr className="border-b border-[#2a2a30] bg-[#141416]">
                   <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-14">#</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase">User</th>
                   <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-28">Old Rating</th>
@@ -48,9 +48,9 @@ export default function ContestRatingsPage() {
                   <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-24">Change</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-rf-border">
+              <tbody className="divide-y divide-[#2a2a30]">
                 {changes.map((c: any) => (
-                  <tr key={c.userId} className="hover:bg-rf-dark/50 transition-colors">
+                  <tr key={c.userId} className="hover:bg-[#141416] transition-colors">
                     <td className="text-center px-4 py-3 text-sm font-bold text-orange-400">
                       {c.rank}
                     </td>

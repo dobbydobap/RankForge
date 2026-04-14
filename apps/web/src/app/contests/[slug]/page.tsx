@@ -114,18 +114,18 @@ export default function ContestDetailPage() {
             </div>
 
             {!showProblems ? (
-              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-gray">
+              <div className="p-6 border border-[#2a2a30] rounded-xl bg-[#141416] text-center text-sm text-rf-gray">
                 Problems will be visible when the contest starts.
               </div>
             ) : contest.problems.length === 0 ? (
-              <div className="p-6 border border-rf-border rounded-xl bg-rf-dark/50 text-center text-sm text-rf-gray">
+              <div className="p-6 border border-[#2a2a30] rounded-xl bg-[#141416] text-center text-sm text-rf-gray">
                 No problems added yet.
               </div>
             ) : (
-              <div className="border border-rf-border rounded-xl overflow-hidden">
+              <div className="border border-[#2a2a30] rounded-xl overflow-hidden">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-rf-border bg-rf-dark/50">
+                    <tr className="border-b border-[#2a2a30] bg-[#141416]">
                       <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase w-16">
                         #
                       </th>
@@ -140,9 +140,9 @@ export default function ContestDetailPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-rf-border">
+                  <tbody className="divide-y divide-[#2a2a30]">
                     {contest.problems.map((p: any) => (
-                      <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
+                      <tr key={p.label} className="hover:bg-[#141416] transition-colors">
                         <td className="px-4 py-3 text-sm font-mono font-bold text-orange-400">
                           {p.label}
                         </td>
@@ -171,14 +171,14 @@ export default function ContestDetailPage() {
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Announcements */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
               <h3 className="text-sm font-semibold text-white mb-3">Announcements</h3>
               {contest.announcements.length === 0 ? (
                 <p className="text-xs text-rf-gray">No announcements yet.</p>
               ) : (
                 <div className="space-y-2">
                   {contest.announcements.map((a: any) => (
-                    <div key={a.id} className="p-2 bg-rf-border/50 rounded-lg">
+                    <div key={a.id} className="p-2 bg-[#22222a] rounded-lg">
                       <p className="text-sm text-orange-400">{a.content}</p>
                       <p className="text-xs text-rf-gray mt-1">
                         {new Date(a.createdAt).toLocaleTimeString()}
@@ -190,7 +190,7 @@ export default function ContestDetailPage() {
             </div>
 
             {/* Contest Info */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
               <h3 className="text-sm font-semibold text-white mb-3">Contest Rules</h3>
               <div className="space-y-2 text-xs text-rf-gray">
                 <div className="flex justify-between">

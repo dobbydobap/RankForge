@@ -181,7 +181,7 @@ export default function CreateContestPage() {
           </div>
         </form>
 
-        <div className="mt-8 p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+        <div className="mt-8 p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
           <h3 className="text-sm font-semibold text-orange-400 mb-2">After creating:</h3>
           <ol className="text-xs text-rf-gray space-y-1 list-decimal list-inside">
             <li>Add problems to the contest from the contest detail page</li>

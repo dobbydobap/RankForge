@@ -147,7 +147,7 @@ export default function ProblemDetailPage() {
   return (
     <div className="h-screen flex flex-col bg-rf-black">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 h-12 border-b border-rf-border bg-rf-black/80 backdrop-blur-sm shrink-0">
+      <div className="flex items-center justify-between px-4 h-12 border-b border-[#2a2a30] bg-rf-black/80 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-4">
           <Link href="/problems" className="text-sm text-rf-gray hover:text-white">&larr; Problems</Link>
           <span className="text-sm font-medium text-white">{problem.title}</span>
@@ -157,7 +157,7 @@ export default function ProblemDetailPage() {
           <button
             onClick={handleRun}
             disabled={isRunning || !code.trim()}
-            className="px-4 py-1.5 text-sm font-medium border border-rf-border hover:border-rf-iron disabled:opacity-50 text-rf-light rounded-lg transition-colors"
+            className="px-4 py-1.5 text-sm font-medium border border-[#2a2a30] hover:border-rf-iron disabled:opacity-50 text-rf-light rounded-lg transition-colors"
           >
             {isRunning ? 'Running...' : 'Run'}
           </button>
@@ -174,8 +174,8 @@ export default function ProblemDetailPage() {
       {/* Main content */}
       <div className="flex-1 flex min-h-0">
         {/* Left panel */}
-        <div className="w-[45%] border-r border-rf-border flex flex-col min-h-0">
-          <div className="flex border-b border-rf-border shrink-0">
+        <div className="w-[45%] border-r border-[#2a2a30] flex flex-col min-h-0">
+          <div className="flex border-b border-[#2a2a30] shrink-0">
             {(['problem', 'submissions'] as LeftTab[]).map((t) => (
               <button key={t} onClick={() => setLeftTab(t)}
                 className={`px-4 py-2 text-sm font-medium capitalize transition-colors ${leftTab === t ? 'text-white border-b-2 border-white' : 'text-rf-gray hover:text-white'}`}
@@ -191,7 +191,7 @@ export default function ProblemDetailPage() {
                   <p className="text-sm text-rf-gray">No submissions yet.</p>
                 ) : submissionsData.submissions.map((sub: any) => (
                   <Link key={sub.id} href={`/submissions/${sub.id}`}
-                    className="flex items-center justify-between p-3 rounded-lg border border-rf-border bg-rf-dark/50 hover:border-rf-iron transition-colors">
+                    className="flex items-center justify-between p-3 rounded-lg border border-[#2a2a30] bg-[#141416] hover:border-rf-iron transition-colors">
                     <div className="flex items-center gap-3">
                       <VerdictBadge verdict={sub.verdict} />
                       <span className="text-xs text-rf-gray">{sub.language}</span>
@@ -214,8 +214,8 @@ export default function ProblemDetailPage() {
           </div>
 
           {/* Bottom panel */}
-          <div className="h-[38%] border-t border-rf-border flex flex-col shrink-0">
-            <div className="flex border-b border-rf-border shrink-0 px-2">
+          <div className="h-[38%] border-t border-[#2a2a30] flex flex-col shrink-0">
+            <div className="flex border-b border-[#2a2a30] shrink-0 px-2">
               {(['testcases', 'result'] as BottomTab[]).map((t) => (
                 <button key={t} onClick={() => setBottomTab(t)}
                   className={`px-3 py-2 text-xs font-medium capitalize transition-colors ${bottomTab === t ? 'text-white border-b-2 border-white' : 'text-rf-gray hover:text-white'}`}
@@ -232,7 +232,7 @@ export default function ProblemDetailPage() {
                   <div className="flex gap-2 mb-3">
                     {sampleCases.map((_: any, i: number) => (
                       <button key={i} onClick={() => setActiveCase(i)}
-                        className={`px-3 py-1 text-xs rounded-lg transition-colors ${activeCase === i ? 'bg-rf-border text-white' : 'text-rf-gray hover:text-white'}`}
+                        className={`px-3 py-1 text-xs rounded-lg transition-colors ${activeCase === i ? 'bg-[#22222a] text-white' : 'text-rf-gray hover:text-white'}`}
                       >Case {i + 1}</button>
                     ))}
                   </div>
@@ -247,12 +247,12 @@ export default function ProblemDetailPage() {
                             newInputs[activeCase] = e.target.value;
                             setCustomInputs(newInputs);
                           }}
-                          className="w-full h-20 px-3 py-2 bg-rf-dark border border-rf-border rounded-lg text-white text-xs font-mono resize-none focus:outline-none focus:ring-1 focus:ring-rf-iron"
+                          className="w-full h-20 px-3 py-2 bg-rf-dark border border-[#2a2a30] rounded-lg text-white text-xs font-mono resize-none focus:outline-none focus:ring-1 focus:ring-rf-iron"
                         />
                       </div>
                       <div>
                         <label className="text-xs text-rf-gray mb-1 block">Expected Output</label>
-                        <pre className="px-3 py-2 bg-rf-dark border border-rf-border rounded-lg text-rf-light text-xs font-mono">{sampleCases[activeCase].output}</pre>
+                        <pre className="px-3 py-2 bg-rf-dark border border-[#2a2a30] rounded-lg text-rf-light text-xs font-mono">{sampleCases[activeCase].output}</pre>
                       </div>
                     </div>
                   )}
@@ -294,7 +294,7 @@ export default function ProblemDetailPage() {
                           return (
                             <button key={i} onClick={() => setActiveCase(i)}
                               className={`flex items-center gap-1 px-3 py-1 text-xs rounded-lg transition-colors ${
-                                activeCase === i ? 'bg-rf-border text-white' : 'text-rf-gray hover:text-white'
+                                activeCase === i ? 'bg-[#22222a] text-white' : 'text-rf-gray hover:text-white'
                               }`}
                             >
                               <span className={`w-1.5 h-1.5 rounded-full ${passed ? 'bg-green-400' : 'bg-red-400'}`} />
@@ -315,15 +315,15 @@ export default function ProblemDetailPage() {
                             <>
                               <div>
                                 <label className="text-xs text-rf-gray mb-1 block">Input</label>
-                                <pre className="px-3 py-2 bg-rf-dark border border-rf-border rounded-lg text-rf-light text-xs font-mono">{customInputs[activeCase] ?? sampleCases[activeCase]?.input}</pre>
+                                <pre className="px-3 py-2 bg-rf-dark border border-[#2a2a30] rounded-lg text-rf-light text-xs font-mono">{customInputs[activeCase] ?? sampleCases[activeCase]?.input}</pre>
                               </div>
                               <div>
                                 <label className="text-xs text-rf-gray mb-1 block">Output</label>
-                                <pre className="px-3 py-2 bg-rf-dark border border-rf-border rounded-lg text-white text-xs font-mono">{runResults[activeCase].output || '(no output)'}</pre>
+                                <pre className="px-3 py-2 bg-rf-dark border border-[#2a2a30] rounded-lg text-white text-xs font-mono">{runResults[activeCase].output || '(no output)'}</pre>
                               </div>
                               <div>
                                 <label className="text-xs text-rf-gray mb-1 block">Expected</label>
-                                <pre className="px-3 py-2 bg-rf-dark border border-rf-border rounded-lg text-rf-light text-xs font-mono">{sampleCases[activeCase]?.output}</pre>
+                                <pre className="px-3 py-2 bg-rf-dark border border-[#2a2a30] rounded-lg text-rf-light text-xs font-mono">{sampleCases[activeCase]?.output}</pre>
                               </div>
                             </>
                           )}
@@ -358,7 +358,7 @@ export default function ProblemDetailPage() {
                                 {submissionDetail.testResults.map((tr: any, i: number) => (
                                   <button key={i} onClick={() => setActiveCase(i)}
                                     className={`flex items-center gap-1 px-3 py-1 text-xs rounded-lg transition-colors ${
-                                      activeCase === i ? 'bg-rf-border text-white' : 'text-rf-gray hover:text-white'
+                                      activeCase === i ? 'bg-[#22222a] text-white' : 'text-rf-gray hover:text-white'
                                     }`}
                                   >
                                     <span className={`w-1.5 h-1.5 rounded-full ${tr.verdict === 'ACCEPTED' ? 'bg-green-400' : 'bg-red-400'}`} />

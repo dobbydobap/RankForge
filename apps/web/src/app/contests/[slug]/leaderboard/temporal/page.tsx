@@ -60,7 +60,7 @@ export default function TemporalLeaderboardPage() {
         </div>
 
         {/* Time Slider */}
-        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+        <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416] mb-6">
           <div className="text-xs text-rf-gray mb-2">
             Scrub through the contest timeline to see how standings evolved
           </div>
@@ -73,7 +73,7 @@ export default function TemporalLeaderboardPage() {
 
         {/* Activity Chart */}
         {analytics?.activityTimeline && (
-          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+          <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416] mb-6">
             <h2 className="text-sm font-semibold text-orange-400 mb-3">
               Submission Activity Over Time
             </h2>
@@ -94,10 +94,10 @@ export default function TemporalLeaderboardPage() {
             No activity at minute {minute}.
           </div>
         ) : (
-          <div className="border border-rf-border rounded-xl overflow-hidden">
+          <div className="border border-[#2a2a30] rounded-xl overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-rf-border bg-rf-dark/50">
+                <tr className="border-b border-[#2a2a30] bg-[#141416]">
                   <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-14">#</th>
                   <th className="text-left px-3 py-3 text-xs font-medium text-rf-gray uppercase">User</th>
                   <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">Score</th>
@@ -105,11 +105,11 @@ export default function TemporalLeaderboardPage() {
                   <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">Solved</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-rf-border">
+              <tbody className="divide-y divide-[#2a2a30]">
                 {standings.entries
                   .filter((e: any) => e.totalScore > 0 || e.solvedCount > 0)
                   .map((entry: any) => (
-                    <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
+                    <tr key={entry.userId} className="hover:bg-[#141416] transition-colors">
                       <td className="text-center px-3 py-3 text-sm font-bold text-orange-400">
                         {entry.rank}
                       </td>

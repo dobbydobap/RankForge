@@ -94,7 +94,7 @@ export default function UserProfilePage() {
           <div className="space-y-4">
             {/* Avatar & Name */}
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-full bg-rf-border border-2 border-rf-iron flex items-center justify-center text-2xl font-bold text-rf-gray shrink-0">
+              <div className="w-20 h-20 rounded-full bg-[#22222a] border-2 border-rf-iron flex items-center justify-center text-2xl font-bold text-rf-gray shrink-0">
                 {(user.profile?.displayName || user.username).charAt(0).toUpperCase()}
               </div>
               <div>
@@ -116,7 +116,7 @@ export default function UserProfilePage() {
             )}
 
             {/* Community Stats */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
               <h3 className="text-sm font-semibold text-orange-400 mb-3">Stats</h3>
               <div className="space-y-2.5">
                 <StatRow label="Rating" value={String(user.profile?.currentRating ?? 1200)} color={ratingColor} />
@@ -128,12 +128,12 @@ export default function UserProfilePage() {
 
             {/* Languages */}
             {stats.languages.length > 0 && (
-              <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+              <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
                 <h3 className="text-sm font-semibold text-orange-400 mb-3">Languages</h3>
                 <div className="space-y-2">
                   {stats.languages.map((l: any) => (
                     <div key={l.language} className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 text-xs bg-rf-border text-orange-400 rounded">
+                      <span className="px-2 py-0.5 text-xs bg-[#22222a] text-orange-400 rounded">
                         {(LANGUAGE_DISPLAY as any)[l.language] || l.language}
                       </span>
                       <span className="text-xs text-rf-gray">
@@ -147,15 +147,15 @@ export default function UserProfilePage() {
 
             {/* Skills */}
             {stats.skills.length > 0 && (
-              <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+              <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
                 <h3 className="text-sm font-semibold text-orange-400 mb-3">Skills</h3>
                 <div className="space-y-1.5">
                   {stats.skills.slice(0, 8).map((s: any) => (
                     <div key={s.name} className="flex items-center gap-2">
                       <span className="text-xs text-rf-gray w-28 truncate">{s.name}</span>
-                      <div className="flex-1 h-1.5 bg-rf-border rounded-full overflow-hidden">
+                      <div className="flex-1 h-1.5 bg-[#22222a] rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-orange-600-hover rounded-full"
+                          className="h-full bg-orange-500 rounded-full"
                           style={{ width: `${Math.min(100, (s.count / (stats.skills[0]?.count || 1)) * 100)}%` }}
                         />
                       </div>
@@ -168,7 +168,7 @@ export default function UserProfilePage() {
 
             {/* Badges */}
             {stats.badges.length > 0 && (
-              <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+              <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
                 <h3 className="text-sm font-semibold text-orange-400 mb-3">Badges</h3>
                 <div className="flex flex-wrap gap-2">
                   {stats.badges.map((b: any) => (
@@ -189,7 +189,7 @@ export default function UserProfilePage() {
           <div className="space-y-4">
 
             {/* Solved Progress Donut */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-5">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-5">
               <div className="flex items-center gap-8">
                 {/* Donut */}
                 <div className="relative w-32 h-32 shrink-0">
@@ -210,7 +210,7 @@ export default function UserProfilePage() {
                 {/* Difficulty Breakdown */}
                 <div className="flex-1 grid grid-cols-2 gap-3">
                   {['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => (
-                    <div key={d} className="flex items-center justify-between px-3 py-2 border border-rf-border rounded-lg">
+                    <div key={d} className="flex items-center justify-between px-3 py-2 border border-[#2a2a30] rounded-lg">
                       <span className="text-xs font-medium" style={{ color: DIFF_COLORS[d] }}>
                         {d.charAt(0) + d.slice(1).toLowerCase()}
                       </span>
@@ -225,7 +225,7 @@ export default function UserProfilePage() {
             </div>
 
             {/* Submission Heatmap */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-5">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-5">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-orange-400">
                   <span className="text-white font-bold">{stats.totalSubmissions}</span>{' '}
@@ -246,7 +246,7 @@ export default function UserProfilePage() {
                         const idx = weekIdx * 7 + dayIdx;
                         const cell = heatmapData[idx];
                         if (!cell) return <div key={dayIdx} className="w-[11px] h-[11px]" />;
-                        const colors = ['bg-rf-border', 'bg-rf-dark', 'bg-rf-iron', 'bg-orange-600-hover', 'bg-pink-400'];
+                        const colors = ['bg-[#1a1a1e]', 'bg-[#2a2a30]', 'bg-[#4a4a52]', 'bg-orange-700', 'bg-orange-500'];
                         return (
                           <div
                             key={dayIdx}
@@ -263,18 +263,18 @@ export default function UserProfilePage() {
               {/* Legend */}
               <div className="flex items-center gap-1.5 mt-2 text-[10px] text-rf-gray justify-end">
                 <span>Less</span>
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-border" />
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-dark" />
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-rf-iron" />
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-orange-600-hover" />
-                <div className="w-[11px] h-[11px] rounded-[2px] bg-pink-400" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-[#1a1a1e]" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-[#2a2a30]" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-[#4a4a52]" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-orange-700" />
+                <div className="w-[11px] h-[11px] rounded-[2px] bg-orange-500" />
                 <span>More</span>
               </div>
             </div>
 
             {/* Rating Graph */}
             {ratings && ratings.length > 0 && (
-              <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-5">
+              <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-5">
                 <h3 className="text-sm font-semibold text-orange-400 mb-3">Rating History</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
@@ -297,8 +297,8 @@ export default function UserProfilePage() {
             )}
 
             {/* Tabs: Recent AC / Contests / Skills */}
-            <div className="border border-rf-border rounded-xl bg-rf-dark/50">
-              <div className="flex border-b border-rf-border px-4">
+            <div className="border border-[#2a2a30] rounded-xl bg-[#141416]">
+              <div className="flex border-b border-[#2a2a30] px-4">
                 {([['recent', 'Recent AC'], ['contests', 'Contests'], ['skills', 'Skills']] as [Tab, string][]).map(([key, label]) => (
                   <button
                     key={key}
@@ -321,7 +321,7 @@ export default function UserProfilePage() {
                       <p className="text-sm text-rf-gray">No solved problems yet.</p>
                     ) : (
                       stats.recentAC.map((p: any) => (
-                        <div key={p.slug} className="flex items-center justify-between py-2 border-b border-rf-border/50 last:border-0">
+                        <div key={p.slug} className="flex items-center justify-between py-2 border-b border-[#2a2a30]/50 last:border-0">
                           <Link
                             href={`/problems/${p.slug}`}
                             className="text-sm text-white hover:text-orange-400 transition-colors"
@@ -348,7 +348,7 @@ export default function UserProfilePage() {
                       <p className="text-sm text-rf-gray">No contest history.</p>
                     ) : (
                       contests.map((c: any) => (
-                        <div key={c.contestId} className="flex items-center justify-between py-2 border-b border-rf-border/50 last:border-0">
+                        <div key={c.contestId} className="flex items-center justify-between py-2 border-b border-[#2a2a30]/50 last:border-0">
                           <Link
                             href={`/contests/${c.slug}`}
                             className="text-sm text-white hover:text-orange-400 transition-colors"
@@ -381,7 +381,7 @@ export default function UserProfilePage() {
                         {stats.skills.map((s: any) => (
                           <span
                             key={s.name}
-                            className="px-3 py-1.5 text-xs bg-rf-border text-orange-400 rounded-lg border border-rf-iron"
+                            className="px-3 py-1.5 text-xs bg-[#22222a] text-orange-400 rounded-lg border border-rf-iron"
                           >
                             {s.name} <span className="text-rf-gray ml-1">x{s.count}</span>
                           </span>

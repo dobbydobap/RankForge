@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
             {stats.map((s: any) => (
               <div
                 key={s.label}
-                className="flex-shrink-0 px-4 py-3 border border-rf-border rounded-lg bg-rf-dark/50 min-w-[140px]"
+                className="flex-shrink-0 px-4 py-3 border border-[#2a2a30] rounded-lg bg-[#141416] min-w-[140px]"
               >
                 <div className="text-sm font-mono font-bold text-orange-400">{s.label}</div>
                 <div className="text-xs text-rf-gray mt-0.5 truncate">{s.title}</div>
@@ -109,10 +109,10 @@ export default function LeaderboardPage() {
         {entries.length === 0 ? (
           <div className="text-center py-12 text-rf-gray">No standings yet.</div>
         ) : (
-          <div className="border border-rf-border rounded-xl overflow-x-auto">
+          <div className="border border-[#2a2a30] rounded-xl overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-rf-border bg-rf-dark/50">
+                <tr className="border-b border-[#2a2a30] bg-[#141416]">
                   <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-14">
                     #
                   </th>
@@ -135,9 +135,9 @@ export default function LeaderboardPage() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-rf-border">
+              <tbody className="divide-y divide-[#2a2a30]">
                 {entries.map((entry: any) => (
-                  <tr key={entry.userId} className="hover:bg-rf-dark/50 transition-colors">
+                  <tr key={entry.userId} className="hover:bg-[#141416] transition-colors">
                     <td className="text-center px-3 py-3 text-sm font-bold text-orange-400">
                       {entry.rank <= 3 ? (
                         <span

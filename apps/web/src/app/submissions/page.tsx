@@ -21,10 +21,10 @@ export default function SubmissionsPage() {
           <div className="text-center py-12 text-rf-gray">No submissions yet.</div>
         ) : (
           <>
-            <div className="border border-rf-border rounded-xl overflow-hidden">
+            <div className="border border-[#2a2a30] rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-rf-border bg-rf-dark/50">
+                  <tr className="border-b border-[#2a2a30] bg-[#141416]">
                     <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider">
                       Problem
                     </th>
@@ -45,9 +45,9 @@ export default function SubmissionsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-rf-border">
+                <tbody className="divide-y divide-[#2a2a30]">
                   {data.submissions.map((sub: any) => (
-                    <tr key={sub.id} className="hover:bg-rf-dark/50 transition-colors">
+                    <tr key={sub.id} className="hover:bg-[#141416] transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/problems/${sub.problemSlug}`}

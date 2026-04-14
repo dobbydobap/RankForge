@@ -49,12 +49,12 @@ export function TemporalSlider({
           max={duration}
           value={value}
           onChange={(e) => onChange(parseInt(e.target.value, 10))}
-          className="flex-1 h-1.5 bg-rf-border rounded-full appearance-none cursor-pointer
+          className="flex-1 h-1.5 bg-[#22222a] rounded-full appearance-none cursor-pointer
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:w-4
             [&::-webkit-slider-thumb]:h-4
             [&::-webkit-slider-thumb]:rounded-full
-            [&::-webkit-slider-thumb]:bg-orange-600-hover
+            [&::-webkit-slider-thumb]:bg-orange-500
             [&::-webkit-slider-thumb]:cursor-pointer
             [&::-webkit-slider-thumb]:shadow-lg"
         />

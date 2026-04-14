@@ -7,7 +7,7 @@ export function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore();
 
   return (
-    <nav className="border-b border-rf-border bg-rf-black/80 backdrop-blur-sm sticky top-0 z-50">
+    <nav className="border-b border-[#2a2a30] bg-rf-black/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">

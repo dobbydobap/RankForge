@@ -55,7 +55,7 @@ export default function AdminPage() {
 
             {/* Verdict Distribution */}
             {stats.verdictBreakdown?.length > 0 && (
-              <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+              <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416] mb-6">
                 <h2 className="text-sm font-semibold text-orange-400 mb-3">Verdict Distribution</h2>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
@@ -78,7 +78,7 @@ export default function AdminPage() {
         )}
 
         {/* User Management */}
-        <div className="border border-rf-border rounded-xl bg-rf-dark/50 p-4">
+        <div className="border border-[#2a2a30] rounded-xl bg-[#141416] p-4">
           <h2 className="text-sm font-semibold text-orange-400 mb-3">User Management</h2>
           <input
             type="text"
@@ -92,7 +92,7 @@ export default function AdminPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-rf-border">
+                  <tr className="border-b border-[#2a2a30]">
                     <th className="text-left px-3 py-2 text-xs font-medium text-rf-gray uppercase">Username</th>
                     <th className="text-left px-3 py-2 text-xs font-medium text-rf-gray uppercase">Email</th>
                     <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase">Role</th>
@@ -101,13 +101,13 @@ export default function AdminPage() {
                     <th className="text-right px-3 py-2 text-xs font-medium text-rf-gray uppercase">Joined</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-rf-border">
+                <tbody className="divide-y divide-[#2a2a30]">
                   {users.users.map((u: any) => (
-                    <tr key={u.id} className="hover:bg-rf-dark/50">
+                    <tr key={u.id} className="hover:bg-[#141416]">
                       <td className="px-3 py-2 text-sm text-white">{u.username}</td>
                       <td className="px-3 py-2 text-sm text-rf-gray">{u.email}</td>
                       <td className="text-center px-3 py-2">
-                        <span className="px-2 py-0.5 text-xs bg-rf-border text-orange-400 rounded">{u.role}</span>
+                        <span className="px-2 py-0.5 text-xs bg-[#22222a] text-orange-400 rounded">{u.role}</span>
                       </td>
                       <td className="text-center px-3 py-2 text-sm text-orange-400">{u.rating}</td>
                       <td className="text-center px-3 py-2 text-sm text-orange-400">{u.solvedCount}</td>
@@ -148,7 +148,7 @@ export default function AdminPage() {
 
 function StatCard({ title, value, accent }: { title: string; value: number; accent?: boolean }) {
   return (
-    <div className="p-3 rounded-xl border border-rf-border bg-rf-dark/50">
+    <div className="p-3 rounded-xl border border-[#2a2a30] bg-[#141416]">
       <p className="text-xs text-rf-gray">{title}</p>
       <p className={`mt-1 text-xl font-bold ${accent ? 'text-orange-400' : 'text-white'}`}>{value}</p>
     </div>

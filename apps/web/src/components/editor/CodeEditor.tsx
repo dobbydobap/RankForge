@@ -27,7 +27,7 @@ export function CodeEditor({ language, value, onChange, readOnly }: CodeEditorPr
   }, []);
 
   return (
-    <div className="h-full border border-rf-border rounded-lg overflow-hidden">
+    <div className="h-full border border-[#2a2a30] rounded-lg overflow-hidden">
       <Editor
         height="100%"
         language={LANGUAGE_MAP[language] || 'plaintext'}

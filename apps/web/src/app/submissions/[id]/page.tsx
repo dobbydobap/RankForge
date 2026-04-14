@@ -82,7 +82,7 @@ export default function SubmissionDetailPage() {
               {submission.testResults.map((tr: any, idx: number) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 px-3 py-2 border border-rf-border rounded-lg bg-rf-dark/50"
+                  className="flex items-center gap-2 px-3 py-2 border border-[#2a2a30] rounded-lg bg-[#141416]"
                 >
                   <span className="text-xs text-rf-gray">#{tr.order + 1}</span>
                   <VerdictBadge verdict={tr.verdict} short />
@@ -114,7 +114,7 @@ export default function SubmissionDetailPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-3 border border-rf-border rounded-lg bg-rf-dark/50">
+    <div className="p-3 border border-[#2a2a30] rounded-lg bg-[#141416]">
       <p className="text-xs text-rf-gray">{label}</p>
       <p className="text-sm font-medium text-white mt-0.5">{value}</p>
     </div>

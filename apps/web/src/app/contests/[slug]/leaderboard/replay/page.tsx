@@ -110,7 +110,7 @@ export default function ReplayPage() {
                 className={`px-2 py-1 text-xs rounded ${
                   speed === s
                     ? 'bg-orange-600 text-white'
-                    : 'bg-rf-border text-rf-gray hover:bg-rf-iron'
+                    : 'bg-[#22222a] text-rf-gray hover:bg-rf-iron'
                 } transition-colors`}
               >
                 {s}x
@@ -120,7 +120,7 @@ export default function ReplayPage() {
         </div>
 
         {/* Timeline slider */}
-        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+        <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416] mb-6">
           <TemporalSlider
             duration={replay.duration}
             value={currentFrame?.minute || 0}
@@ -131,7 +131,7 @@ export default function ReplayPage() {
         </div>
 
         {/* Rank Graph */}
-        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50 mb-6">
+        <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416] mb-6">
           <h2 className="text-sm font-semibold text-orange-400 mb-3">
             Rank Movement Over Time
           </h2>
@@ -144,22 +144,22 @@ export default function ReplayPage() {
 
         {/* Current standings at this frame */}
         {currentFrame && (
-          <div className="border border-rf-border rounded-xl overflow-hidden">
-            <div className="px-4 py-2 bg-rf-dark/50 border-b border-rf-border">
+          <div className="border border-[#2a2a30] rounded-xl overflow-hidden">
+            <div className="px-4 py-2 bg-[#141416] border-b border-[#2a2a30]">
               <span className="text-xs text-rf-gray">
                 Standings at minute {currentFrame.minute}
               </span>
             </div>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-rf-border bg-rf-dark/30">
+                <tr className="border-b border-[#2a2a30] bg-rf-dark/30">
                   <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-14">#</th>
                   <th className="text-left px-3 py-2 text-xs font-medium text-rf-gray uppercase">User</th>
                   <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-20">Score</th>
                   <th className="text-center px-3 py-2 text-xs font-medium text-rf-gray uppercase w-20">Penalty</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-rf-border">
+              <tbody className="divide-y divide-[#2a2a30]">
                 {currentFrame.standings
                   .filter((s: any) => s.score > 0)
                   .map((entry: any, idx: number) => {

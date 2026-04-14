@@ -47,22 +47,22 @@ export default function ContestAnalyticsPage() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+          <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
             <p className="text-xs text-rf-gray">Solved</p>
             <p className="text-2xl font-bold text-orange-400">
               {myAnalytics.summary.solved}/{myAnalytics.totalProblems}
             </p>
           </div>
-          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+          <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
             <p className="text-xs text-rf-gray">Score</p>
             <p className="text-2xl font-bold text-white">{myAnalytics.summary.totalScore}</p>
           </div>
-          <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+          <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
             <p className="text-xs text-rf-gray">Participants</p>
             <p className="text-2xl font-bold text-white">{myAnalytics.totalParticipants}</p>
           </div>
           {myAnalytics.summary.ratingChange && (
-            <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+            <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
               <p className="text-xs text-rf-gray">Rating Change</p>
               <p className={`text-2xl font-bold ${
                 myAnalytics.summary.ratingChange.delta >= 0 ? 'text-orange-400' : 'text-red-400'
@@ -75,10 +75,10 @@ export default function ContestAnalyticsPage() {
         </div>
 
         {/* Per-problem breakdown */}
-        <div className="border border-rf-border rounded-xl overflow-hidden mb-6">
+        <div className="border border-[#2a2a30] rounded-xl overflow-hidden mb-6">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-rf-border bg-rf-dark/50">
+              <tr className="border-b border-[#2a2a30] bg-[#141416]">
                 <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-14">#</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase">Problem</th>
                 <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-20">Result</th>
@@ -87,9 +87,9 @@ export default function ContestAnalyticsPage() {
                 <th className="text-center px-4 py-3 text-xs font-medium text-rf-gray uppercase w-20">Solvers</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-rf-border">
+            <tbody className="divide-y divide-[#2a2a30]">
               {myAnalytics.problemBreakdown.map((p: any) => (
-                <tr key={p.label} className="hover:bg-rf-dark/50 transition-colors">
+                <tr key={p.label} className="hover:bg-[#141416] transition-colors">
                   <td className="text-center px-4 py-3 text-sm font-mono font-bold text-orange-400">
                     {p.label}
                   </td>
@@ -123,7 +123,7 @@ export default function ContestAnalyticsPage() {
         </div>
 
         {/* Solve comparison chart */}
-        <div className="p-4 border border-rf-border rounded-xl bg-rf-dark/50">
+        <div className="p-4 border border-[#2a2a30] rounded-xl bg-[#141416]">
           <h2 className="text-sm font-semibold text-orange-400 mb-3">
             Your Solve Time vs Average
           </h2>

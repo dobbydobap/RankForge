@@ -29,9 +29,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Sidebar */}
-      <aside className="w-[240px] h-full flex flex-col border-r border-rf-border bg-rf-dark/60 backdrop-blur-xl shrink-0 relative z-10">
+      <aside className="w-[240px] h-full flex flex-col border-r border-[#1e1e24] bg-[#0e0e10]/90 backdrop-blur-xl shrink-0 relative z-10">
         {/* Logo */}
-        <div className="h-14 flex items-center px-5 border-b border-rf-border">
+        <div className="h-14 flex items-center px-5 border-b border-[#2a2a30]">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center text-white text-xs font-bold">
               R
@@ -51,7 +51,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
                   isActive
                     ? 'bg-gradient-to-r from-orange-500/15 to-orange-500/5 text-white border border-orange-500/20'
-                    : 'text-rf-gray hover:text-white hover:bg-rf-border/50'
+                    : 'text-rf-gray hover:text-white hover:bg-[#22222a]'
                 }`}
               >
                 <item.icon active={isActive} />
@@ -72,7 +72,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href={`/users/${user.username}`}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
-                pathname.startsWith('/users/') ? 'text-white bg-rf-border/50' : 'text-rf-gray hover:text-white hover:bg-rf-border/50'
+                pathname.startsWith('/users/') ? 'text-white bg-[#22222a]' : 'text-rf-gray hover:text-white hover:bg-[#22222a]'
               }`}
             >
               <UserIcon active={pathname.startsWith('/users/')} />
@@ -84,7 +84,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/admin"
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
-                pathname === '/admin' ? 'text-white bg-rf-border/50' : 'text-rf-gray hover:text-white hover:bg-rf-border/50'
+                pathname === '/admin' ? 'text-white bg-[#22222a]' : 'text-rf-gray hover:text-white hover:bg-[#22222a]'
               }`}
             >
               <ShieldIcon active={pathname === '/admin'} />
@@ -94,10 +94,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* User section */}
-        <div className="p-3 border-t border-rf-border">
+        <div className="p-3 border-t border-[#2a2a30]">
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3 px-2 py-1.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500/30 to-orange-700/30 border border-rf-border flex items-center justify-center text-xs font-bold text-orange-300">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500/30 to-orange-700/30 border border-[#2a2a30] flex items-center justify-center text-xs font-bold text-orange-300">
                 {(user.profile?.displayName || user.username).charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
@@ -116,7 +116,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           ) : (
             <div className="space-y-1.5">
-              <Link href="/login" className="flex items-center justify-center py-2 text-sm text-rf-gray hover:text-white rounded-lg border border-rf-border hover:border-rf-iron transition-all">
+              <Link href="/login" className="flex items-center justify-center py-2 text-sm text-rf-gray hover:text-white rounded-lg border border-[#2a2a30] hover:border-rf-iron transition-all">
                 Login
               </Link>
               <Link href="/register" className="flex items-center justify-center py-2 text-sm text-white bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-500 hover:to-orange-600 rounded-lg transition-all">

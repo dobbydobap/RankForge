@@ -32,7 +32,7 @@ export function ProblemStatement({ problem }: ProblemStatementProps) {
         </div>
         <div className="flex flex-wrap gap-1.5 mt-2">
           {problem.tags.map((t) => (
-            <span key={t} className="px-2 py-0.5 text-xs bg-rf-border text-rf-gray rounded">
+            <span key={t} className="px-2 py-0.5 text-xs bg-[#22222a] text-rf-gray rounded">
               {t}
             </span>
           ))}
@@ -94,7 +94,7 @@ function DiffBadge({ difficulty }: { difficulty: string }) {
     HARD: 'bg-orange-900/50 text-orange-400 border-orange-800',
     EXPERT: 'bg-red-900/50 text-red-400 border-red-800',
   };
-  const cls = colors[difficulty] || 'bg-rf-border text-rf-gray border-rf-iron';
+  const cls = colors[difficulty] || 'bg-[#22222a] text-rf-gray border-rf-iron';
   return (
     <span className={`px-2 py-0.5 text-xs font-medium rounded border ${cls}`}>
       {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}

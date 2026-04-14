@@ -33,7 +33,7 @@ export default function ContestsPage() {
                 <Link
                   key={contest.id}
                   href={`/contests/${contest.slug}`}
-                  className="block p-5 rounded-xl border border-rf-border bg-rf-dark/50 hover:border-rf-gray transition-colors"
+                  className="block p-5 rounded-xl border border-[#2a2a30] bg-[#141416] hover:border-rf-gray transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div>

@@ -14,7 +14,7 @@ const VERDICT_COLORS: Record<string, string> = {
   MEMORY_LIMIT_EXCEEDED: 'bg-orange-900/50 text-orange-400 border-orange-800',
   RUNTIME_ERROR: 'bg-purple-900/50 text-purple-400 border-purple-800',
   COMPILATION_ERROR: 'bg-pink-900/50 text-pink-400 border-pink-800',
-  PENDING: 'bg-rf-border/50 text-rf-gray border-rf-iron',
+  PENDING: 'bg-[#22222a] text-rf-gray border-rf-iron',
   JUDGING: 'bg-blue-900/50 text-blue-400 border-blue-800',
 };
 
