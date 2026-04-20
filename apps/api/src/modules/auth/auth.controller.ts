@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { registerSchema, loginSchema } from '@rankforge/shared';
@@ -17,6 +18,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
+  @Throttle({ short: { ttl: 60_000, limit: 5 }, long: { ttl: 3_600_000, limit: 10 } })
   async register(
     @Body(new ZodValidationPipe(registerSchema)) body: { email: string; username: string; password: string },
     @Res({ passthrough: true }) res: Response,
@@ -30,6 +32,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @Throttle({ short: { ttl: 60_000, limit: 10 }, long: { ttl: 3_600_000, limit: 50 } })
   @HttpCode(HttpStatus.OK)
   async login(
     @Body(new ZodValidationPipe(loginSchema)) body: { emailOrUsername: string; password: string },

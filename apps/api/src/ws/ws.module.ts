@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventsGateway } from './events.gateway';
+import { requireSecret } from '../common/utils/secrets';
 
 @Global()
 @Module({
@@ -9,7 +10,7 @@ import { EventsGateway } from './events.gateway';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_ACCESS_SECRET', 'dev-access-secret'),
+        secret: requireSecret(configService, 'JWT_ACCESS_SECRET'),
       }),
       inject: [ConfigService],
     }),

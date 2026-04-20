@@ -32,11 +32,9 @@ export class ContestsController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.contestsService.findAll({
-      status,
-      page: page ? parseInt(page, 10) : undefined,
-      limit: limit ? parseInt(limit, 10) : undefined,
-    });
+    const p = Math.max(1, Math.min(parseInt(page || '1', 10) || 1, 10000));
+    const l = Math.max(1, Math.min(parseInt(limit || '20', 10) || 20, 100));
+    return this.contestsService.findAll({ status, page: p, limit: l });
   }
 
   @Get('my')

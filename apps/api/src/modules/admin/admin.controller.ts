@@ -19,12 +19,9 @@ export class AdminController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.adminService.getUsers({
-      search,
-      role,
-      page: page ? parseInt(page, 10) : undefined,
-      limit: limit ? parseInt(limit, 10) : undefined,
-    });
+    const p = Math.max(1, Math.min(parseInt(page || '1', 10) || 1, 10000));
+    const l = Math.max(1, Math.min(parseInt(limit || '20', 10) || 20, 100));
+    return this.adminService.getUsers({ search: search?.slice(0, 100), role, page: p, limit: l });
   }
 
   @Patch('users/:id/role')
@@ -32,6 +29,10 @@ export class AdminController {
     @Param('id') id: string,
     @Body('role') role: string,
   ) {
+    const allowedRoles = ['USER', 'PROBLEM_SETTER', 'CONTEST_ORGANIZER', 'ADMIN'];
+    if (!allowedRoles.includes(role)) {
+      throw new (await import('@nestjs/common')).BadRequestException('Invalid role');
+    }
     return this.adminService.changeRole(id, role);
   }
 

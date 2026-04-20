@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
+import { requireSecret } from '../../common/utils/secrets';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { RolesGuard } from './guards/roles.guard';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_ACCESS_SECRET', 'dev-access-secret'),
+        secret: requireSecret(configService, 'JWT_ACCESS_SECRET'),
         signOptions: {
           expiresIn: configService.get('JWT_ACCESS_EXPIRY', '15m') as any,
         },

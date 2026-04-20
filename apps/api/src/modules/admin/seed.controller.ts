@@ -1,7 +1,20 @@
 import { Controller, Post, Query, ForbiddenException } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { ConfigService } from '@nestjs/config';
+import { timingSafeEqual } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PROBLEMS_DATA } from '../../data/problems-data';
+
+/** Constant-time string comparison to prevent timing attacks */
+function safeEqual(a: string, b: string): boolean {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  if (a.length !== b.length) return false;
+  try {
+    return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+  } catch {
+    return false;
+  }
+}
 
 @Controller('seed')
 export class SeedController {
@@ -11,9 +24,10 @@ export class SeedController {
   ) {}
 
   @Post()
+  @Throttle({ short: { ttl: 60_000, limit: 3 }, long: { ttl: 3_600_000, limit: 10 } })
   async seed(@Query('key') key: string, @Query('force') force?: string) {
-    const secret = this.configService.get<string>('JWT_ACCESS_SECRET');
-    if (!key || key !== secret) {
+    const secret = this.configService.get<string>('SEED_KEY') || this.configService.get<string>('JWT_ACCESS_SECRET');
+    if (!secret || !safeEqual(key || '', secret)) {
       throw new ForbiddenException('Invalid seed key');
     }
 

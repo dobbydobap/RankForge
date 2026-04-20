@@ -20,7 +20,8 @@ export class LeaderboardController {
     @Param('contestId') contestId: string,
     @Param('minute') minute: string,
   ) {
-    return this.leaderboardService.getStandingsAtTime(contestId, parseInt(minute, 10));
+    const m = Math.max(0, Math.min(parseInt(minute, 10) || 0, 10000));
+    return this.leaderboardService.getStandingsAtTime(contestId, m);
   }
 
   @Get(':contestId/user/:userId')

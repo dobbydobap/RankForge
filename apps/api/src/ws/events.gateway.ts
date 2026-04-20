@@ -12,6 +12,7 @@ import { Server, WebSocket } from 'ws';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IncomingMessage } from 'http';
+import { requireSecret } from '../common/utils/secrets';
 
 interface AuthenticatedSocket extends WebSocket {
   userId?: string;
@@ -42,7 +43,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       if (token) {
         const payload = this.jwtService.verify(token, {
-          secret: this.configService.get<string>('JWT_ACCESS_SECRET', 'dev-access-secret'),
+          secret: requireSecret(this.configService, 'JWT_ACCESS_SECRET'),
         });
         client.userId = payload.sub;
       }

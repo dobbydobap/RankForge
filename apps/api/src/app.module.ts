@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
 import { WsModule } from './ws/ws.module';
@@ -24,6 +26,12 @@ import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'production' ? undefined : '../../.env',
     }),
+    // Global rate limiting: 3 tiers
+    ThrottlerModule.forRoot([
+      { name: 'short', ttl: 1000, limit: 10 },    // 10 req/s burst
+      { name: 'medium', ttl: 60_000, limit: 200 }, // 200 req/min
+      { name: 'long', ttl: 3_600_000, limit: 2000 }, // 2000 req/hour
+    ]),
     PrismaModule,
     RedisModule,
     WsModule,
@@ -41,6 +49,9 @@ import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
     AdminModule,
     AchievementsModule,
     PlagiarismModule,
+  ],
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
 export class AppModule {}
