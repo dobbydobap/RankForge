@@ -1,0 +1,209 @@
+'use client';
+import { useCallback } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { useQueryClient } from '@tanstack/react-query';
+import { VerdictBadge } from '@/components/submissions/VerdictBadge';
+import { useContest, useLeaderboard, useProblemStats } from '@/hooks/use-api';
+import { useContestUpdates } from '@/hooks/use-websocket';
+
+export default function LeaderboardPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const queryClient = useQueryClient();
+  const { data: contest } = useContest(slug);
+  const { data: leaderboard, isLoading } = useLeaderboard(contest?.id || '');
+  const { data: stats } = useProblemStats(contest?.id || '');
+
+  // Live leaderboard updates via WebSocket
+  useContestUpdates(contest?.id || null, {
+    onLeaderboardUpdate: useCallback(() => {
+      queryClient.invalidateQueries({ queryKey: ['leaderboard', contest?.id] });
+      queryClient.invalidateQueries({ queryKey: ['problemStats', contest?.id] });
+    }, [queryClient, contest?.id]),
+  });
+
+  if (isLoading || !contest) {
+    return (
+      <>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-rf-gray">Loading leaderboard...</div>
+        </div>
+      </>
+    );
+  }
+
+  const entries = leaderboard?.entries || [];
+  const problemLabels = contest.problems?.map((p: any) => p.label) || [];
+
+  return (
+    <>
+      <main className="flex-1 w-full px-6 lg:px-10 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-[var(--c-fg)]">Leaderboard</h1>
+              {leaderboard?.isFrozen && (
+                <span className="px-2 py-0.5 text-xs font-medium bg-yellow-900/50 text-yellow-400 border border-yellow-800 rounded">
+                  Frozen
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-3 mt-1">
+              <Link
+                href={`/contests/${slug}`}
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
+              >
+                &larr; {contest.title}
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/leaderboard/temporal`}
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
+              >
+                Temporal View
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/leaderboard/replay`}
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
+              >
+                Replay
+              </Link>
+              <span className="text-rf-iron">|</span>
+              <Link
+                href={`/contests/${slug}/ratings`}
+                className="text-sm text-rf-gray hover:text-orange-400 transition-colors"
+              >
+                Ratings
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Problem Stats */}
+        {stats && stats.length > 0 && (
+          <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
+            {stats.map((s: any) => (
+              <div
+                key={s.label}
+                className="flex-shrink-0 px-4 py-3 border border-[var(--c-border-2)] rounded-lg bg-[var(--c-surface)] min-w-[140px]"
+              >
+                <div className="text-sm font-mono font-bold text-orange-400">{s.label}</div>
+                <div className="text-xs text-rf-gray mt-0.5 truncate">{s.title}</div>
+                <div className="flex items-center gap-2 mt-2 text-xs text-rf-gray">
+                  <span>{s.solvedCount}/{s.attemptedCount}</span>
+                  <span>{s.acceptanceRate}%</span>
+                </div>
+                {s.firstSolver && (
+                  <div className="text-xs text-yellow-400 mt-1">
+                    FB: {s.firstSolver.username}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Standings Table */}
+        {entries.length === 0 ? (
+          <div className="text-center py-12 text-rf-gray">No standings yet.</div>
+        ) : (
+          <div className="border border-[var(--c-border-2)] rounded-xl overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--c-border-2)] bg-[var(--c-surface)]">
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-14">
+                    #
+                  </th>
+                  <th className="text-left px-3 py-3 text-xs font-medium text-rf-gray uppercase">
+                    User
+                  </th>
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">
+                    Score
+                  </th>
+                  <th className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20">
+                    Penalty
+                  </th>
+                  {problemLabels.map((label: string) => (
+                    <th
+                      key={label}
+                      className="text-center px-3 py-3 text-xs font-medium text-rf-gray uppercase w-20"
+                    >
+                      {label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--c-border-2)]">
+                {entries.map((entry: any) => (
+                  <tr key={entry.userId} className="hover:bg-[var(--c-surface)] transition-colors">
+                    <td className="text-center px-3 py-3 text-sm font-bold text-orange-400">
+                      {entry.rank <= 3 ? (
+                        <span
+                          className={
+                            entry.rank === 1
+                              ? 'text-yellow-400'
+                              : entry.rank === 2
+                                ? 'text-orange-400'
+                                : 'text-orange-400'
+                          }
+                        >
+                          {entry.rank}
+                        </span>
+                      ) : (
+                        entry.rank
+                      )}
+                    </td>
+                    <td className="px-3 py-3">
+                      <Link
+                        href={`/users/${entry.username}`}
+                        className="text-sm font-medium text-[var(--c-fg)] hover:text-orange-400 transition-colors"
+                      >
+                        {entry.displayName || entry.username}
+                      </Link>
+                      <span className="text-xs text-rf-gray ml-1.5">@{entry.username}</span>
+                    </td>
+                    <td className="text-center px-3 py-3 text-sm font-bold text-[var(--c-fg)]">
+                      {entry.totalScore}
+                    </td>
+                    <td className="text-center px-3 py-3 text-sm text-rf-gray">
+                      {entry.penalty}
+                    </td>
+                    {problemLabels.map((label: string) => {
+                      const pr = entry.problemResults.find((r: any) => r.label === label);
+                      if (!pr || pr.attempts === 0) {
+                        return (
+                          <td key={label} className="text-center px-3 py-3 text-sm text-rf-iron">
+                            —
+                          </td>
+                        );
+                      }
+
+                      const isAC = pr.score > 0;
+                      return (
+                        <td key={label} className="text-center px-3 py-3">
+                          <div
+                            className={`inline-flex flex-col items-center px-2 py-1 rounded text-xs font-medium ${
+                              isAC
+                                ? pr.isFirstBlood
+                                  ? 'bg-yellow-900/30 text-yellow-400'
+                                  : 'bg-rf-dark/30 text-orange-400'
+                                : 'bg-red-900/30 text-red-400'
+                            }`}
+                          >
+                            <span>{isAC ? `+${pr.attempts > 1 ? pr.attempts - 1 : ''}` : `-${pr.attempts}`}</span>
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </main>
+    </>
+  );
+}
