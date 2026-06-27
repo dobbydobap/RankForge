@@ -82,7 +82,7 @@ export default function ReplayPage() {
       <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-[var(--c-fg)]">Contest Replay</h1>
+            <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-[var(--c-fg)]">Contest Replay</h1>
             <div className="flex items-center gap-3 mt-1">
               <Link
                 href={`/contests/${slug}`}

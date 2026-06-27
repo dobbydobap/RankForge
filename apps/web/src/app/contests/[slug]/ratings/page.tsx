@@ -23,7 +23,7 @@ export default function ContestRatingsPage() {
     <>
       <main className="flex-1 w-full px-6 lg:px-10 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[var(--c-fg)]">Rating Changes</h1>
+          <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-[var(--c-fg)]">Rating Changes</h1>
           <Link
             href={`/contests/${slug}`}
             className="text-sm text-rf-gray hover:text-orange-400 transition-colors"

@@ -55,7 +55,7 @@ export default function CreateContestPage() {
     <>
       <main className="flex-1 w-full max-w-3xl px-6 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[var(--c-fg)]">Create Contest</h1>
+          <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-[var(--c-fg)]">Create Contest</h1>
           <p className="text-sm text-rf-gray mt-1">
             Set up a new competitive programming contest
           </p>

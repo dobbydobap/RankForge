@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-[var(--c-fg)]">Leaderboard</h1>
+              <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-[var(--c-fg)]">Leaderboard</h1>
               {leaderboard?.isFrozen && (
                 <span className="px-2 py-0.5 text-xs font-medium bg-yellow-900/50 text-yellow-400 border border-yellow-800 rounded">
                   Frozen

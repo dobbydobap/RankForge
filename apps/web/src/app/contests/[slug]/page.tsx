@@ -55,7 +55,7 @@ export default function ContestDetailPage() {
         <div className="flex items-start justify-between mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-[var(--c-fg)]">{contest.title}</h1>
+              <h1 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-[var(--c-fg)]">{contest.title}</h1>
               <ContestStatusBadge status={contest.status} />
             </div>
             {contest.description && (
