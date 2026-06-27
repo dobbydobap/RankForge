@@ -2,6 +2,7 @@
 
 import { useAuthStore } from '@/stores/auth-store';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
+import { PageHeader, SectionLabel, StatTile } from '@/components/layout/Editorial';
 import { useDashboardStats } from '@/hooks/use-api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -21,157 +22,152 @@ export default function DashboardPage() {
 
   if (authLoading || isLoading) {
     return (
-      <>
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-rf-gray">Loading...</div>
-        </div>
-      </>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="label-mono text-rf-gray animate-pulse">Loading…</div>
+      </div>
     );
   }
 
   if (!user) return null;
 
+  const maxDiff = Math.max(
+    1,
+    ...['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => stats?.difficultyBreakdown?.[d] || 0),
+  );
+
   return (
-    <>
-      <main className="flex-1 w-full px-6 lg:px-10 py-8">
-        <h1 className="text-2xl font-bold text-[var(--c-fg)]">
-          Welcome, {user.profile?.displayName || user.username}
-        </h1>
-        <p className="mt-1 text-sm text-rf-gray">
-          Here&apos;s your progress overview
-        </p>
-
-        {/* Stats Cards */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
-          <StatCard title="Rating" value={stats?.profile?.currentRating ?? 1200} accent />
-          <StatCard title="Max Rating" value={stats?.profile?.maxRating ?? 1200} />
-          <StatCard title="Solved" value={stats?.profile?.solvedCount ?? 0} />
-          <StatCard title="Contests" value={stats?.profile?.contestCount ?? 0} />
-          <StatCard title="Streak" value={`${stats?.streak ?? 0}d`} />
-        </div>
-
-        {/* Difficulty Breakdown */}
-        {stats?.difficultyBreakdown && Object.keys(stats.difficultyBreakdown).length > 0 && (
-          <div className="mt-6 p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-            <h2 className="text-sm font-semibold text-orange-400 mb-3">Problems by Difficulty</h2>
-            <div className="flex items-center gap-4">
-              {['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => {
-                const count = stats.difficultyBreakdown[d] || 0;
-                const colors: Record<string, string> = {
-                  EASY: 'bg-orange-500', MEDIUM: 'bg-yellow-500',
-                  HARD: 'bg-orange-500', EXPERT: 'bg-red-500',
-                };
-                return (
-                  <div key={d} className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${colors[d]}`} />
-                    <span className="text-xs text-rf-gray">
-                      {d.charAt(0) + d.slice(1).toLowerCase()}: {count}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Upcoming Contests */}
-          <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-            <h2 className="text-sm font-semibold text-orange-400 mb-3">Upcoming Contests</h2>
-            {!stats?.upcomingContests?.length ? (
-              <p className="text-xs text-rf-gray">
-                No upcoming contests.{' '}
-                <Link href="/contests" className="text-orange-400 hover:text-[var(--c-fg)]">
-                  Browse contests
-                </Link>
-              </p>
-            ) : (
-              <div className="space-y-2">
-                {stats.upcomingContests.map((c: any) => (
-                  <Link
-                    key={c.id}
-                    href={`/contests/${c.slug}`}
-                    className="block p-3 rounded-lg border border-[var(--c-border-2)] hover:border-rf-gray transition-colors"
-                  >
-                    <div className="text-sm font-medium text-[var(--c-fg)]">{c.title}</div>
-                    <div className="text-xs text-rf-gray mt-0.5">
-                      {new Date(c.startTime).toLocaleDateString(undefined, {
-                        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
-                      })}{' '}
-                      &middot; {c.duration} min
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Recent Submissions */}
-          <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-            <h2 className="text-sm font-semibold text-orange-400 mb-3">Recent Submissions</h2>
-            {!stats?.recentSubmissions?.length ? (
-              <p className="text-xs text-rf-gray">
-                No submissions yet.{' '}
-                <Link href="/problems" className="text-orange-400 hover:text-[var(--c-fg)]">
-                  Start solving
-                </Link>
-              </p>
-            ) : (
-              <div className="space-y-2">
-                {stats.recentSubmissions.map((s: any) => (
-                  <Link
-                    key={s.id}
-                    href={`/submissions/${s.id}`}
-                    className="flex items-center justify-between p-2 rounded-lg hover:bg-[var(--c-surface-3)] transition-colors"
-                  >
-                    <div>
-                      <div className="text-sm text-[var(--c-fg)]">{s.problemTitle}</div>
-                      <div className="text-xs text-rf-gray">
-                        {(LANGUAGE_DISPLAY as any)[s.language]} &middot;{' '}
-                        {new Date(s.createdAt).toLocaleDateString()}
-                      </div>
-                    </div>
-                    <VerdictBadge verdict={s.verdict} short />
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mt-6 flex gap-3">
-          <Link
-            href="/problems"
-            className="px-4 py-2 text-sm font-medium bg-[var(--c-surface-3)] hover:bg-rf-iron text-[var(--c-fg)] rounded-lg transition-colors"
-          >
-            Practice Problems
-          </Link>
-          <Link
-            href="/contests"
-            className="px-4 py-2 text-sm font-medium bg-[var(--c-surface-3)] hover:bg-rf-iron text-[var(--c-fg)] rounded-lg transition-colors"
-          >
-            Browse Contests
-          </Link>
+    <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+      <PageHeader
+        eyebrow="Dashboard / Overview"
+        title={user.profile?.displayName || user.username}
+        actions={
           <Link
             href={`/users/${user.username}`}
-            className="px-4 py-2 text-sm font-medium bg-[var(--c-surface-3)] hover:bg-rf-iron text-[var(--c-fg)] rounded-lg transition-colors"
+            className="px-5 py-2.5 text-xs uppercase tracking-wide font-medium bg-[var(--c-fg)] text-[var(--c-bg)] hover:opacity-80 transition-opacity"
           >
-            My Profile
+            View Profile
           </Link>
-        </div>
-      </main>
-    </>
-  );
-}
+        }
+      />
 
-function StatCard({ title, value, accent }: { title: string; value: string | number; accent?: boolean }) {
-  return (
-    <div className="p-4 rounded-xl border border-[var(--c-border-2)] bg-[var(--c-surface)]">
-      <p className="text-xs text-rf-gray">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-orange-400' : 'text-[var(--c-fg)]'}`}>
-        {value}
-      </p>
-    </div>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-[var(--c-border)] border border-[var(--c-border)]">
+        <StatTile label="Rating" value={stats?.profile?.currentRating ?? 1200} emphasis />
+        <StatTile label="Max Rating" value={stats?.profile?.maxRating ?? 1200} />
+        <StatTile label="Solved" value={stats?.profile?.solvedCount ?? 0} />
+        <StatTile label="Contests" value={stats?.profile?.contestCount ?? 0} />
+        <StatTile label="Streak" value={`${stats?.streak ?? 0}d`} />
+      </div>
+
+      {/* Difficulty Breakdown */}
+      {stats?.difficultyBreakdown && Object.keys(stats.difficultyBreakdown).length > 0 && (
+        <section className="mt-12">
+          <SectionLabel index="01">Problems by Difficulty</SectionLabel>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[var(--c-border)] border border-[var(--c-border)]">
+            {['EASY', 'MEDIUM', 'HARD', 'EXPERT'].map((d) => {
+              const count = stats.difficultyBreakdown[d] || 0;
+              return (
+                <div key={d} className="bg-[var(--c-surface)] p-5">
+                  <div className="label-mono text-rf-gray">{d}</div>
+                  <div className="font-display text-3xl text-[var(--c-fg)] mt-2 tabular-nums leading-none">
+                    {count}
+                  </div>
+                  <div className="mt-3 h-1 bg-[var(--c-surface-3)]">
+                    <div
+                      className="h-full bg-[var(--c-fg)]"
+                      style={{ width: `${(count / maxDiff) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* Upcoming Contests */}
+        <section>
+          <SectionLabel index="02">Upcoming Contests</SectionLabel>
+          {!stats?.upcomingContests?.length ? (
+            <p className="text-sm text-rf-gray">
+              No upcoming contests.{' '}
+              <Link href="/contests" className="text-[var(--c-fg)] underline underline-offset-4">
+                Browse contests
+              </Link>
+            </p>
+          ) : (
+            <div className="border border-[var(--c-border)] divide-y divide-[var(--c-border)]">
+              {stats.upcomingContests.map((c: any) => (
+                <Link
+                  key={c.id}
+                  href={`/contests/${c.slug}`}
+                  className="block p-4 bg-[var(--c-surface)] hover:bg-[var(--c-surface-2)] transition-colors"
+                >
+                  <div className="text-sm font-medium text-[var(--c-fg)]">{c.title}</div>
+                  <div className="label-mono text-rf-gray mt-1">
+                    {new Date(c.startTime).toLocaleDateString(undefined, {
+                      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+                    })}{' '}
+                    · {c.duration} min
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Recent Submissions */}
+        <section>
+          <SectionLabel index="03">Recent Submissions</SectionLabel>
+          {!stats?.recentSubmissions?.length ? (
+            <p className="text-sm text-rf-gray">
+              No submissions yet.{' '}
+              <Link href="/problems" className="text-[var(--c-fg)] underline underline-offset-4">
+                Start solving
+              </Link>
+            </p>
+          ) : (
+            <div className="border border-[var(--c-border)] divide-y divide-[var(--c-border)]">
+              {stats.recentSubmissions.map((s: any) => (
+                <Link
+                  key={s.id}
+                  href={`/submissions/${s.id}`}
+                  className="flex items-center justify-between gap-3 p-4 bg-[var(--c-surface)] hover:bg-[var(--c-surface-2)] transition-colors"
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm text-[var(--c-fg)] truncate">{s.problemTitle}</div>
+                    <div className="label-mono text-rf-gray mt-1">
+                      {(LANGUAGE_DISPLAY as any)[s.language]} · {new Date(s.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <VerdictBadge verdict={s.verdict} short />
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* Quick Actions */}
+      <section className="mt-12">
+        <SectionLabel index="04">Quick Actions</SectionLabel>
+        <div className="flex flex-wrap gap-3">
+          {[
+            ['Practice Problems', '/problems'],
+            ['Browse Contests', '/contests'],
+            ['My Profile', `/users/${user.username}`],
+          ].map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              className="px-5 py-2.5 text-xs uppercase tracking-wide font-medium border border-[var(--c-border-2)] text-[var(--c-fg)] hover:border-[var(--c-fg)] transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
