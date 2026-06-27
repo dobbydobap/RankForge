@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { useSubmissions } from '@/hooks/use-api';
 import { LANGUAGE_DISPLAY } from '@rankforge/shared';
+import { PageHeader } from '@/components/layout/Editorial';
 
 export default function SubmissionsPage() {
   const [page, setPage] = useState(1);
@@ -12,19 +13,19 @@ export default function SubmissionsPage() {
 
   return (
     <>
-      <main className="flex-1 w-full px-6 lg:px-10 py-8">
-        <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-6">Submissions</h1>
+      <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+        <PageHeader eyebrow="Activity / Judge" title="Submissions" />
 
         {isLoading ? (
-          <div className="text-center py-12 text-rf-gray">Loading submissions...</div>
+          <div className="text-center py-12 label-mono text-rf-gray animate-pulse">Loading…</div>
         ) : !data?.submissions.length ? (
-          <div className="text-center py-12 text-rf-gray">No submissions yet.</div>
+          <div className="text-center py-12 label-mono text-rf-gray">No submissions yet</div>
         ) : (
           <>
-            <div className="border border-[var(--c-border-2)] rounded-xl overflow-hidden">
+            <div className="border border-[var(--c-border)]">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--c-border-2)] bg-[var(--c-surface)]">
+                  <tr className="border-b border-[var(--c-border)] bg-[var(--c-surface)]">
                     <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider">
                       Problem
                     </th>
@@ -45,13 +46,13 @@ export default function SubmissionsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--c-border-2)]">
+                <tbody className="divide-y divide-[var(--c-border)]">
                   {data.submissions.map((sub: any) => (
                     <tr key={sub.id} className="hover:bg-[var(--c-surface)] transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/problems/${sub.problemSlug}`}
-                          className="text-sm text-[var(--c-fg)] hover:text-orange-400 transition-colors"
+                          className="text-sm text-[var(--c-fg)] hover:underline underline-offset-4 transition-colors"
                         >
                           {sub.problemTitle}
                         </Link>
@@ -85,21 +86,21 @@ export default function SubmissionsPage() {
             </div>
 
             {data.totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-6">
+              <div className="flex items-center justify-center gap-4 mt-6">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-1.5 text-xs uppercase tracking-wide border border-[var(--c-border-2)] text-[var(--c-fg)] hover:border-[var(--c-fg)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
-                  Previous
+                  Prev
                 </button>
-                <span className="text-sm text-rf-gray">
-                  Page {data.page} of {data.totalPages}
+                <span className="label-mono text-rf-gray tabular-nums">
+                  {data.page} / {data.totalPages}
                 </span>
                 <button
                   onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                   disabled={page === data.totalPages}
-                  className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-1.5 text-xs uppercase tracking-wide border border-[var(--c-border-2)] text-[var(--c-fg)] hover:border-[var(--c-fg)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>

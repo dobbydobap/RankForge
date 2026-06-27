@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ProblemFilters, DifficultyBadge } from '@/components/problems/ProblemFilters';
+import { PageHeader } from '@/components/layout/Editorial';
 import { useProblems, useTags } from '@/hooks/use-api';
 
 export default function ProblemsPage() {
@@ -16,10 +17,16 @@ export default function ProblemsPage() {
 
   return (
     <>
-      <main className="flex-1 w-full px-6 lg:px-10 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-[var(--c-fg)]">Problems</h1>
-        </div>
+      <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+        <PageHeader
+          eyebrow="Practice / Archive"
+          title="Problems"
+          actions={
+            <span className="label-mono text-rf-gray">
+              {data?.total ?? data?.problems?.length ?? 0} total
+            </span>
+          }
+        />
 
         <ProblemFilters
           difficulty={difficulty}
@@ -33,15 +40,15 @@ export default function ProblemsPage() {
 
         <div className="mt-6">
           {isLoading ? (
-            <div className="text-center py-12 text-rf-gray">Loading problems...</div>
+            <div className="text-center py-12 label-mono text-rf-gray animate-pulse">Loading…</div>
           ) : !data?.problems.length ? (
-            <div className="text-center py-12 text-rf-gray">No problems found.</div>
+            <div className="text-center py-12 label-mono text-rf-gray">No problems found</div>
           ) : (
             <>
-              <div className="border border-[var(--c-border-2)] rounded-xl overflow-hidden">
+              <div className="border border-[var(--c-border)]">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-[var(--c-border-2)] bg-[var(--c-surface)]">
+                    <tr className="border-b border-[var(--c-border)] bg-[var(--c-surface)]">
                       <th className="text-left px-4 py-3 text-xs font-medium text-rf-gray uppercase tracking-wider">
                         Title
                       </th>
@@ -56,13 +63,13 @@ export default function ProblemsPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[var(--c-border-2)]">
+                  <tbody className="divide-y divide-[var(--c-border)]">
                     {data.problems.map((problem: any) => (
                       <tr key={problem.id} className="hover:bg-[var(--c-surface)] transition-colors">
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${problem.slug}`}
-                            className="text-sm font-medium text-[var(--c-fg)] hover:text-orange-400 transition-colors"
+                            className="text-sm font-medium text-[var(--c-fg)] hover:underline underline-offset-4 transition-colors"
                           >
                             {problem.title}
                           </Link>
@@ -78,7 +85,7 @@ export default function ProblemsPage() {
                             {problem.tags.slice(0, 3).map((t: string) => (
                               <span
                                 key={t}
-                                className="px-2 py-0.5 text-xs bg-[var(--c-surface-3)] text-rf-gray rounded"
+                                className="px-2 py-0.5 text-[11px] font-mono uppercase tracking-wide border border-[var(--c-border-2)] text-rf-gray"
                               >
                                 {t}
                               </span>
@@ -100,21 +107,21 @@ export default function ProblemsPage() {
               </div>
 
               {data.totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-6">
+                <div className="flex items-center justify-center gap-4 mt-6">
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-1.5 text-xs uppercase tracking-wide border border-[var(--c-border-2)] text-[var(--c-fg)] hover:border-[var(--c-fg)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
-                    Previous
+                    Prev
                   </button>
-                  <span className="text-sm text-rf-gray">
-                    Page {data.page} of {data.totalPages}
+                  <span className="label-mono text-rf-gray tabular-nums">
+                    {data.page} / {data.totalPages}
                   </span>
                   <button
                     onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                     disabled={page === data.totalPages}
-                    className="px-3 py-1.5 text-sm border border-rf-iron rounded-lg text-orange-400 hover:border-rf-gray disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-1.5 text-xs uppercase tracking-wide border border-[var(--c-border-2)] text-[var(--c-fg)] hover:border-[var(--c-fg)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>
