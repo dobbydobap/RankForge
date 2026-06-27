@@ -8,6 +8,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Behind Render's TLS-terminating proxy — required for `secure` cookies to be
+  // set over the proxied HTTPS connection (otherwise the refresh cookie is dropped).
+  app.getHttpAdapter().getInstance().set('trust proxy', 1);
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || configService.get<number>('API_PORT', 4000);
 
