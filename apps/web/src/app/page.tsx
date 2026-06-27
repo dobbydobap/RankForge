@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LandingHeader } from "@/components/layout/LandingHeader";
 
 const FEATURES = [
   {
@@ -28,23 +29,8 @@ const STATS: [string, string][] = [
 export default function Home() {
   return (
     <div className="h-full overflow-y-auto bg-[var(--c-bg)] text-[var(--c-fg)] selection:bg-[var(--c-fg)] selection:text-[var(--c-bg)]">
-      {/* Top bar */}
-      <header className="flex items-center justify-between px-6 lg:px-10 h-16 border-b border-[var(--c-fg)]">
-        <Link href="/" className="font-display text-lg font-extrabold uppercase tracking-tight">
-          RankForge<sup className="text-[9px] align-super ml-0.5">™</sup>
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 label-mono">
-          <Link href="/problems" className="hover:opacity-40 transition-opacity">Problems</Link>
-          <Link href="/contests" className="hover:opacity-40 transition-opacity">Contests</Link>
-          <Link href="/login" className="hover:opacity-40 transition-opacity">Login</Link>
-        </nav>
-        <Link
-          href="/register"
-          className="label-mono bg-[var(--c-fg)] text-[var(--c-bg)] px-4 py-2 hover:opacity-80 transition-colors"
-        >
-          Get Started →
-        </Link>
-      </header>
+      {/* Top bar (auth-aware) */}
+      <LandingHeader />
 
       {/* Meta strip */}
       <div className="flex items-center justify-between px-6 lg:px-10 py-2 border-b border-[var(--c-fg)] label-mono text-neutral-500">
@@ -87,7 +73,7 @@ export default function Home() {
           </Link>
           <Link
             href="/problems"
-            className="inline-flex items-center justify-center border border-[var(--c-fg)] px-8 py-4 label-mono hover:bg-[var(--c-fg)] hover:text-[var(--c-fg)] transition-colors"
+            className="inline-flex items-center justify-center border border-[var(--c-fg)] px-8 py-4 label-mono hover:bg-[var(--c-fg)] hover:text-[var(--c-bg)] transition-colors"
           >
             Browse Problems
           </Link>
@@ -123,7 +109,7 @@ export default function Home() {
         {FEATURES.map((f) => (
           <div
             key={f.n}
-            className="group grid grid-cols-1 md:grid-cols-[8rem_1fr_minmax(0,28rem)] gap-4 md:gap-8 px-6 lg:px-10 py-10 border-b border-[var(--c-fg)] hover:bg-[var(--c-fg)] hover:text-[var(--c-fg)] transition-colors"
+            className="group grid grid-cols-1 md:grid-cols-[8rem_1fr_minmax(0,28rem)] gap-4 md:gap-8 px-6 lg:px-10 py-10 border-b border-[var(--c-fg)] hover:bg-[var(--c-fg)] hover:text-[var(--c-bg)] transition-colors"
           >
             <div className="font-display text-5xl lg:text-7xl text-neutral-300 group-hover:text-neutral-600">
               {f.n}
