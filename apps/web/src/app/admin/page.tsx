@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
 } from 'recharts';
+import { PageHeader, StatTile } from '@/components/layout/Editorial';
 
 const VERDICT_COLORS: Record<string, string> = {
   ACCEPTED: '#9a9aa4', WRONG_ANSWER: '#6b6b75', TIME_LIMIT_EXCEEDED: '#c8c8d0',
@@ -38,32 +39,32 @@ export default function AdminPage() {
 
   return (
     <>
-      <main className="flex-1 w-full px-6 lg:px-10 py-8">
-        <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-6">Admin Dashboard</h1>
+      <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+        <PageHeader eyebrow="Admin / System" title="Control Room" />
 
         {/* System Stats */}
         {stats && (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
-              <StatCard title="Users" value={stats.users} />
-              <StatCard title="Problems" value={stats.problems} />
-              <StatCard title="Contests" value={stats.contests} />
-              <StatCard title="Submissions" value={stats.submissions} />
-              <StatCard title="Live Contests" value={stats.liveContests} accent />
-              <StatCard title="24h Submissions" value={stats.submissionsLast24h} />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-[var(--c-border)] border border-[var(--c-border)] mb-12">
+              <StatTile label="Users" value={stats.users} />
+              <StatTile label="Problems" value={stats.problems} />
+              <StatTile label="Contests" value={stats.contests} />
+              <StatTile label="Submissions" value={stats.submissions} />
+              <StatTile label="Live" value={stats.liveContests} emphasis />
+              <StatTile label="24h Subs" value={stats.submissionsLast24h} />
             </div>
 
             {/* Verdict Distribution */}
             {stats.verdictBreakdown?.length > 0 && (
               <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)] mb-6">
-                <h2 className="text-sm font-semibold text-orange-400 mb-3">Verdict Distribution</h2>
+                <h2 className="label-mono text-[var(--c-fg)] mb-4">Verdict Distribution</h2>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={stats.verdictBreakdown}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f1f23" />
                       <XAxis dataKey="verdict" stroke="#3a3a42" fontSize={9} angle={-30} textAnchor="end" height={60} />
                       <YAxis stroke="#3a3a42" fontSize={10} />
-                      <Tooltip contentStyle={{ backgroundColor: "#111113", border: "1px solid #1f1f23", borderRadius: '8px', fontSize: '12px' }} />
+                      <Tooltip contentStyle={{ backgroundColor: 'var(--c-surface)', border: '1px solid var(--c-border)', borderRadius: 0, fontSize: '12px', color: 'var(--c-fg)' }} />
                       <Bar dataKey="count">
                         {stats.verdictBreakdown.map((entry: any, idx: number) => (
                           <Cell key={idx} fill={VERDICT_COLORS[entry.verdict] || "#6A6A67"} />
@@ -79,7 +80,7 @@ export default function AdminPage() {
 
         {/* User Management */}
         <div className="border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)] p-4">
-          <h2 className="text-sm font-semibold text-orange-400 mb-3">User Management</h2>
+          <h2 className="label-mono text-[var(--c-fg)] mb-4">User Management</h2>
           <input
             type="text"
             value={search}
@@ -143,14 +144,5 @@ export default function AdminPage() {
         </div>
       </main>
     </>
-  );
-}
-
-function StatCard({ title, value, accent }: { title: string; value: number; accent?: boolean }) {
-  return (
-    <div className="p-3 rounded-xl border border-[var(--c-border-2)] bg-[var(--c-surface)]">
-      <p className="text-xs text-rf-gray">{title}</p>
-      <p className={`mt-1 text-xl font-bold ${accent ? 'text-orange-400' : 'text-[var(--c-fg)]'}`}>{value}</p>
-    </div>
   );
 }

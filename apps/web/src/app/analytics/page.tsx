@@ -10,6 +10,7 @@ import {
 import { useAuthStore } from '@/stores/auth-store';
 import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
+import { PageHeader, SectionLabel, StatTile } from '@/components/layout/Editorial';
 
 export default function GrowthAnalyticsPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function GrowthAnalyticsPage() {
     return (
       <>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-rf-gray">Loading analytics...</div>
+          <div className="label-mono text-rf-gray animate-pulse">Loading…</div>
         </div>
       </>
     );
@@ -54,22 +55,22 @@ export default function GrowthAnalyticsPage() {
 
   return (
     <>
-      <main className="flex-1 w-full px-6 lg:px-10 py-8">
-        <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-6">Growth Analytics</h1>
+      <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+        <PageHeader eyebrow="Growth / Insights" title="Analytics" />
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <StatCard title="Rating" value={growth.currentRating} accent />
-          <StatCard title="Max Rating" value={growth.maxRating} />
-          <StatCard title="Problems Solved" value={growth.solvedCount} />
-          <StatCard title="Contests" value={growth.contestCount} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--c-border)] border border-[var(--c-border)] mb-12">
+          <StatTile label="Rating" value={growth.currentRating} emphasis />
+          <StatTile label="Max Rating" value={growth.maxRating} />
+          <StatTile label="Problems Solved" value={growth.solvedCount} />
+          <StatTile label="Contests" value={growth.contestCount} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Rating History */}
           {growth.ratingHistory.length > 0 && (
-            <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-              <h2 className="text-sm font-semibold text-orange-400 mb-3">Rating Over Time</h2>
+            <div className="p-4 border border-[var(--c-border)] bg-[var(--c-surface)]">
+              <h2 className="label-mono text-[var(--c-fg)] mb-4">Rating Over Time</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={growth.ratingHistory}>
@@ -82,7 +83,7 @@ export default function GrowthAnalyticsPage() {
                     />
                     <YAxis stroke="#3a3a42" fontSize={10} domain={['auto', 'auto']} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: "#111113", border: "1px solid #1f1f23", borderRadius: '8px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: 'var(--c-surface)', border: '1px solid var(--c-border)', borderRadius: 0, fontSize: '12px', color: 'var(--c-fg)' }}
                     />
                     <Line type="monotone" dataKey="newRating" stroke="#8a8a98" strokeWidth={2} dot={{ r: 3 }} name="Rating" />
                   </LineChart>
@@ -93,8 +94,8 @@ export default function GrowthAnalyticsPage() {
 
           {/* Topic Mastery Radar */}
           {radarData.length > 0 && (
-            <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-              <h2 className="text-sm font-semibold text-orange-400 mb-3">Topic Mastery</h2>
+            <div className="p-4 border border-[var(--c-border)] bg-[var(--c-surface)]">
+              <h2 className="label-mono text-[var(--c-fg)] mb-4">Topic Mastery</h2>
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={radarData}>
@@ -109,8 +110,8 @@ export default function GrowthAnalyticsPage() {
         </div>
 
         {/* Activity Heatmap (simple version) */}
-        <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)] mb-6">
-          <h2 className="text-sm font-semibold text-orange-400 mb-3">
+        <div className="p-4 border border-[var(--c-border)] bg-[var(--c-surface)] mb-6">
+          <h2 className="label-mono text-[var(--c-fg)] mb-4">
             Solve Activity (Last 30 Days)
           </h2>
           <div className="flex gap-1 flex-wrap">
@@ -142,15 +143,15 @@ export default function GrowthAnalyticsPage() {
 
         {/* Top topics table */}
         {growth.topicMastery.length > 0 && (
-          <div className="p-4 border border-[var(--c-border-2)] rounded-xl bg-[var(--c-surface)]">
-            <h2 className="text-sm font-semibold text-orange-400 mb-3">Strongest Topics</h2>
+          <div className="p-4 border border-[var(--c-border)] bg-[var(--c-surface)]">
+            <h2 className="label-mono text-[var(--c-fg)] mb-4">Strongest Topics</h2>
             <div className="space-y-2">
               {growth.topicMastery.map((t: any) => (
                 <div key={t.topic} className="flex items-center gap-3">
-                  <span className="text-sm text-orange-400 w-32">{t.topic}</span>
-                  <div className="flex-1 h-2 bg-[var(--c-surface-3)] rounded-full overflow-hidden">
+                  <span className="text-sm text-[var(--c-fg)] w-32 truncate">{t.topic}</span>
+                  <div className="flex-1 h-1.5 bg-[var(--c-surface-3)] overflow-hidden">
                     <div
-                      className="h-full bg-orange-500 rounded-full"
+                      className="h-full bg-[var(--c-fg)]"
                       style={{
                         width: `${Math.min(100, (t.count / (growth.topicMastery[0]?.count || 1)) * 100)}%`,
                       }}
@@ -164,14 +165,5 @@ export default function GrowthAnalyticsPage() {
         )}
       </main>
     </>
-  );
-}
-
-function StatCard({ title, value, accent }: { title: string; value: number; accent?: boolean }) {
-  return (
-    <div className="p-4 rounded-xl border border-[var(--c-border-2)] bg-[var(--c-surface)]">
-      <p className="text-xs text-rf-gray">{title}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? 'text-orange-400' : 'text-[var(--c-fg)]'}`}>{value}</p>
-    </div>
   );
 }
