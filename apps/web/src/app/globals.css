@@ -281,6 +281,58 @@
   animation: rf-line-grow 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Route transition (template.tsx) — opacity only, no transform containing-block */
+@keyframes rf-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.rf-page-enter {
+  animation: rf-fade 0.35s ease both;
+}
+
+/* Skeleton shimmer */
+@keyframes rf-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.rf-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--c-surface) 25%,
+    var(--c-surface-2) 50%,
+    var(--c-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: rf-shimmer 1.4s ease-in-out infinite;
+}
+
+/* Toast entrance */
+@keyframes rf-toast-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.rf-toast { animation: rf-toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ACCEPTED stamp */
+@keyframes rf-stamp {
+  0% { opacity: 0; transform: scale(1.6) rotate(-12deg); }
+  60% { opacity: 1; transform: scale(0.92) rotate(-12deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-12deg); }
+}
+.rf-stamp { animation: rf-stamp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Editorial focus ring */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--c-fg);
+  outline-offset: 2px;
+}
+
+/* Native View Transitions — crossfade routes (Chrome/Edge; graceful elsewhere) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+}
+
 /* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   .rf-enter,
