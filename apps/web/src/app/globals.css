@@ -123,8 +123,8 @@
   --c-surface: #f5f5f7;
   --c-surface-2: #ececef;
   --c-surface-3: #e2e2e7;
-  --c-border: #dcdce1;
-  --c-border-2: #d0d0d6;
+  --c-border: #d2d2d9;
+  --c-border-2: #c4c4cc;
   --c-line: #b6b6be;
   --c-fg: #0a0a0a;
   --c-fg-muted: #5c5c66;
@@ -170,9 +170,9 @@
   --c-surface: #141416;
   --c-surface-2: #1a1a1e;
   --c-surface-3: #22222a;
-  --c-border: #232329;
-  --c-border-2: #2a2a30;
-  --c-line: #3a3a42;
+  --c-border: #2e2e36;
+  --c-border-2: #3a3a44;
+  --c-line: #4a4a54;
   --c-fg: #e8e8ec;
   --c-fg-muted: #8a8a98;
   --c-fg-subtle: #52525a;
@@ -212,7 +212,7 @@
   text-transform: uppercase;
 }
 
-/* Animations */
+/* ── Animations ── */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -220,6 +220,79 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes rf-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes rf-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes rf-line-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Mount entrance — staggerable via inline animation-delay */
+.rf-enter {
+  opacity: 0;
+  animation: rf-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scroll-triggered reveal (driven by the Reveal component adding .is-in) */
+.rf-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.rf-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Marquee track (duplicate content inside, animate -50%) */
+.rf-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: rf-marquee 28s linear infinite;
+}
+.rf-marquee-fast {
+  animation-duration: 16s;
+}
+
+/* Animated editorial underline on links/labels */
+.rf-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.3s ease;
+}
+.rf-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Growing hairline (for section labels) */
+.rf-line-grow {
+  transform-origin: left;
+  animation: rf-line-grow 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .rf-enter,
+  .rf-reveal,
+  .rf-marquee,
+  .rf-line-grow,
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .rf-reveal { opacity: 1; transform: none; }
 }
 
 /* Smooth scrollbar */

@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/stores/auth-store';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { PageHeader, SectionLabel, StatTile } from '@/components/layout/Editorial';
+import { Reveal } from '@/components/layout/Reveal';
 import { useDashboardStats } from '@/hooks/use-api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -150,7 +151,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <section className="mt-12">
+      <Reveal className="block mt-12">
+      <section>
         <SectionLabel index="04">Quick Actions</SectionLabel>
         <div className="flex flex-wrap gap-3">
           {[
@@ -168,6 +170,7 @@ export default function DashboardPage() {
           ))}
         </div>
       </section>
+      </Reveal>
     </main>
   );
 }

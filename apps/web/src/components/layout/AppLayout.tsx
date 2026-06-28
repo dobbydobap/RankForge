@@ -19,16 +19,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen flex bg-rf-black overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-[224px] h-full flex flex-col border-r border-[var(--c-border)] bg-[var(--c-surface-2)] shrink-0 relative z-10">
+      <aside className="w-[224px] h-full flex flex-col border-r border-[var(--c-border-2)] bg-[var(--c-bg)] shrink-0 relative z-10">
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-[var(--c-border)]">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-6 h-6 bg-[var(--c-fg)] flex items-center justify-center text-[var(--c-bg)] text-xs font-display font-extrabold">
-              R
-            </div>
-            <span className="font-display text-sm font-extrabold tracking-tight text-[var(--c-fg)] uppercase">
-              RankForge
-            </span>
+        <div className="h-16 flex items-center px-5 border-b border-[var(--c-border-2)]">
+          <Link href="/" className="group font-display text-base font-extrabold tracking-tight text-[var(--c-fg)] uppercase">
+            Rank<span className="transition-colors group-hover:text-rf-gray">Forge</span>
+            <sup className="text-[8px] align-super ml-0.5">™</sup>
           </Link>
         </div>
 
@@ -49,7 +45,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <span className="font-mono text-[10px] text-rf-iron tabular-nums">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="uppercase tracking-wide text-[13px]">{item.label}</span>
+                <span className="uppercase tracking-wide text-[13px] transition-transform duration-200 group-hover:translate-x-1">{item.label}</span>
                 {isActive && <span className="ml-auto text-rf-gray text-xs">→</span>}
               </Link>
             );
@@ -65,7 +61,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             >
               {pathname.startsWith('/users/') && <span className="absolute left-0 top-0 bottom-0 w-[2px] bg-[var(--c-fg)]" />}
               <span className="font-mono text-[10px] text-rf-iron tabular-nums">06</span>
-              <span className="uppercase tracking-wide text-[13px]">Profile</span>
+              <span className="uppercase tracking-wide text-[13px] transition-transform duration-200 group-hover:translate-x-1">Profile</span>
             </Link>
           )}
           {user?.role === 'ADMIN' && (
@@ -77,13 +73,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             >
               {pathname === '/admin' && <span className="absolute left-0 top-0 bottom-0 w-[2px] bg-[var(--c-fg)]" />}
               <span className="font-mono text-[10px] text-rf-iron tabular-nums">07</span>
-              <span className="uppercase tracking-wide text-[13px]">Admin</span>
+              <span className="uppercase tracking-wide text-[13px] transition-transform duration-200 group-hover:translate-x-1">Admin</span>
             </Link>
           )}
         </nav>
 
         {/* User section */}
-        <div className="p-4 border-t border-[var(--c-border)]">
+        <div className="p-4 border-t border-[var(--c-border-2)]">
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-[var(--c-fg)] text-[var(--c-bg)] flex items-center justify-center text-xs font-display font-extrabold">
