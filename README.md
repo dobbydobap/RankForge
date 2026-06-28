@@ -201,6 +201,7 @@ Available after seeding (`pnpm db:seed` locally, or `POST /api/seed?key=...&forc
 
 | User | Email | Password | Role | Rating |
 |------|-------|----------|------|--------|
+| **demo** | demo@rankforge.dev | Demo1234 | User | 1240 — pre-loaded with solved problems, submissions & a daily streak |
 | admin | admin@rankforge.dev | Admin123 | Admin | 2100 |
 | alice | alice@rankforge.dev | Password1 | User | 1650 |
 | bob | bob@rankforge.dev | Password1 | User | 1420 |

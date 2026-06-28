@@ -330,6 +330,66 @@ async function main() {
     console.log(`  Created "${prob.title}" (${prob.testCases.length} test cases)`);
   }
 
+  // ── Demo account with real activity (for showcasing / quick login) ──
+  console.log('Seeding demo account...');
+  const demoHash = await bcrypt.hash('Demo1234', 12);
+  const demo = await prisma.user.upsert({
+    where: { email: 'demo@rankforge.dev' },
+    update: {},
+    create: {
+      email: 'demo@rankforge.dev', username: 'demo', passwordHash: demoHash,
+      role: 'USER',
+      profile: { create: { displayName: 'Demo User', currentRating: 1240, maxRating: 1300 } },
+    },
+  });
+
+  const demoSubs = await prisma.submission.count({ where: { userId: demo.id } });
+  if (demoSubs === 0 && problemRecords.length > 0) {
+    // Solve a spread of problems over the last ~10 days (today included) so the
+    // profile shows a current daily streak, a populated heatmap, and submissions.
+    const toSolve = problemRecords.slice(0, 12);
+    let solved = 0;
+    for (let d = 0; d <= 9 && solved < toSolve.length; d++) {
+      const solvesToday = d % 3 === 0 ? 2 : 1; // 1–2 solves per day
+      for (let k = 0; k < solvesToday && solved < toSolve.length; k++) {
+        const problem = toSolve[solved];
+        // d days ago, minus a few hours — always in the past, distinct timestamps.
+        const when = new Date(Date.now() - d * 86_400_000 - (k + 1) * 3_600_000);
+
+        // occasional wrong attempt before the AC
+        if (solved % 4 === 1) {
+          const wrong = new Date(when.getTime() - 25 * 60 * 1000);
+          await prisma.submission.create({
+            data: {
+              userId: demo.id, problemId: problem.id,
+              language: 'PYTHON', sourceCode: '# attempt',
+              verdict: 'WRONG_ANSWER', timeUsed: 140, memoryUsed: 9000,
+              score: 0, createdAt: wrong, judgedAt: wrong,
+            },
+          });
+        }
+
+        await prisma.submission.create({
+          data: {
+            userId: demo.id, problemId: problem.id,
+            language: 'PYTHON', sourceCode: '# accepted solution',
+            verdict: 'ACCEPTED', timeUsed: 60 + Math.floor(Math.random() * 120),
+            memoryUsed: 6000 + Math.floor(Math.random() * 4000),
+            score: 100, createdAt: when, judgedAt: when,
+          },
+        });
+        solved++;
+      }
+    }
+    await prisma.userProfile.update({
+      where: { userId: demo.id },
+      data: { solvedCount: solved },
+    });
+    console.log(`  Demo user seeded: ${solved} problems solved across recent days (streak + submissions)`);
+  } else {
+    console.log('  Demo account already has activity, skipping');
+  }
+
   // ── Demo contest (already ended, with results) ──
   console.log('Seeding demo contest...');
   const contestSlug = 'rankforge-round-1';
@@ -506,6 +566,7 @@ async function main() {
   }
 
   console.log('\nSeed complete!');
+  console.log('  Demo login (with activity): demo@rankforge.dev / Demo1234');
   console.log('  Login credentials for all seed users: Password1');
   console.log('  Admin login: admin@rankforge.dev / Admin123');
 }
