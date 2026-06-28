@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
-import { RegisterInput, LoginInput } from '@rankforge/shared';
+import { RegisterInput, LoginInput, DEFAULT_RATING } from '@rankforge/shared';
 import { requireSecret } from '../../common/utils/secrets';
 
 @Injectable()
@@ -39,8 +39,9 @@ export class AuthService {
         email: input.email,
         username: input.username,
         passwordHash,
+        // New accounts start at the rating floor with zero activity — a clean slate.
         profile: {
-          create: {},
+          create: { currentRating: DEFAULT_RATING, maxRating: DEFAULT_RATING },
         },
       },
       include: { profile: true },

@@ -87,6 +87,7 @@ export const VERDICT_SHORT: Record<Verdict, string> = {
   [Verdict.COMPILATION_ERROR]: 'CE',
 };
 
-export const DEFAULT_RATING = 1200;
+// Starting rating for new accounts = the rating floor (clean-slate / "newbie").
+export const DEFAULT_RATING = 100;
 export const DEFAULT_PENALTY_MINUTES = 20;
 export const LEADERBOARD_SNAPSHOT_INTERVAL_MINUTES = 5;

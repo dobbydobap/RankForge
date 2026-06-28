@@ -42,8 +42,8 @@ model UserProfile {
   displayName   String?
   bio           String?
   avatarUrl     String?
-  currentRating Int     @default(1200)
-  maxRating     Int     @default(1200)
+  currentRating Int     @default(100)
+  maxRating     Int     @default(100)
   solvedCount   Int     @default(0)
   contestCount  Int     @default(0)
 }
