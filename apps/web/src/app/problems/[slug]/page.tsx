@@ -10,6 +10,7 @@ import { ProblemStatement } from '@/components/problems/ProblemStatement';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { LanguageSelector } from '@/components/editor/LanguageSelector';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
+import { DiffView } from '@/components/submissions/DiffView';
 import { Language } from '@rankforge/shared';
 import { api } from '@/lib/api';
 
@@ -53,6 +54,9 @@ export default function ProblemDetailPage() {
   // Submit state
   const [lastSubmissionId, setLastSubmissionId] = useState<string | null>(null);
   const [submitVerdict, setSubmitVerdict] = useState<any>(null);
+  const [streamTotal, setStreamTotal] = useState(0);
+  const [streamResults, setStreamResults] = useState<{ order: number; verdict: string }[]>([]);
+  const [focusMode, setFocusMode] = useState(false);
   const queryClient = useQueryClient();
 
   const submitMutation = useSubmitCode();
@@ -66,14 +70,21 @@ export default function ProblemDetailPage() {
       : '',
   );
 
-  useVerdictUpdates(lastSubmissionId, useCallback((data) => {
-    setSubmitVerdict(data);
-    setBottomTab('result');
-    queryClient.invalidateQueries({ queryKey: ['submissions'] });
-    if (data.submissionId) {
-      queryClient.invalidateQueries({ queryKey: ['submission', data.submissionId] });
-    }
-  }, [queryClient]));
+  useVerdictUpdates(
+    lastSubmissionId,
+    useCallback((data) => {
+      setSubmitVerdict(data);
+      setBottomTab('result');
+      queryClient.invalidateQueries({ queryKey: ['submissions'] });
+      if (data.submissionId) {
+        queryClient.invalidateQueries({ queryKey: ['submission', data.submissionId] });
+      }
+    }, [queryClient]),
+    {
+      onStart: (d) => { setStreamTotal(d.total); setStreamResults([]); },
+      onProgress: (d) => setStreamResults((prev) => [...prev, { order: d.order, verdict: d.verdict }]),
+    },
+  );
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
@@ -127,6 +138,8 @@ export default function ProblemDetailPage() {
 
     setSubmitVerdict(null);
     setRunResults([]);
+    setStreamTotal(0);
+    setStreamResults([]);
     setBottomTab('result');
 
     const result = await submitMutation.mutateAsync({
@@ -153,6 +166,13 @@ export default function ProblemDetailPage() {
           <span className="text-sm font-medium text-[var(--c-fg)]">{problem.title}</span>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setFocusMode((f) => !f)}
+            title="Toggle focus mode"
+            className="px-3 py-1.5 text-xs uppercase tracking-wide border border-[var(--c-border-2)] hover:border-rf-iron text-rf-gray rounded-lg transition-colors"
+          >
+            {focusMode ? 'Exit Focus' : 'Focus'}
+          </button>
           <LanguageSelector value={language} onChange={handleLanguageChange} />
           <button
             onClick={handleRun}
@@ -174,7 +194,7 @@ export default function ProblemDetailPage() {
       {/* Main content */}
       <div className="flex-1 flex min-h-0">
         {/* Left panel */}
-        <div className="w-[45%] border-r border-[var(--c-border-2)] flex flex-col min-h-0">
+        <div className={`${focusMode ? 'hidden' : 'w-[45%]'} border-r border-[var(--c-border-2)] flex flex-col min-h-0`}>
           <div className="flex border-b border-[var(--c-border-2)] shrink-0">
             {(['problem', 'submissions'] as LeftTab[]).map((t) => (
               <button key={t} onClick={() => setLeftTab(t)}
@@ -208,7 +228,7 @@ export default function ProblemDetailPage() {
         </div>
 
         {/* Right panel: editor + bottom */}
-        <div className="w-[55%] flex flex-col min-h-0">
+        <div className={`${focusMode ? 'w-full' : 'w-[55%]'} flex flex-col min-h-0`}>
           <div className="flex-1 min-h-0">
             <CodeEditor language={language} value={code} onChange={setCode} />
           </div>
@@ -317,14 +337,22 @@ export default function ProblemDetailPage() {
                                 <label className="text-xs text-rf-gray mb-1 block">Input</label>
                                 <pre className="px-3 py-2 bg-rf-dark border border-[var(--c-border-2)] rounded-lg text-rf-light text-xs font-mono">{customInputs[activeCase] ?? sampleCases[activeCase]?.input}</pre>
                               </div>
-                              <div>
-                                <label className="text-xs text-rf-gray mb-1 block">Output</label>
-                                <pre className="px-3 py-2 bg-rf-dark border border-[var(--c-border-2)] rounded-lg text-[var(--c-fg)] text-xs font-mono">{runResults[activeCase].output || '(no output)'}</pre>
-                              </div>
-                              <div>
-                                <label className="text-xs text-rf-gray mb-1 block">Expected</label>
-                                <pre className="px-3 py-2 bg-rf-dark border border-[var(--c-border-2)] rounded-lg text-rf-light text-xs font-mono">{sampleCases[activeCase]?.output}</pre>
-                              </div>
+                              {(() => {
+                                const out = runResults[activeCase].output || '';
+                                const exp = sampleCases[activeCase]?.output || '';
+                                const passed = out.trim() === exp.trim();
+                                return passed ? (
+                                  <div>
+                                    <label className="text-xs text-rf-gray mb-1 block">Output</label>
+                                    <pre className="px-3 py-2 bg-rf-dark border border-[var(--c-border-2)] rounded-lg text-[var(--c-fg)] text-xs font-mono">{out || '(no output)'}</pre>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <label className="text-xs text-rf-gray mb-1 block">Diff — expected vs your output</label>
+                                    <DiffView expected={exp} actual={out} />
+                                  </div>
+                                );
+                              })()}
                             </>
                           )}
                         </div>
@@ -333,12 +361,36 @@ export default function ProblemDetailPage() {
                   )}
 
                   {/* Submit result */}
-                  {(submitMutation.isPending || submitVerdict) && !runResults.length && (
+                  {(submitMutation.isPending || lastSubmissionId || submitVerdict) && !runResults.length && (
                     <div>
-                      {submitMutation.isPending && !submitVerdict && (
-                        <div className="flex items-center gap-2 text-xs text-rf-gray">
-                          <div className="w-3 h-3 border-2 border-rf-gray border-t-transparent rounded-full animate-spin" />
-                          Judging against all test cases...
+                      {!submitVerdict && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs text-rf-gray mb-3">
+                            <div className="w-3 h-3 border-2 border-rf-gray border-t-transparent rounded-full animate-spin" />
+                            Judging {streamTotal ? `(${streamResults.length}/${streamTotal})` : 'against all test cases'}…
+                          </div>
+                          {streamTotal > 0 && (
+                            <div className="flex flex-wrap gap-1.5">
+                              {Array.from({ length: streamTotal }).map((_, i) => {
+                                const r = streamResults[i];
+                                return (
+                                  <div
+                                    key={i}
+                                    title={r?.verdict || 'pending'}
+                                    className={`w-7 h-7 flex items-center justify-center text-[10px] font-mono border transition-colors ${
+                                      !r
+                                        ? 'border-[var(--c-border-2)] text-rf-iron animate-pulse'
+                                        : r.verdict === 'ACCEPTED'
+                                          ? 'rf-stamp border-[var(--c-fg)] bg-[var(--c-fg)] text-[var(--c-bg)]'
+                                          : 'border-rf-iron text-rf-light'
+                                    }`}
+                                  >
+                                    {!r ? '·' : r.verdict === 'ACCEPTED' ? '✓' : '✕'}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
                       )}
 
@@ -388,7 +440,7 @@ export default function ProblemDetailPage() {
                   )}
 
                   {/* Empty state */}
-                  {!isRunning && !runResults.length && !submitVerdict && !submitMutation.isPending && (
+                  {!isRunning && !runResults.length && !submitVerdict && !submitMutation.isPending && !lastSubmissionId && (
                     <div className="text-xs text-rf-gray">
                       Click &quot;Run&quot; to test against sample cases, or &quot;Submit&quot; to judge all test cases.
                     </div>
