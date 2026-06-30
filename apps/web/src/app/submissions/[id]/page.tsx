@@ -2,6 +2,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
+import { AcceptedStamp } from '@/components/submissions/AcceptedStamp';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { useSubmission } from '@/hooks/use-api';
 import { LANGUAGE_DISPLAY } from '@rankforge/shared';
@@ -38,7 +39,7 @@ export default function SubmissionDetailPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-xl font-bold text-[var(--c-fg)]">
+              <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-[var(--c-fg)]">
                 Submission #{id.slice(0, 8)}
               </h1>
               <VerdictBadge verdict={submission.verdict} />
@@ -46,7 +47,7 @@ export default function SubmissionDetailPage() {
             <div className="flex items-center gap-4 text-sm text-rf-gray">
               <Link
                 href={`/problems/${submission.problemSlug}`}
-                className="hover:text-orange-400 transition-colors"
+                className="hover:underline underline-offset-4 transition-colors"
               >
                 {submission.problemTitle}
               </Link>
@@ -56,6 +57,12 @@ export default function SubmissionDetailPage() {
             </div>
           </div>
         </div>
+
+        {submission.verdict === 'ACCEPTED' && (
+          <div className="mb-8">
+            <AcceptedStamp />
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
