@@ -39,6 +39,12 @@ export class JudgeProcessor extends WorkerHost {
       return;
     }
 
+    // Tell subscribers how many cases are coming, so the UI can render placeholders.
+    this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'test:start', {
+      submissionId,
+      total: testCases.length,
+    });
+
     let overallVerdict = 'ACCEPTED';
     let maxTime = 0;
     const testResults: {
@@ -92,6 +98,15 @@ export class JudgeProcessor extends WorkerHost {
       if (verdict !== 'ACCEPTED' && overallVerdict === 'ACCEPTED') {
         overallVerdict = verdict;
       }
+
+      // Stream this case's result as it finishes (Piston runs each case → real latency).
+      this.eventsGateway.emitToRoom(`submission:${submissionId}`, 'test:progress', {
+        submissionId,
+        index: testResults.length - 1,
+        order: tc.order,
+        total: testCases.length,
+        verdict,
+      });
     }
 
     // Save test results
