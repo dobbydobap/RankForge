@@ -4,6 +4,9 @@ import { useAuthStore } from '@/stores/auth-store';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { PageHeader, SectionLabel, StatTile } from '@/components/layout/Editorial';
 import { Reveal } from '@/components/layout/Reveal';
+import { RankChip } from '@/components/layout/RankChip';
+import { TodayCard } from '@/components/layout/TodayCard';
+import { LoadingBlock } from '@/components/ui/Skeleton';
 import { useDashboardStats } from '@/hooks/use-api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,9 +26,9 @@ export default function DashboardPage() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="label-mono text-rf-gray animate-pulse">Loading…</div>
-      </div>
+      <main className="flex-1 w-full max-w-6xl px-6 lg:px-10 py-10">
+        <LoadingBlock rows={4} />
+      </main>
     );
   }
 
@@ -58,6 +61,12 @@ export default function DashboardPage() {
         <StatTile label="Solved" value={stats?.profile?.solvedCount ?? 0} />
         <StatTile label="Contests" value={stats?.profile?.contestCount ?? 0} />
         <StatTile label="Streak" value={`${stats?.streak ?? 0}d`} />
+      </div>
+
+      {/* Tier + streak keeper */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <RankChip rating={stats?.profile?.currentRating ?? 100} />
+        <TodayCard streak={stats?.streak ?? 0} />
       </div>
 
       {/* Difficulty Breakdown */}
