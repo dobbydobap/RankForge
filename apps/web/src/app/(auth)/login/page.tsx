@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginInput } from '@rankforge/shared';
 import { useAuthStore } from '@/stores/auth-store';
+import { toast } from '@/stores/toast-store';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,9 +26,11 @@ export default function LoginPage() {
     try {
       setError('');
       await login(data);
+      toast.success('Signed in');
       router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Login failed');
+      toast.error(err.message || 'Login failed');
     }
   };
 

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterInput } from '@rankforge/shared';
 import { useAuthStore } from '@/stores/auth-store';
+import { toast } from '@/stores/toast-store';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,9 +26,11 @@ export default function RegisterPage() {
     try {
       setError('');
       await registerUser(data);
+      toast.success('Account created — welcome');
       router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Registration failed');
+      toast.error(err.message || 'Registration failed');
     }
   };
 
