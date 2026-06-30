@@ -2,6 +2,8 @@ import Link from "next/link";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Reveal } from "@/components/layout/Reveal";
 import { CursorBubble } from "@/components/layout/CursorBubble";
+import { MagneticLink } from "@/components/layout/MagneticLink";
+import { ScrambleText } from "@/components/layout/ScrambleText";
 
 const FEATURES = [
   {
@@ -61,23 +63,23 @@ export default function Home() {
         </div>
 
         <h1 className="font-display uppercase mt-8 leading-[0.82] tracking-tight text-[19vw] lg:text-[13.5rem]">
-          <span className="rf-enter block" style={{ animationDelay: "120ms" }}>Compete</span>
+          <span className="rf-enter block" style={{ animationDelay: "120ms" }}><ScrambleText text="Compete" /></span>
           <span
             className="rf-enter block text-transparent"
             style={{ WebkitTextStroke: "1.5px var(--c-fg)", animationDelay: "240ms" }}
           >
-            Analyze
+            <ScrambleText text="Analyze" />
           </span>
-          <span className="rf-enter block" style={{ animationDelay: "360ms" }}>Rise</span>
+          <span className="rf-enter block" style={{ animationDelay: "360ms" }}><ScrambleText text="Rise" /></span>
         </h1>
 
         <div className="rf-enter mt-10 flex flex-col sm:flex-row sm:items-center gap-4" style={{ animationDelay: "480ms" }}>
-          <Link
+          <MagneticLink
             href="/register"
-            className="group inline-flex items-center justify-center gap-2 bg-[var(--c-fg)] text-[var(--c-bg)] px-8 py-4 label-mono hover:opacity-80 transition-opacity"
+            className="group items-center justify-center gap-2 bg-[var(--c-fg)] text-[var(--c-bg)] px-8 py-4 label-mono hover:opacity-80"
           >
             Start Coding <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
+          </MagneticLink>
           <Link
             href="/problems"
             className="inline-flex items-center justify-center border border-[var(--c-fg)] px-8 py-4 label-mono hover:bg-[var(--c-fg)] hover:text-[var(--c-bg)] transition-colors"
@@ -140,12 +142,12 @@ export default function Home() {
             <br />
             Rating
           </h2>
-          <Link
+          <MagneticLink
             href="/register"
-            className="group inline-flex items-center justify-center gap-2 mt-10 bg-[var(--c-fg)] text-[var(--c-bg)] px-10 py-4 label-mono hover:opacity-80 transition-opacity"
+            className="group items-center justify-center gap-2 mt-10 bg-[var(--c-fg)] text-[var(--c-bg)] px-10 py-4 label-mono hover:opacity-80"
           >
             Create Account <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
+          </MagneticLink>
         </section>
       </Reveal>
 
