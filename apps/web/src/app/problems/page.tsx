@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { ProblemFilters, DifficultyBadge } from '@/components/problems/ProblemFilters';
 import { PageHeader } from '@/components/layout/Editorial';
+import { EmptyState } from '@/components/layout/EmptyState';
+import { useArrowNav } from '@/lib/use-arrow-nav';
 import { useProblems, useTags } from '@/hooks/use-api';
 
 export default function ProblemsPage() {
@@ -11,6 +13,8 @@ export default function ProblemsPage() {
   const [tag, setTag] = useState('');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const tableRef = useRef<HTMLDivElement>(null);
+  useArrowNav(tableRef);
 
   const { data: tagsData } = useTags();
   const { data, isLoading } = useProblems({ difficulty, tag, search, page });
@@ -42,10 +46,10 @@ export default function ProblemsPage() {
           {isLoading ? (
             <div className="text-center py-12 label-mono text-rf-gray animate-pulse">Loading…</div>
           ) : !data?.problems.length ? (
-            <div className="text-center py-12 label-mono text-rf-gray">No problems found</div>
+            <EmptyState title="No problems found" hint="Try clearing your filters" />
           ) : (
             <>
-              <div className="border border-[var(--c-border)]">
+              <div ref={tableRef} className="border border-[var(--c-border)]">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-[var(--c-border)] bg-[var(--c-surface)]">
@@ -69,6 +73,7 @@ export default function ProblemsPage() {
                         <td className="px-4 py-3">
                           <Link
                             href={`/problems/${problem.slug}`}
+                            data-row-link
                             className="text-sm font-medium text-[var(--c-fg)] hover:underline underline-offset-4 transition-colors"
                           >
                             {problem.title}

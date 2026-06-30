@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ContestStatusBadge } from '@/components/contests/ContestStatusBadge';
 import { PageHeader } from '@/components/layout/Editorial';
+import { EmptyState } from '@/components/layout/EmptyState';
 import { useContests } from '@/hooks/use-api';
 
 export default function ContestsPage() {
@@ -29,7 +30,18 @@ export default function ContestsPage() {
         {isLoading ? (
           <div className="text-center py-12 label-mono text-rf-gray animate-pulse">Loading…</div>
         ) : !data?.contests.length ? (
-          <div className="text-center py-12 label-mono text-rf-gray">No contests yet</div>
+          <EmptyState
+            title="No contests yet"
+            hint="Create the first round"
+            action={
+              <Link
+                href="/contests/create"
+                className="px-5 py-2.5 text-xs uppercase tracking-wide font-medium bg-[var(--c-fg)] text-[var(--c-bg)] hover:opacity-80 transition-opacity"
+              >
+                Create contest →
+              </Link>
+            }
+          />
         ) : (
           <>
             <div className="border border-[var(--c-border)] divide-y divide-[var(--c-border)]">

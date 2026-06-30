@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { VerdictBadge } from '@/components/submissions/VerdictBadge';
 import { useSubmissions } from '@/hooks/use-api';
 import { LANGUAGE_DISPLAY } from '@rankforge/shared';
 import { PageHeader } from '@/components/layout/Editorial';
+import { EmptyState } from '@/components/layout/EmptyState';
+import { useArrowNav } from '@/lib/use-arrow-nav';
 
 export default function SubmissionsPage() {
   const [page, setPage] = useState(1);
+  const tableRef = useRef<HTMLDivElement>(null);
+  useArrowNav(tableRef);
   const { data, isLoading } = useSubmissions({ page });
 
   return (
@@ -19,10 +23,21 @@ export default function SubmissionsPage() {
         {isLoading ? (
           <div className="text-center py-12 label-mono text-rf-gray animate-pulse">Loading…</div>
         ) : !data?.submissions.length ? (
-          <div className="text-center py-12 label-mono text-rf-gray">No submissions yet</div>
+          <EmptyState
+            title="No submissions yet"
+            hint="Solve a problem to see it here"
+            action={
+              <Link
+                href="/problems"
+                className="px-5 py-2.5 text-xs uppercase tracking-wide font-medium bg-[var(--c-fg)] text-[var(--c-bg)] hover:opacity-80 transition-opacity"
+              >
+                Browse problems →
+              </Link>
+            }
+          />
         ) : (
           <>
-            <div className="border border-[var(--c-border)]">
+            <div ref={tableRef} className="border border-[var(--c-border)]">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[var(--c-border)] bg-[var(--c-surface)]">
@@ -52,6 +67,7 @@ export default function SubmissionsPage() {
                       <td className="px-4 py-3">
                         <Link
                           href={`/problems/${sub.problemSlug}`}
+                          data-row-link
                           className="text-sm text-[var(--c-fg)] hover:underline underline-offset-4 transition-colors"
                         >
                           {sub.problemTitle}
