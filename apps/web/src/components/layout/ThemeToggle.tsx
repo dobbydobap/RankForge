@@ -12,11 +12,18 @@ export function ThemeToggle() {
   }, []);
 
   const toggle = () => {
-    const el = document.documentElement;
-    const next = !el.classList.contains('dark');
-    el.classList.toggle('dark', next);
+    const root = document.documentElement;
+    const next = !root.classList.contains('dark');
     localStorage.setItem('rf-theme', next ? 'dark' : 'light');
-    setDark(next);
+    const apply = () => {
+      root.classList.toggle('dark', next);
+      setDark(next);
+    };
+    // Smooth crossfade between themes where supported (Chrome/Edge).
+    const start = (document as Document & { startViewTransition?: (cb: () => void) => void })
+      .startViewTransition;
+    if (typeof start === 'function') start.call(document, apply);
+    else apply();
   };
 
   return (
@@ -26,6 +33,7 @@ export function ThemeToggle() {
       title={dark ? 'Switch to light' : 'Switch to dark'}
       className="fixed top-3 right-3 z-[100] w-9 h-9 flex items-center justify-center border border-[var(--c-border-2)] bg-[var(--c-surface)] text-[var(--c-fg)] hover:bg-[var(--c-surface-2)] transition-colors"
     >
+      <span className={`inline-flex transition-transform duration-500 ${dark ? 'rotate-0' : 'rotate-90'}`}>
       {dark ? (
         // sun
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round">
@@ -38,6 +46,7 @@ export function ThemeToggle() {
           <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" />
         </svg>
       )}
+      </span>
     </button>
   );
 }
