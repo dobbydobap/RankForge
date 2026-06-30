@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Archivo } from "next/font/google";
 import { Providers } from "@/lib/providers";
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { CommandPalette } from "@/components/layout/CommandPalette";
+import { Toaster } from "@/components/layout/Toaster";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -47,10 +50,13 @@ export default function RootLayout({
               "(function(){try{var t=localStorage.getItem('rf-theme');if(t==='light'){document.documentElement.classList.remove('dark');}else{document.documentElement.classList.add('dark');}}catch(e){document.documentElement.classList.add('dark');}})();",
           }}
         />
+        <ScrollProgress />
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>
         <ThemeToggle />
+        <CommandPalette />
+        <Toaster />
       </body>
     </html>
   );
