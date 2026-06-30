@@ -96,6 +96,10 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 export function useVerdictUpdates(
   submissionId: string | null,
   onVerdict: (data: { submissionId: string; verdict: string; timeUsed: number | null; memoryUsed: number | null }) => void,
+  stream?: {
+    onStart?: (data: { submissionId: string; total: number }) => void;
+    onProgress?: (data: { submissionId: string; index: number; order: number; total: number; verdict: string }) => void;
+  },
 ) {
   return useWebSocket({
     enabled: !!submissionId,
@@ -104,6 +108,8 @@ export function useVerdictUpdates(
       : [],
     onEvent: {
       'verdict:update': onVerdict,
+      'test:start': (d) => stream?.onStart?.(d),
+      'test:progress': (d) => stream?.onProgress?.(d),
     },
   });
 }
