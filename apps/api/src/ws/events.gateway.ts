@@ -3,9 +3,6 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  SubscribeMessage,
-  MessageBody,
-  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server, WebSocket } from 'ws';
@@ -102,15 +99,20 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private handleClientMessage(client: AuthenticatedSocket, data: any) {
+    // The web client sends two shapes: {event, data: {contestId}} from the
+    // room auto-join path and {event, ...fields} from its send() helper.
+    // Accept both; ignore messages with no id (previously joined "…:undefined").
+    const payload =
+      data && typeof data.data === 'object' && data.data !== null ? data.data : data;
     switch (data.event) {
       case 'contest:join':
-        this.joinRoom(client, `contest:${data.contestId}`);
+        if (payload.contestId) this.joinRoom(client, `contest:${payload.contestId}`);
         break;
       case 'contest:leave':
-        this.leaveRoom(client, `contest:${data.contestId}`);
+        if (payload.contestId) this.leaveRoom(client, `contest:${payload.contestId}`);
         break;
       case 'submission:subscribe':
-        this.joinRoom(client, `submission:${data.submissionId}`);
+        if (payload.submissionId) this.joinRoom(client, `submission:${payload.submissionId}`);
         break;
     }
   }
