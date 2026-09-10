@@ -74,7 +74,12 @@ export class JudgeProcessor extends WorkerHost {
         });
         overallVerdict = 'COMPILATION_ERROR';
         break; // No point running more test cases
-      } else if (result.signal === 'SIGKILL' || timeUsed > timeLimit) {
+      } else if (result.signal === 'SIGKILL' || result.signal === 'Killed') {
+        // timeUsed is wall-clock including the Wandbox HTTP roundtrip (3-8s
+        // measured), so comparing it against timeLimit (2000ms seeded) would
+        // false-TLE every submission. Trust the kill signal instead: the
+        // executor aborts at timeLimit+7s and synthesizes SIGKILL, and Wandbox
+        // reports its own kills as "Killed".
         verdict = 'TIME_LIMIT_EXCEEDED';
       } else if (!result.success) {
         verdict = 'RUNTIME_ERROR';
