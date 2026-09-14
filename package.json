@@ -19,19 +19,6 @@
     "test:segment-tree": "pnpm --filter @rankforge/segment-tree test",
     "test:shared": "pnpm --filter @rankforge/shared test"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@nestjs/core",
-      "@prisma/client",
-      "@prisma/engines",
-      "bcrypt",
-      "esbuild",
-      "msgpackr-extract",
-      "prisma",
-      "sharp",
-      "unrs-resolver"
-    ]
-  },
   "devDependencies": {
     "turbo": "^2.4.0",
     "typescript": "^5.7.0"
