@@ -6,7 +6,6 @@ import {
   Param,
   Query,
   UseGuards,
-  ForbiddenException,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { z } from 'zod';

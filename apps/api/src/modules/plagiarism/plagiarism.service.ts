@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 /**
@@ -123,7 +123,7 @@ export class PlagiarismService {
 
     // Tokenize: split on non-alphanumeric (keep operators as tokens)
     const tokens = cleaned
-      .split(/([{}()\[\];,+\-*/%=<>!&|^~?.:]|\s+)/)
+      .split(/([{}()[\];,+\-*/%=<>!&|^~?.:]|\s+)/)
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
 

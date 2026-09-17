@@ -151,7 +151,7 @@ export class AnalyticsService {
     }
 
     // Drop-off: how many participants attempted problem N but not N+1
-    const dropOff = contest.problems.map((cp, idx) => {
+    const dropOff = contest.problems.map((cp) => {
       const attempted = new Set(
         submissions.filter((s) => s.problemId === cp.problemId).map((s) => s.userId),
       ).size;
