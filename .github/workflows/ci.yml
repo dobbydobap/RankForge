@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  TURBO_TELEMETRY_DISABLED: "1"
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4 # version comes from package.json "packageManager"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # nest build imports @prisma/client types; generate is offline (no DATABASE_URL needed)
+      - name: Generate Prisma client
+        run: pnpm --filter @rankforge/api exec prisma generate
+
+      - name: Build
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
