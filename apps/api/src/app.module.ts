@@ -19,6 +19,7 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AchievementsModule } from './modules/achievements/achievements.module';
 import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
+import { MetricsModule } from './modules/metrics/metrics.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { PlagiarismModule } from './modules/plagiarism/plagiarism.module';
     AdminModule,
     AchievementsModule,
     PlagiarismModule,
+    MetricsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
