@@ -6,8 +6,12 @@ import { EventsGateway } from '../../ws/events.gateway';
 import { JUDGE_QUEUE } from '../../redis/redis.module';
 import { JudgeJobData } from './judge.service';
 import { executeCode } from './executor';
+import { isMockExecutor, mockExecuteCode } from './mock-executor';
 
-@Processor(JUDGE_QUEUE)
+// Evaluated at import time (before ConfigModule), so set it in the shell env.
+const JUDGE_CONCURRENCY = parseInt(process.env.JUDGE_CONCURRENCY ?? '8', 10);
+
+@Processor(JUDGE_QUEUE, { concurrency: JUDGE_CONCURRENCY })
 export class JudgeProcessor extends WorkerHost {
   private readonly logger = new Logger(JudgeProcessor.name);
 
@@ -16,6 +20,9 @@ export class JudgeProcessor extends WorkerHost {
     private eventsGateway: EventsGateway,
   ) {
     super();
+    this.logger.log(
+      `JUDGE EXECUTOR: ${isMockExecutor() ? `MOCK (${process.env.JUDGE_MOCK_DELAY_MS ?? '200'}ms/test)` : 'wandbox'}, concurrency=${JUDGE_CONCURRENCY}`,
+    );
   }
 
   async process(job: Job<JudgeJobData>): Promise<void> {
@@ -58,7 +65,9 @@ export class JudgeProcessor extends WorkerHost {
 
     for (const tc of testCases) {
       const startTime = Date.now();
-      const result = await executeCode(language, sourceCode, tc.input, timeLimit + 2000);
+      const result = isMockExecutor()
+        ? await mockExecuteCode(tc.output)
+        : await executeCode(language, sourceCode, tc.input, timeLimit + 2000);
       const timeUsed = Date.now() - startTime;
 
       let verdict = 'ACCEPTED';
