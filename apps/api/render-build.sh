@@ -2,8 +2,10 @@
 set -e
 
 echo "Installing dependencies..."
-npm install -g pnpm
-pnpm install --frozen-lockfile=false
+# Pin to the repo's packageManager version — a bare install drifts to whatever
+# major pnpm is latest and reinterprets the lockfile/workspace settings.
+npm install -g pnpm@10.33.0
+pnpm install --frozen-lockfile
 
 echo "Building shared packages..."
 cd packages/shared && npx tsc && cd ../..
