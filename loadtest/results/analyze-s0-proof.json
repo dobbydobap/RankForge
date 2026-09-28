@@ -1,0 +1,22 @@
+{
+  "label": "s0-proof",
+  "window": {
+    "from": "2026-09-27T13:00:03.000Z",
+    "to": "2026-09-27T12:59:04.000Z",
+    "seconds": -59
+  },
+  "submitted": 0,
+  "judged": 0,
+  "completedPct": 0,
+  "timeToVerdictSec": {
+    "p50": null,
+    "p95": null,
+    "p99": null,
+    "max": null
+  },
+  "verdictThroughputPerSec": {
+    "mean": 0,
+    "peak": 0
+  },
+  "verdictBreakdown": {}
+}

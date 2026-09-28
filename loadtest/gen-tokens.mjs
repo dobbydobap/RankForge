@@ -31,7 +31,7 @@ if (users.length === 0) throw new Error('run seed-users.mjs first');
 const now = Math.floor(Date.now() / 1000);
 const tokens = users.map((u, i) => ({
   username: u.username,
-  token: sign({ sub: u.id, role: 'USER', iat: now, exp: now + 4 * 3600 }),
+  token: sign({ sub: u.id, role: 'USER', iat: now, exp: now + 12 * 3600 }),
   // unique synthetic client IP per VU (see README: restores per-client limiter behavior)
   ip: `10.${(i >> 16) & 255}.${(i >> 8) & 255}.${i & 255}`,
 }));

@@ -1,0 +1,24 @@
+{
+  "label": "s2-c32-a",
+  "window": {
+    "from": "2026-09-28T07:40:39.000Z",
+    "to": "2026-09-28T07:47:11.000Z",
+    "seconds": 392
+  },
+  "submitted": 7724,
+  "judged": 7724,
+  "completedPct": 100,
+  "timeToVerdictSec": {
+    "p50": 6.33,
+    "p95": 46.6,
+    "p99": 60.77,
+    "max": 63.23
+  },
+  "verdictThroughputPerSec": {
+    "mean": 23.82,
+    "peak": 62
+  },
+  "verdictBreakdown": {
+    "ACCEPTED": 7724
+  }
+}

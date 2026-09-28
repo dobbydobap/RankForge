@@ -1,0 +1,24 @@
+{
+  "label": "s2-c1-b",
+  "window": {
+    "from": "2026-09-28T08:10:28.000Z",
+    "to": "2026-09-28T08:16:59.000Z",
+    "seconds": 391
+  },
+  "submitted": 1381,
+  "judged": 0,
+  "completedPct": 0,
+  "timeToVerdictSec": {
+    "p50": null,
+    "p95": null,
+    "p99": null,
+    "max": null
+  },
+  "verdictThroughputPerSec": {
+    "mean": 1.03,
+    "peak": 2
+  },
+  "verdictBreakdown": {
+    "PENDING": 1381
+  }
+}

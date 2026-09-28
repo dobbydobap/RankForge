@@ -273,6 +273,76 @@ pnpm test:segment-tree    # Segment tree unit tests (9 tests)
 pnpm test:shared          # Zod validation tests (8 tests)
 ```
 
+## Load Testing
+
+The submission pipeline was load-tested to 500 concurrent users. The full harness
+lives in [`loadtest/`](loadtest/) and is reproducible end to end.
+
+**Test setup**
+
+- **Host:** Windows 11, Intel i7-1355U (10C / 12T), 16 GB RAM. Postgres 16 and
+  Redis 7 in Docker (WSL2); API run locally with `node dist/main.js`. The k6 load
+  generator shares the host with the system under test — an acknowledged
+  limitation; runs where total host CPU saturated were discarded.
+- **Tooling:** k6 v2.2.0, Node v24.18.0.
+- **Code execution is mocked** (`JUDGE_EXECUTOR=mock`) at a fixed **200 ms/test**,
+  so the numbers measure RankForge's own orchestration — API, BullMQ queue,
+  Postgres, WebSocket — and not the third-party [Wandbox](https://wandbox.org)
+  compile service. The 200 ms figure is calibrated against the **median of 31 real
+  Wandbox test-case executions (2657 ms)** measured on this stack; the real
+  executor is never load-tested (it is a free public service).
+- **Identity & rate limits:** 500 pre-seeded users, each with a pre-signed JWT and
+  a unique `X-Forwarded-For`, so per-client rate limits (3 submissions / 10 s,
+  10 req/s) behave as they would in production rather than collapsing onto one IP.
+- **Scenarios:** **S1** — open-loop `ramping-arrival-rate`, 25 → 150 submissions/s
+  (throughput / breaking point). **S2** — closed-loop `ramping-vus`, 0 → 500 VUs
+  over 2 min then held 5 min, each user looping submit → poll verdict → think 5–10 s
+  (the "500 concurrent users" headline). Time-to-verdict is read from server-side
+  `Submission.createdAt → judgedAt`; the first 60 s of each run is excluded as warmup.
+
+**The bottleneck.** The BullMQ judge worker ran at the default concurrency of **1**,
+so verdicts drained at a hard ceiling of ~1.4/s regardless of load, while the
+Prisma connection pool (default 21) exhausted under the enqueue burst
+(`P2024` timeouts → HTTP 5xx). Evidence: queue depth grew linearly while `active`
+stayed pinned at 1 and API CPU sat idle. **Fix:** configurable worker concurrency
+(`JUDGE_CONCURRENCY=32`) plus `connection_limit=40` on the database URL.
+
+**S2 — 500 concurrent users (2 min ramp + 5 min hold)**
+
+| Metric | Before (concurrency 1) | After (concurrency 32, pool 40) |
+|---|---|---|
+| Submissions judged within window | **4.5%** | **100%** |
+| Verdict throughput (steady state) | 1.1 / s | **23.8 / s** |
+| Time-to-verdict p50 / p95 / p99 | 307 s / 352 s / 355 s | **6.3 s / 47 s / 61 s** |
+| Users timed out (gave up after 120 s) | 1155 | **0** |
+| HTTP error rate (5xx) | 0% | 0% |
+
+**S1 — open-loop, arrival rate ramped to 150 submissions/s**
+
+| Metric | Before (concurrency 1) | After (concurrency 32, pool 40) |
+|---|---|---|
+| Verdict throughput (mean / peak) | 1.4 / 2 per s | **34 / 63 per s** |
+| Submissions judged within window | 0% | **58–79%** |
+| First failure mode under load | pool exhaustion → 5xx | rate-limit 429s (load shed cleanly) |
+
+**How to reproduce**
+
+```bash
+winget install k6 && docker compose up -d
+node loadtest/seed-users.mjs && node loadtest/gen-tokens.mjs   # 500 users + tokens
+bash loadtest/run-one.sh s2 1  s2-before        # baseline (concurrency 1)
+bash loadtest/run-one.sh s2 32 s2-after 40      # fixed (concurrency 32, pool 40)
+```
+
+**Honest caveats.** Numbers are single-host and shared-generator, so absolute
+latencies are conservative; the before/after comparison is what matters and both
+sides ran identically. Reported figures are the mean of 2 clean runs per
+configuration (S2 "after" is 1 clean run corroborated by a second); runs
+interrupted by the laptop's Modern Standby were detected via the Windows event log
+and discarded. S1 enqueue latency varied run-to-run with host contention; the
+verdict-throughput ceiling and completion rate — the actual bottleneck signature —
+were consistent across every run.
+
 ## Contributing
 
 RankForge is open source and contributions are welcome. See

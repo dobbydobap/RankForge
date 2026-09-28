@@ -46,5 +46,11 @@ coverage/
 .vercel
 .env*
 
-# Load testing (pre-signed tokens; results/ IS committed for reproducibility)
+# Load testing. Pre-signed tokens and the env-specific config are generated.
+# The distilled analysis JSON/CSV in results/ is committed as evidence; the
+# multi-MB API logs and discarded (standby-contaminated) runs are not.
 loadtest/tokens.json
+loadtest/config.json
+loadtest/results/*.log
+loadtest/results/api.pid
+loadtest/results/discarded/
