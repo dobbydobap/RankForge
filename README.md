@@ -10,7 +10,7 @@ A full-stack competitive programming platform with temporal leaderboards, real-t
 ## Live Demo
 
 - **Frontend**: [rank-forge-web.vercel.app](https://rank-forge-web.vercel.app)
-- **API**: [rankforge-717i.onrender.com](https://rankforge-717i.onrender.com)
+- **API**: [rankforge-api.onrender.com](https://rankforge-api.onrender.com)
 
 > Backend is on Render free tier — first request may take ~30s to wake up.
 
