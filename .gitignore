@@ -45,3 +45,6 @@ coverage/
 
 .vercel
 .env*
+
+# Load testing (pre-signed tokens; results/ IS committed for reproducibility)
+loadtest/tokens.json
