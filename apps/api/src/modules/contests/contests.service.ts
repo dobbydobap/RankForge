@@ -57,10 +57,11 @@ export class ContestsService {
     const skip = (page - 1) * limit;
 
     const where: any = {};
-    if (query.status) {
+    if (query.status && query.status !== 'DRAFT') {
       where.status = query.status;
     } else {
-      // By default exclude drafts
+      // Drafts are never listable publicly (?status=DRAFT would otherwise
+      // enumerate everyone's unpublished contests).
       where.status = { not: 'DRAFT' };
     }
 

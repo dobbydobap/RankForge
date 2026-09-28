@@ -26,14 +26,22 @@ export class SeedController {
   @Post()
   @Throttle({ short: { ttl: 60_000, limit: 3 }, long: { ttl: 3_600_000, limit: 10 } })
   async seed(@Query('key') key: string, @Query('force') force?: string) {
-    const secret = this.configService.get<string>('SEED_KEY') || this.configService.get<string>('JWT_ACCESS_SECRET');
+    // Requires a DEDICATED SEED_KEY. Never fall back to the JWT signing secret:
+    // that would turn a leaked signing key into a database-wipe capability, and
+    // the key travels in a query string (request logs, browser history).
+    const secret = this.configService.get<string>('SEED_KEY');
     if (!secret || !safeEqual(key || '', secret)) {
-      throw new ForbiddenException('Invalid seed key');
+      throw new ForbiddenException('Seeding is disabled (no SEED_KEY configured) or the key is invalid');
     }
 
     const userCount = await this.prisma.user.count();
     if (userCount > 0 && force !== 'true') {
       return { message: 'Database already seeded. Add &force=true to reseed.', users: userCount };
+    }
+
+    // Destructive reseed is never allowed in production — it wipes every table.
+    if (force === 'true' && process.env.NODE_ENV === 'production') {
+      throw new ForbiddenException('force reseed is disabled in production');
     }
 
     // Wipe existing data if force reseeding

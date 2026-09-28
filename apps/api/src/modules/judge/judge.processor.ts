@@ -29,6 +29,18 @@ export class JudgeProcessor extends WorkerHost {
     const { submissionId, problemId, language, sourceCode, timeLimit } = job.data;
     this.logger.log(`Judging submission ${submissionId} (${language})`);
 
+    // Retry idempotency: if a previous attempt died midway, its judgedAt/solved
+    // side effects must not be applied twice, and stale TestResults must go.
+    const existing = await this.prisma.submission.findUnique({
+      where: { id: submissionId },
+      select: { judgedAt: true },
+    });
+    if (existing?.judgedAt) {
+      this.logger.warn(`Submission ${submissionId} already judged; skipping retry`);
+      return;
+    }
+    await this.prisma.testResult.deleteMany({ where: { submissionId } });
+
     // Mark as judging
     await this.prisma.submission.update({
       where: { id: submissionId },
@@ -69,6 +81,18 @@ export class JudgeProcessor extends WorkerHost {
         ? await mockExecuteCode(tc.output)
         : await executeCode(language, sourceCode, tc.input, timeLimit + 2000);
       const timeUsed = Date.now() - startTime;
+
+      // Executor-service outage is not the user's fault: throw so BullMQ retries
+      // (attempts: 2) instead of recording a bogus RUNTIME_ERROR + penalty. On
+      // the final attempt, fall through so the submission still reaches a
+      // terminal verdict rather than hanging in JUDGING forever.
+      if (result.infraFailure && job.attemptsMade + 1 < (job.opts.attempts ?? 1)) {
+        await this.prisma.submission.update({
+          where: { id: submissionId },
+          data: { verdict: 'PENDING' },
+        });
+        throw new Error(`Executor unavailable (${result.stderr}); retrying submission ${submissionId}`);
+      }
 
       let verdict = 'ACCEPTED';
       let output = result.stdout;

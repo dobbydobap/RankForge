@@ -7,9 +7,14 @@ import {
   Body,
   Param,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { ContestsService } from './contests.service';
+import { requireSecret } from '../../common/utils/secrets';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -24,7 +29,27 @@ import {
 
 @Controller('contests')
 export class ContestsController {
-  constructor(private contestsService: ContestsService) {}
+  constructor(
+    private contestsService: ContestsService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
+
+  /** Optional auth: identity comes from a verified JWT or not at all — never
+   *  from client-supplied params (which allowed spoofing the contest creator
+   *  to read unpublished problem lists pre-contest). */
+  private userIdFromAuth(req: Request): string | undefined {
+    const header = req.headers.authorization;
+    if (!header?.startsWith('Bearer ')) return undefined;
+    try {
+      const payload = this.jwtService.verify(header.slice(7), {
+        secret: requireSecret(this.configService, 'JWT_ACCESS_SECRET'),
+      });
+      return payload.sub;
+    } catch {
+      return undefined;
+    }
+  }
 
   @Get()
   async findAll(
@@ -44,11 +69,8 @@ export class ContestsController {
   }
 
   @Get(':slug')
-  async findBySlug(
-    @Param('slug') slug: string,
-    @Query('userId') userId?: string,
-  ) {
-    return this.contestsService.findBySlug(slug, userId);
+  async findBySlug(@Param('slug') slug: string, @Req() req: Request) {
+    return this.contestsService.findBySlug(slug, this.userIdFromAuth(req));
   }
 
   @Post()

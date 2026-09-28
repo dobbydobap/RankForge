@@ -50,6 +50,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     client.rooms = new Set();
 
+    // An unhandled 'error' event on a ws socket (abrupt disconnect, malformed
+    // frame) throws and would crash the whole process. Log-and-drop instead.
+    client.on('error', () => {
+      try { client.terminate(); } catch { /* already gone */ }
+    });
+
     if (client.userId) {
       if (!this.clients.has(client.userId)) {
         this.clients.set(client.userId, new Set());
@@ -118,6 +124,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private joinRoom(client: AuthenticatedSocket, room: string) {
+    // Cap rooms per socket: joins allocate server memory keyed by arbitrary
+    // client strings, so an unbounded loop of subscribe messages is a DoS.
+    if (client.rooms.size >= 50 && !client.rooms.has(room)) return;
     client.rooms.add(room);
     if (!this.rooms.has(room)) {
       this.rooms.set(room, new Set());

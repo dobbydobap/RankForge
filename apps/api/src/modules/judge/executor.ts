@@ -34,6 +34,9 @@ export interface ExecutionResult {
   compilationError: string | null;
   exitCode: number;
   signal: string;
+  /** True when the EXECUTOR SERVICE failed (HTTP error / network), as opposed
+   *  to the user's program failing — callers should retry, not issue a verdict. */
+  infraFailure?: boolean;
 }
 
 export async function executeCode(
@@ -88,6 +91,7 @@ export async function executeCode(
         compilationError: null,
         exitCode: 1,
         signal: '',
+        infraFailure: true,
       };
     }
 
@@ -135,6 +139,7 @@ export async function executeCode(
       compilationError: null,
       exitCode: 1,
       signal: '',
+      infraFailure: true,
     };
   }
 }

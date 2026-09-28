@@ -26,9 +26,15 @@ export class UsersService {
   }
 
   async updateProfile(userId: string, data: { displayName?: string; bio?: string }) {
+    // Hard whitelist: the TS type is erased at runtime, so a raw body could
+    // otherwise smuggle profile fields like currentRating/solvedCount straight
+    // into Prisma (self-set rating exploit). Only these two fields are writable.
+    const safe: { displayName?: string; bio?: string } = {};
+    if (typeof data?.displayName === 'string') safe.displayName = data.displayName.slice(0, 50);
+    if (typeof data?.bio === 'string') safe.bio = data.bio.slice(0, 500);
     return this.prisma.userProfile.update({
       where: { userId },
-      data,
+      data: safe,
     });
   }
 

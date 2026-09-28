@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JudgeService } from '../judge/judge.service';
 import { SubmitCodeInput } from '@rankforge/shared';
@@ -15,6 +15,33 @@ export class SubmissionsService {
       where: { id: input.problemId },
     });
     if (!problem) throw new NotFoundException('Problem not found');
+
+    // A contestId affects standings, first blood, and eventually ratings, so it
+    // is only accepted when the contest is actually running, the user is a real
+    // (non-virtual) registrant, and the problem belongs to the contest.
+    if (input.contestId) {
+      const contest = await this.prisma.contest.findUnique({
+        where: { id: input.contestId },
+        include: {
+          problems: { where: { problemId: input.problemId }, select: { id: true } },
+          registrations: { where: { userId }, select: { isVirtual: true } },
+        },
+      });
+      if (!contest) throw new NotFoundException('Contest not found');
+      const now = new Date();
+      if (contest.status !== 'LIVE' && contest.status !== 'FROZEN') {
+        throw new BadRequestException('Contest is not accepting submissions');
+      }
+      if (now < contest.startTime || now > contest.endTime) {
+        throw new BadRequestException('Outside the contest window');
+      }
+      if (contest.problems.length === 0) {
+        throw new BadRequestException('Problem is not part of this contest');
+      }
+      if (contest.registrations.length === 0) {
+        throw new ForbiddenException('Not registered for this contest');
+      }
+    }
 
     const submission = await this.prisma.submission.create({
       data: {
