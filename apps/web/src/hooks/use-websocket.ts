@@ -21,13 +21,23 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
   const accessToken = useAuthStore((s) => s.accessToken);
   const wsRef = useRef<WebSocket | null>(null);
   const handlersRef = useRef(onEvent);
+  const roomsRef = useRef(rooms);
+  const reconnectRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const attemptsRef = useRef(0);
   const [isConnected, setIsConnected] = useState(false);
 
-  // Keep handlers ref up to date
+  // Keep handlers/rooms refs up to date without retriggering the effect
   handlersRef.current = onEvent;
+  roomsRef.current = rooms;
+
+  // Callers pass rooms as inline literals (new identity every render), so key
+  // the effect on their VALUE — otherwise the socket is torn down and reopened
+  // on every render of a live page.
+  const roomsKey = JSON.stringify(rooms ?? []);
 
   const connect = useCallback(() => {
-    if (wsRef.current?.readyState === WebSocket.OPEN) return;
+    const state = wsRef.current?.readyState;
+    if (state === WebSocket.OPEN || state === WebSocket.CONNECTING) return;
 
     const url = new URL('/ws', WS_URL);
     if (accessToken) {
@@ -39,12 +49,11 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 
     ws.onopen = () => {
       setIsConnected(true);
+      attemptsRef.current = 0;
 
       // Auto-join rooms
-      if (rooms) {
-        for (const room of rooms) {
-          ws.send(JSON.stringify(room));
-        }
+      for (const room of roomsRef.current ?? []) {
+        ws.send(JSON.stringify(room));
       }
     };
 
@@ -62,26 +71,33 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 
     ws.onclose = () => {
       setIsConnected(false);
-      // Auto-reconnect after 3s
-      setTimeout(() => {
-        if (enabled) connect();
-      }, 3000);
+      // Reconnect only while this socket is still the active one (the unmount
+      // cleanup nulls wsRef, which previously left a zombie reconnect loop
+      // running after navigation). Exponential backoff + jitter avoids a
+      // synchronized stampede when the server blips.
+      if (wsRef.current !== ws) return;
+      const delay = Math.min(3000 * 2 ** attemptsRef.current, 30000) + Math.random() * 1000;
+      attemptsRef.current += 1;
+      reconnectRef.current = setTimeout(connect, delay);
     };
 
     ws.onerror = () => {
       ws.close();
     };
-  }, [accessToken, rooms, enabled]);
+  }, [accessToken]);
 
   useEffect(() => {
     if (!enabled) return;
     connect();
 
     return () => {
-      wsRef.current?.close();
-      wsRef.current = null;
+      if (reconnectRef.current) clearTimeout(reconnectRef.current);
+      const ws = wsRef.current;
+      wsRef.current = null; // signals onclose not to reconnect
+      ws?.close();
     };
-  }, [connect, enabled]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connect, enabled, roomsKey]);
 
   const send = useCallback((event: string, data: Record<string, string>) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {

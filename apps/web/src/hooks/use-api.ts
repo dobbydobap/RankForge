@@ -123,10 +123,9 @@ export function useContest(slug: string) {
   const userId = useAuthStore((s) => s.user?.id);
   return useQuery({
     queryKey: ['contest', slug, userId],
-    queryFn: () =>
-      api.get<any>(`/contests/${slug}${userId ? `?userId=${userId}` : ''}`, {
-        token: token ?? undefined,
-      }),
+    // Identity is derived server-side from the Bearer token; a userId query
+    // param was spoofable (pre-contest problem-list leak).
+    queryFn: () => api.get<any>(`/contests/${slug}`, { token: token ?? undefined }),
     enabled: !!slug,
   });
 }

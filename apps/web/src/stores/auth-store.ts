@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { UserPublic, AuthResponse, RegisterInput, LoginInput } from '@rankforge/shared';
-import { api } from '@/lib/api';
+import { api, bindAuthBridge } from '@/lib/api';
 
 interface AuthState {
   user: UserPublic | null;
@@ -80,3 +80,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   clearAuth: () =>
     set({ user: null, accessToken: null, isAuthenticated: false, isLoading: false }),
 }));
+
+// Let the api layer push a transparently-refreshed token back into the store
+// (and log out cleanly when the refresh cookie is dead).
+bindAuthBridge(
+  (accessToken, user) => useAuthStore.getState().setAuth(user as UserPublic, accessToken),
+  () => useAuthStore.getState().clearAuth(),
+);
