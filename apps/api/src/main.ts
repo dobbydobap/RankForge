@@ -25,8 +25,16 @@ async function bootstrap() {
   );
 
   const corsOrigin = configService.get<string>('CORS_ORIGIN', 'http://localhost:3000');
+  // Tolerate common env-var mistakes (surrounding quotes, trailing slash, a pasted
+  // "CORS_ORIGIN=" prefix) and log what was actually loaded, so a misconfigured
+  // deploy is diagnosable from its own boot log.
+  const corsOrigins = corsOrigin
+    .split(',')
+    .map((o) => o.trim().replace(/^CORS_ORIGIN=/i, '').replace(/^["']+|["']+$/g, '').replace(/\/+$/, ''))
+    .filter(Boolean);
+  console.log(`CORS origins: ${JSON.stringify(corsOrigins)}`);
   app.enableCors({
-    origin: corsOrigin.split(',').map((o) => o.trim()),
+    origin: corsOrigins,
     credentials: true,
   });
 
